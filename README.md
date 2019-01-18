@@ -25,6 +25,21 @@ import {MultiselectModule} from 'angular-multiselect';
 export class MyModule {}
 ```
 
+
+## How to publish a new official version on npmjs
+
+First create a new build of the package:
+
+```
+npm run packagr
+```
+
+Finally publish it on npmjs:
+
+```
+npm publish dist --access public
+```
+
 ## License
 
 MIT
