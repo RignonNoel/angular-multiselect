@@ -1,0 +1,37 @@
+<div class="multiselect">
+  <input ([ngModel])="searchBarText"
+         class="nt-form-input"
+         (keypress)="triggerSearch()"
+         type="text"
+         [placeholder]="settings.searchBarPlaceholder"/>
+  <div class="multiselect__columns">
+    <div class="multiselect__columns__column">
+      <div class="multiselect__columns__column__title">
+        {{ settings.listLabel }}
+      </div>
+      <div class="multiselect__columns__column__list">
+        <div class="multiselect__columns__column__list__empty" *ngIf="!list || list.length < 1">
+          {{ settings.listEmptyLabel }}
+        </div>
+        <div *ngFor="let item of list" class="multiselect__columns__column__list__item">
+          <div *ngIf="!isSelected(item)" (dblclick)="select(item)">
+            {{ item[labelProperty] }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="multiselect__columns__column">
+      <div class="multiselect__columns__column__title">
+        {{ settings.selectedLabel }}
+      </div>
+      <div class="multiselect__columns__column__list">
+        <div class="multiselect__columns__column__list__empty" *ngIf="!selected || selected.length < 1">
+          {{ settings.selectedEmptyLabel }}
+        </div>
+        <div *ngFor="let item of selected"  (dblclick)="unselect(item)" class="multiselect__columns__column__list__item">
+          {{ item[labelProperty] }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

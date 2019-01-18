@@ -1,0 +1,44 @@
+.multiselect {
+  &__columns {
+    display: flex;
+    justify-content: space-between;
+
+    &__column {
+      flex: 1;
+      margin-top: 20px;
+      margin-right: 30px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &__title {
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 0.8em;
+      }
+
+      &__list {
+        height: 300px;
+        border: 1px solid lightgrey;
+
+        &__item {
+          padding: 0 5px;
+
+          &:hover{
+            background-color: lightgrey;
+            cursor: pointer;
+          }
+        }
+
+        &__empty {
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: lightgrey;
+        }
+      }
+    }
+  }
+}
