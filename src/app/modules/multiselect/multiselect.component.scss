@@ -19,8 +19,9 @@
       }
 
       &__list {
-        height: 300px;
+        height: 150px;
         border: 1px solid lightgrey;
+        overflow: auto;
 
         &__item {
           padding: 0 5px;
