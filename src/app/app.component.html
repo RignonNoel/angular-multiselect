@@ -1,5 +1,35 @@
-<multiselect [list]="listOfChoices"
-                 [(selected)]="selectedChoices"
-                 labelProperty="name">
+<div class="header">
+  <a href="https://github.com/RignonNoel/angular-multiselect" class="header__item">
+    Go to the Github repository
+  </a>
+</div>
+<div class="content">
+  Little package to easily select multiple choices of a big set of data. It's perfect for manage ManyToMany relationships in your admin panel for example.
 
-</multiselect>
+  <div class="content__section">
+    <div class="content__section__title">
+      Demo
+    </div>
+    <div class="content__section__content">
+      <multiselect [list]="choicesAvailable"
+                   [(selected)]="selectedChoices"
+                   labelProperty="name"
+                   (searchBar)="filter($event)">
+      </multiselect>
+
+      <p>
+        It's easy to see the result in realtime with the variable we bind to the component:
+      </p>
+      <p>
+        <b>Number of choices:</b> {{ selectedChoices.length }}<br/>
+        <b>Last choice:</b>
+        <span *ngIf="selectedChoices.length > 0">
+          {{ selectedChoices[selectedChoices.length - 1].name }}
+        </span>
+        <span *ngIf="selectedChoices.length <= 0">
+          None
+        </span>
+      </p>
+    </div>
+  </div>
+</div>

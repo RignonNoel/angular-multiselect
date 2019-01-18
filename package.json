@@ -1,6 +1,6 @@
 {
   "name": "@rignonnoel/angular-multiselect",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A multiple select component for angular 6.0+ that allow user to manage choices between two list.",
   "author": "Noël Rignon",
   "license": "MIT",

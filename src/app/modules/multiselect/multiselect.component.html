@@ -1,6 +1,6 @@
 <div class="multiselect">
-  <input ([ngModel])="searchBarText"
-         class="nt-form-input"
+  <input [(ngModel)]="searchBarText"
+         class="multiselect__searchbar"
          (keypress)="triggerSearch()"
          type="text"
          [placeholder]="settings.searchBarPlaceholder"/>

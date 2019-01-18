@@ -8,7 +8,6 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 export class MultiselectComponent implements OnInit, OnChanges {
 
   @Input() labelProperty = 'label';
-  @Input() valueProperty = 'value';
   @Input() selected: any[] = [];
   @Input() list: any[] = [];
   @Input() settings;
