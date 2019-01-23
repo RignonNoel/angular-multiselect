@@ -97,7 +97,8 @@ export class AppComponent {
 <multiselect [list]="choicesAvailable"
              [(selected)]="selectedChoices"
              labelProperty="name"
-             (searchBar)="filter($event)">
+             (searchBar)="filter($event)"
+             typeOfSearch='text'>
 </multiselect>
 ```
 
@@ -111,7 +112,7 @@ export class AppComponent {
 | selected | The list of selected choices in the multiselect | any[] | [] |
 | labelProperty | Attribute name of `list` we want to use as display in the multiselect | string | label |
 | settings | General settings of the component, principally use for display configuration | Object | See below |
-
+| typeOfSearch | The type of searchbar you want | 'text', 'datetime', 'datetime-range' | 'text'
 ### Settings
 
 Here is the default value of the settings, feel free to change it to do some customization or internationalization.
@@ -122,6 +123,10 @@ Here is the default value of the settings, feel free to change it to do some cus
   listEmptyLabel: 'No choices available',
   selectedLabel: 'Selected choices',
   selectedEmptyLabel: 'No choice selected',
+  datetime_range: {
+    start: 'Start',
+    end: 'End',
+  }
 }
 ```
 

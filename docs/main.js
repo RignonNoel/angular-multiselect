@@ -30,7 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"header\">\n  <a href=\"https://github.com/RignonNoel/angular-multiselect\" class=\"header__item\">\n    Go to the Github repository\n  </a>\n</div>\n<div class=\"content\">\n  Little package to easily select multiple choices of a big set of data. It's perfect for manage ManyToMany relationships in your admin panel for example.\n\n  <div class=\"content__section\">\n    <div class=\"content__section__title\">\n      Demo\n    </div>\n    <div class=\"content__section__content\">\n      <multiselect [list]=\"choicesAvailable\"\n                   [(selected)]=\"selectedChoices\"\n                   labelProperty=\"name\"\n                   (searchBar)=\"filter($event)\">\n      </multiselect>\n\n      <p>\n        It's easy to see the result in realtime with the variable we bind to the component:\n      </p>\n      <p>\n        <b>Number of choices:</b> {{ selectedChoices.length }}<br/>\n        <b>Last choice:</b>\n        <span *ngIf=\"selectedChoices.length > 0\">\n          {{ selectedChoices[selectedChoices.length - 1].name }}\n        </span>\n        <span *ngIf=\"selectedChoices.length <= 0\">\n          None\n        </span>\n      </p>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"header\">\n  <a href=\"https://github.com/RignonNoel/angular-multiselect\" class=\"header__item\">\n    Go to the Github repository\n  </a>\n</div>\n<div class=\"content\">\n  Little package to easily select multiple choices of a big set of data. It's perfect for manage ManyToMany relationships in your admin panel for example.\n\n  <div class=\"content__section\">\n    <div class=\"content__section__title\">\n      Demo\n    </div>\n    <div class=\"content__section__content\">\n      <multiselect [list]=\"choicesAvailable\"\n                   [(selected)]=\"selectedChoices\"\n                   labelProperty=\"name\"\n                   (searchBar)=\"filter($event)\">\n      </multiselect>\n\n      <p>\n        It's easy to see the result in realtime with the variable we bind to the component:\n      </p>\n      <p>\n        <b>Number of choices:</b> {{ selectedChoices.length }}<br/>\n        <b>Last choice:</b>\n        <span *ngIf=\"selectedChoices.length > 0\">\n          {{ selectedChoices[selectedChoices.length - 1].name }}\n        </span>\n        <span *ngIf=\"selectedChoices.length <= 0\">\n          None\n        </span>\n      </p>\n    </div>\n  </div>\n\n  <div class=\"content__section\">\n    <div class=\"content__section__title\">\n      With datetime selector\n    </div>\n    <div class=\"content__section__content\">\n      <p>\n        If you use the `typeOfSearch='datetime'` you will have a datetime picker in place of the searchbar.\n      </p>\n      <multiselect [list]=\"demo1ChoicesAvailable\"\n                   [(selected)]=\"demo1SelectedChoices\"\n                   labelProperty=\"name\"\n                   (searchBar)=\"setDemo1($event)\"\n                   typeOfSearch=\"datetime\">\n      </multiselect>\n\n      <p>\n        Value emmited by the search bar: {{ demo1 }}\n      </p>\n    </div>\n  </div>\n\n  <div class=\"content__section\">\n    <div class=\"content__section__title\">\n      With datetime range selector\n    </div>\n    <div class=\"content__section__content\">\n      <p>\n        If you use the `typeOfSearch='datetime-range'` you will have two datetime picker in place of the searchbar.\n      </p>\n      <multiselect [list]=\"demo2ChoicesAvailable\"\n                   [(selected)]=\"demo2SelectedChoices\"\n                   labelProperty=\"name\"\n                   (searchBar)=\"setDemo2($event)\"\n                   typeOfSearch=\"datetime-range\">\n      </multiselect>\n\n      <p>\n        Value emmited by the search bar:\n      </p>\n      <ul *ngIf=\"demo2\">\n        <li>Start : {{ demo2.start }}</li>\n        <li>End : {{ demo2.end }}</li>\n      </ul>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -71,12 +71,18 @@ var AppComponent = /** @class */ (function () {
         this.allChoices = [];
         this.choicesAvailable = [];
         this.selectedChoices = [];
+        this.demo1ChoicesAvailable = [];
+        this.demo1SelectedChoices = [];
+        this.demo2ChoicesAvailable = [];
+        this.demo2SelectedChoices = [];
         for (var index = 0; index <= 200; index++) {
             this.allChoices.push({
                 name: 'Choice ' + index.toString(),
             });
         }
         this.choicesAvailable = this.allChoices;
+        this.demo1ChoicesAvailable = this.allChoices;
+        this.demo2ChoicesAvailable = this.allChoices;
     }
     AppComponent.prototype.filter = function (search) {
         console.log(search);
@@ -92,6 +98,12 @@ var AppComponent = /** @class */ (function () {
         else {
             this.choicesAvailable = this.allChoices;
         }
+    };
+    AppComponent.prototype.setDemo1 = function (value) {
+        this.demo1 = value;
+    };
+    AppComponent.prototype.setDemo2 = function (value) {
+        this.demo2 = value;
     };
     AppComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -164,7 +176,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"multiselect\">\n  <input [(ngModel)]=\"searchBarText\"\n         class=\"multiselect__searchbar\"\n         (keypress)=\"triggerSearch()\"\n         type=\"text\"\n         [placeholder]=\"settings.searchBarPlaceholder\"/>\n  <div class=\"multiselect__columns\">\n    <div class=\"multiselect__columns__column\">\n      <div class=\"multiselect__columns__column__title\">\n        {{ settings.listLabel }}\n      </div>\n      <div class=\"multiselect__columns__column__list\">\n        <div class=\"multiselect__columns__column__list__empty\" *ngIf=\"!list || list.length < 1\">\n          {{ settings.listEmptyLabel }}\n        </div>\n        <div *ngFor=\"let item of list\" class=\"multiselect__columns__column__list__item\">\n          <div *ngIf=\"!isSelected(item)\" (dblclick)=\"select(item)\">\n            {{ item[labelProperty] }}\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"multiselect__columns__column\">\n      <div class=\"multiselect__columns__column__title\">\n        {{ settings.selectedLabel }}\n      </div>\n      <div class=\"multiselect__columns__column__list\">\n        <div class=\"multiselect__columns__column__list__empty\" *ngIf=\"!selected || selected.length < 1\">\n          {{ settings.selectedEmptyLabel }}\n        </div>\n        <div *ngFor=\"let item of selected\"  (dblclick)=\"unselect(item)\" class=\"multiselect__columns__column__list__item\">\n          {{ item[labelProperty] }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"multiselect\">\n  <div *ngIf=\"typeOfSearch === 'text'\">\n    <input [(ngModel)]=\"searchBarText\"\n           class=\"input\"\n           (keypress)=\"triggerSearch()\"\n           type=\"text\"\n           [placeholder]=\"settings.searchBarPlaceholder\"/>\n  </div>\n  <div *ngIf=\"typeOfSearch === 'datetime'\">\n    <input [owlDateTimeTrigger]=\"datetime\"\n           class=\"input\"\n           [owlDateTime]=\"datetime\"\n           [(ngModel)]=\"datetimeStart\"\n           (ngModelChange)=\"triggerSearch()\">\n    <owl-date-time #datetime [firstDayOfWeek]=\"1\"></owl-date-time>\n  </div>\n  <div *ngIf=\"typeOfSearch === 'datetime-range'\" class=\"multiselect__searchbar\">\n      <div class=\"multiselect__searchbar__item\">\n        {{ settings.datetime_range.start }}\n        <input [owlDateTimeTrigger]=\"dt_start\"\n               class=\"input\"\n               [owlDateTime]=\"dt_start\"\n               [(ngModel)]=\"datetimeStart\"\n               (ngModelChange)=\"triggerSearch()\">\n        <owl-date-time #dt_start [firstDayOfWeek]=\"1\"></owl-date-time>\n      </div>\n      <div class=\"multiselect__searchbar__item\">\n        {{ settings.datetime_range.end }}\n          <input [owlDateTimeTrigger]=\"dt_end\"\n                 class=\"input\"\n                 [owlDateTime]=\"dt_end\"\n                 [(ngModel)]=\"datetimeEnd\"\n                 (ngModelChange)=\"triggerSearch()\">\n          <owl-date-time #dt_end [firstDayOfWeek]=\"1\"></owl-date-time>\n      </div>\n  </div>\n  <div class=\"multiselect__columns\">\n    <div class=\"multiselect__columns__column\">\n      <div class=\"multiselect__columns__column__title\">\n        {{ settings.listLabel }}\n      </div>\n      <div class=\"multiselect__columns__column__list\">\n        <div class=\"multiselect__columns__column__list__empty\" *ngIf=\"!list || list.length < 1\">\n          {{ settings.listEmptyLabel }}\n        </div>\n        <div *ngFor=\"let item of list\" class=\"multiselect__columns__column__list__item\">\n          <div *ngIf=\"!isSelected(item)\" (dblclick)=\"select(item)\">\n            {{ item[labelProperty] }}\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"multiselect__columns__column\">\n      <div class=\"multiselect__columns__column__title\">\n        {{ settings.selectedLabel }}\n      </div>\n      <div class=\"multiselect__columns__column__list\">\n        <div class=\"multiselect__columns__column__list__empty\" *ngIf=\"!selected || selected.length < 1\">\n          {{ settings.selectedEmptyLabel }}\n        </div>\n        <div *ngFor=\"let item of selected\"  (dblclick)=\"unselect(item)\" class=\"multiselect__columns__column__list__item\">\n          {{ item[labelProperty] }}\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -175,7 +187,7 @@ module.exports = "<div class=\"multiselect\">\n  <input [(ngModel)]=\"searchBarT
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".multiselect__searchbar {\n  box-sizing: border-box;\n  border: 1px solid lightgrey;\n  padding: 10px;\n  width: 100%;\n  background: none;\n  color: black; }\n\n.multiselect__columns {\n  display: flex;\n  justify-content: space-between; }\n\n.multiselect__columns__column {\n    flex: 1;\n    margin-top: 20px;\n    margin-right: 30px; }\n\n.multiselect__columns__column:last-child {\n      margin-right: 0; }\n\n.multiselect__columns__column__title {\n      text-transform: uppercase;\n      font-weight: 600;\n      font-size: 0.8em; }\n\n.multiselect__columns__column__list {\n      height: 150px;\n      border: 1px solid lightgrey;\n      overflow: auto; }\n\n.multiselect__columns__column__list__item {\n        padding: 0 5px; }\n\n.multiselect__columns__column__list__item:hover {\n          background-color: lightgrey;\n          cursor: pointer; }\n\n.multiselect__columns__column__list__empty {\n        height: 100%;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        background-color: lightgrey; }\n"
+module.exports = ".input {\n  box-sizing: border-box;\n  border: 1px solid lightgrey;\n  padding: 10px;\n  width: 100%;\n  background: none;\n  color: black; }\n\n.multiselect__searchbar {\n  display: flex;\n  width: 100%; }\n\n.multiselect__searchbar__item {\n    flex: 1;\n    padding-right: 20px; }\n\n.multiselect__searchbar__item:last-child {\n      padding-right: 0; }\n\n.multiselect__columns {\n  display: flex;\n  justify-content: space-between; }\n\n.multiselect__columns__column {\n    flex: 1;\n    margin-top: 20px;\n    margin-right: 30px; }\n\n.multiselect__columns__column:last-child {\n      margin-right: 0; }\n\n.multiselect__columns__column__title {\n      text-transform: uppercase;\n      font-weight: 600;\n      font-size: 0.8em; }\n\n.multiselect__columns__column__list {\n      height: 150px;\n      border: 1px solid lightgrey;\n      overflow: auto; }\n\n.multiselect__columns__column__list__item {\n        padding: 0 5px; }\n\n.multiselect__columns__column__list__item:hover {\n          background-color: lightgrey;\n          cursor: pointer; }\n\n.multiselect__columns__column__list__empty {\n        height: 100%;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        background-color: lightgrey; }\n"
 
 /***/ }),
 
@@ -205,6 +217,7 @@ var MultiselectComponent = /** @class */ (function () {
         this.labelProperty = 'label';
         this.selected = [];
         this.list = [];
+        this.typeOfSearch = 'text';
         this.doneTypingInterval = 1500;
         this.searchBar = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
     }
@@ -216,6 +229,10 @@ var MultiselectComponent = /** @class */ (function () {
                 listEmptyLabel: 'No choices available',
                 selectedLabel: 'Selected choices',
                 selectedEmptyLabel: 'No choice selected',
+                datetime_range: {
+                    start: 'Start',
+                    end: 'End',
+                }
             };
         }
     };
@@ -228,13 +245,29 @@ var MultiselectComponent = /** @class */ (function () {
     };
     MultiselectComponent.prototype.triggerSearch = function () {
         var _this = this;
-        clearTimeout(this.typingTimer);
-        this.typingTimer = setTimeout(function () {
-            _this.filterList();
-        }, this.doneTypingInterval);
+        if (this.typeOfSearch === 'text') {
+            clearTimeout(this.typingTimer);
+            this.typingTimer = setTimeout(function () {
+                _this.filterList();
+            }, this.doneTypingInterval);
+        }
+        else {
+            this.filterList();
+        }
     };
     MultiselectComponent.prototype.filterList = function () {
-        this.searchBar.emit(this.searchBarText);
+        if (this.typeOfSearch === 'text') {
+            this.searchBar.emit(this.searchBarText);
+        }
+        else if (this.typeOfSearch === 'datetime') {
+            this.searchBar.emit(this.datetimeStart);
+        }
+        else if (this.typeOfSearch === 'datetime-range') {
+            this.searchBar.emit({
+                start: this.datetimeStart,
+                end: this.datetimeEnd,
+            });
+        }
     };
     MultiselectComponent.prototype.select = function (item) {
         this.selected.push(item);
@@ -261,6 +294,10 @@ var MultiselectComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
         __metadata("design:type", Object)
     ], MultiselectComponent.prototype, "settings", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", String)
+    ], MultiselectComponent.prototype, "typeOfSearch", void 0);
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
         __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"])
@@ -294,6 +331,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _multiselect_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./multiselect.component */ "./src/app/modules/multiselect/multiselect.component.ts");
+/* harmony import */ var ng_pick_datetime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ng-pick-datetime */ "./node_modules/ng-pick-datetime/picker.js");
+/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/fesm5/animations.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -304,14 +343,19 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+
 var MultiselectModule = /** @class */ (function () {
     function MultiselectModule() {
     }
     MultiselectModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
             imports: [
+                _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_5__["BrowserAnimationsModule"],
                 _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormsModule"],
+                ng_pick_datetime__WEBPACK_IMPORTED_MODULE_4__["OwlDateTimeModule"],
+                ng_pick_datetime__WEBPACK_IMPORTED_MODULE_4__["OwlNativeDateTimeModule"],
             ],
             declarations: [
                 _multiselect_component__WEBPACK_IMPORTED_MODULE_3__["MultiselectComponent"],

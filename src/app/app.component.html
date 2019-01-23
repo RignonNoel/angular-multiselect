@@ -32,4 +32,50 @@
       </p>
     </div>
   </div>
+
+  <div class="content__section">
+    <div class="content__section__title">
+      With datetime selector
+    </div>
+    <div class="content__section__content">
+      <p>
+        If you use the `typeOfSearch='datetime'` you will have a datetime picker in place of the searchbar.
+      </p>
+      <multiselect [list]="demo1ChoicesAvailable"
+                   [(selected)]="demo1SelectedChoices"
+                   labelProperty="name"
+                   (searchBar)="setDemo1($event)"
+                   typeOfSearch="datetime">
+      </multiselect>
+
+      <p>
+        Value emmited by the search bar: {{ demo1 }}
+      </p>
+    </div>
+  </div>
+
+  <div class="content__section">
+    <div class="content__section__title">
+      With datetime range selector
+    </div>
+    <div class="content__section__content">
+      <p>
+        If you use the `typeOfSearch='datetime-range'` you will have two datetime picker in place of the searchbar.
+      </p>
+      <multiselect [list]="demo2ChoicesAvailable"
+                   [(selected)]="demo2SelectedChoices"
+                   labelProperty="name"
+                   (searchBar)="setDemo2($event)"
+                   typeOfSearch="datetime-range">
+      </multiselect>
+
+      <p>
+        Value emmited by the search bar:
+      </p>
+      <ul *ngIf="demo2">
+        <li>Start : {{ demo2.start }}</li>
+        <li>End : {{ demo2.end }}</li>
+      </ul>
+    </div>
+  </div>
 </div>

@@ -1,5 +1,15102 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["vendor"],{
 
+/***/ "./node_modules/@angular/animations/fesm5/animations.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@angular/animations/fesm5/animations.js ***!
+  \**************************************************************/
+/*! exports provided: AnimationBuilder, AnimationFactory, AUTO_STYLE, animate, animateChild, animation, group, keyframes, query, sequence, stagger, state, style, transition, trigger, useAnimation, NoopAnimationPlayer, ɵPRE_STYLE, ɵAnimationGroupPlayer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationBuilder", function() { return AnimationBuilder; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationFactory", function() { return AnimationFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTO_STYLE", function() { return AUTO_STYLE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animate", function() { return animate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animateChild", function() { return animateChild; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animation", function() { return animation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "group", function() { return group; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "keyframes", function() { return keyframes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "query", function() { return query; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sequence", function() { return sequence; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stagger", function() { return stagger; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "state", function() { return state; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "style", function() { return style; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transition", function() { return transition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "trigger", function() { return trigger; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useAnimation", function() { return useAnimation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoopAnimationPlayer", function() { return NoopAnimationPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵPRE_STYLE", function() { return ɵPRE_STYLE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationGroupPlayer", function() { return AnimationGroupPlayer; });
+/**
+ * @license Angular v6.1.10
+ * (c) 2010-2018 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+/**
+ * An injectable service that produces an animation sequence programmatically within an
+ * Angular component or directive.
+ * Provided by the `BrowserAnimationsModule` or `NoopAnimationsModule`.
+ *
+ * @usageNotes
+ *
+ * To use this service, add it to your component or directive as a dependency.
+ * The service is instantiated along with your component.
+ *
+ * Apps do not typically need to create their own animation players, but if you
+ * do need to, follow these steps:
+ *
+ * 1. Use the `build()` method to create a programmatic animation using the
+ * `animate()` function. The method returns an `AnimationFactory` instance.
+ *
+ * 2. Use the factory object to create an `AnimationPlayer` and attach it to a DOM element.
+ *
+ * 3. Use the player object to control the animation programmatically.
+ *
+ * For example:
+ *
+ * ```ts
+ * // import the service from BrowserAnimationsModule
+ * import {AnimationBuilder} from '@angular/animations';
+ * // require the service as a dependency
+ * class MyCmp {
+ *   constructor(private _builder: AnimationBuilder) {}
+ *
+ *   makeAnimation(element: any) {
+ *     // first define a reusable animation
+ *     const myAnimation = this._builder.build([
+ *       style({ width: 0 }),
+ *       animate(1000, style({ width: '100px' }))
+ *     ]);
+ *
+ *     // use the returned factory object to create a player
+ *     const player = myAnimation.create(element);
+ *
+ *     player.play();
+ *   }
+ * }
+ * ```
+ *
+ */
+var AnimationBuilder = /** @class */ (function () {
+    function AnimationBuilder() {
+    }
+    return AnimationBuilder;
+}());
+/**
+ * A factory object returned from the `AnimationBuilder`.`build()` method.
+ *
+ */
+var AnimationFactory = /** @class */ (function () {
+    function AnimationFactory() {
+    }
+    return AnimationFactory;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * Specifies automatic styling.
+ */
+var AUTO_STYLE = '*';
+/**
+ * Creates a named animation trigger, containing a  list of `state()`
+ * and `transition()` entries to be evaluated when the expression
+ * bound to the trigger changes.
+ *
+ * @param name An identifying string.
+ * @param definitions  An animation definition object, containing an array of `state()`
+ * and `transition()` declarations.
+ *
+ * @return An object that encapsulates the trigger data.
+ *
+ * @usageNotes
+ * Define an animation trigger in the `animations` section of `@Component` metadata.
+ * In the template, reference the trigger by name and bind it to a trigger expression that
+ * evaluates to a defined animation state, using the following format:
+ *
+ * `[@triggerName]="expression"`
+ *
+ * Animation trigger bindings convert all values to strings, and then match the
+ * previous and current values against any linked transitions.
+ * Booleans can be specified as `1` or `true` and `0` or `false`.
+ *
+ * ### Usage Example
+ *
+ * The following example creates an animation trigger reference based on the provided
+ * name value.
+ * The provided animation value is expected to be an array consisting of state and
+ * transition declarations.
+ *
+ * ```typescript
+ * @Component({
+ *   selector: "my-component",
+ *   templateUrl: "my-component-tpl.html",
+ *   animations: [
+ *     trigger("myAnimationTrigger", [
+ *       state(...),
+ *       state(...),
+ *       transition(...),
+ *       transition(...)
+ *     ])
+ *   ]
+ * })
+ * class MyComponent {
+ *   myStatusExp = "something";
+ * }
+ * ```
+ *
+ * The template associated with this component makes use of the defined trigger
+ * by binding to an element within its template code.
+ *
+ * ```html
+ * <!-- somewhere inside of my-component-tpl.html -->
+ * <div [@myAnimationTrigger]="myStatusExp">...</div>
+ * ```
+ *
+ * ### Using an inline function
+ * The `transition` animation method also supports reading an inline function which can decide
+ * if its associated animation should be run.
+ *
+ * ```typescript
+ * // this method is run each time the `myAnimationTrigger` trigger value changes.
+ * function myInlineMatcherFn(fromState: string, toState: string, element: any, params: {[key:
+ string]: any}): boolean {
+ *   // notice that `element` and `params` are also available here
+ *   return toState == 'yes-please-animate';
+ * }
+ *
+ * @Component({
+ *   selector: 'my-component',
+ *   templateUrl: 'my-component-tpl.html',
+ *   animations: [
+ *     trigger('myAnimationTrigger', [
+ *       transition(myInlineMatcherFn, [
+ *         // the animation sequence code
+ *       ]),
+ *     ])
+ *   ]
+ * })
+ * class MyComponent {
+ *   myStatusExp = "yes-please-animate";
+ * }
+ * ```
+ *
+ * ### Disabling Animations
+ * When true, the special animation control binding `@.disabled` binding prevents
+ * all animations from rendering.
+ * Place the  `@.disabled` binding on an element to disable
+ * animations on the element itself, as well as any inner animation triggers
+ * within the element.
+ *
+ * The following example shows how to use this feature:
+ *
+ * ```typescript
+ * @Component({
+ *   selector: 'my-component',
+ *   template: `
+ *     <div [@.disabled]="isDisabled">
+ *       <div [@childAnimation]="exp"></div>
+ *     </div>
+ *   `,
+ *   animations: [
+ *     trigger("childAnimation", [
+ *       // ...
+ *     ])
+ *   ]
+ * })
+ * class MyComponent {
+ *   isDisabled = true;
+ *   exp = '...';
+ * }
+ * ```
+ *
+ * When `@.disabled` is true, it prevents the `@childAnimation` trigger from animating,
+ * along with any inner animations.
+ *
+ * ### Disable animations application-wide
+ * When an area of the template is set to have animations disabled,
+ * **all** inner components have their animations disabled as well.
+ * This means that you can disable all animations for an app
+ * by placing a host binding set on `@.disabled` on the topmost Angular component.
+ *
+ * ```typescript
+ * import {Component, HostBinding} from '@angular/core';
+ *
+ * @Component({
+ *   selector: 'app-component',
+ *   templateUrl: 'app.component.html',
+ * })
+ * class AppComponent {
+ *   @HostBinding('@.disabled')
+ *   public animationsDisabled = true;
+ * }
+ * ```
+ *
+ * ### Overriding disablement of inner animations
+ * Despite inner animations being disabled, a parent animation can `query()`
+ * for inner elements located in disabled areas of the template and still animate
+ * them if needed. This is also the case for when a sub animation is
+ * queried by a parent and then later animated using `animateChild()`.
+ *
+ * ### Detecting when an animation is disabled
+ * If a region of the DOM (or the entire application) has its animations disabled, the animation
+ * trigger callbacks still fire, but for zero seconds. When the callback fires, it provides
+ * an instance of an `AnimationEvent`. If animations are disabled,
+ * the `.disabled` flag on the event is true.
+ *
+ * @experimental Animation support is experimental.
+ */
+function trigger(name, definitions) {
+    return { type: 7 /* Trigger */, name: name, definitions: definitions, options: {} };
+}
+/**
+ * Defines an animation step that combines styling information with timing information.
+ *
+ * @param timings Sets `AnimateTimings` for the parent animation.
+ * A string in the format "duration [delay] [easing]".
+ *  - Duration and delay are expressed as a number and optional time unit,
+ * such as "1s" or "10ms" for one second and 10 milliseconds, respectively.
+ * The default unit is milliseconds.
+ *  - The easing value controls how the animation accelerates and decelerates
+ * during its runtime. Value is one of  `ease`, `ease-in`, `ease-out`,
+ * `ease-in-out`, or a `cubic-bezier()` function call.
+ * If not supplied, no easing is applied.
+ *
+ * For example, the string "1s 100ms ease-out" specifies a duration of
+ * 1000 milliseconds, and delay of 100 ms, and the "ease-out" easing style,
+ * which decelerates near the end of the duration.
+ * @param styles Sets AnimationStyles for the parent animation.
+ * A function call to either `style()` or `keyframes()`
+ * that returns a collection of CSS style entries to be applied to the parent animation.
+ * When null, uses the styles from the destination state.
+ * This is useful when describing an animation step that will complete an animation;
+ * see "Animating to the final state" in `transitions()`.
+ * @returns An object that encapsulates the animation step.
+ *
+ * @usageNotes
+ * Call within an animation `sequence()`, `{@link animations/group group()}`, or
+ * `transition()` call to specify an animation step
+ * that applies given style data to the parent animation for a given amount of time.
+ *
+ * ### Syntax Examples
+ * **Timing examples**
+ *
+ * The following examples show various `timings` specifications.
+ * - `animate(500)` : Duration is 500 milliseconds.
+ * - `animate("1s")` : Duration is 1000 milliseconds.
+ * - `animate("100ms 0.5s")` : Duration is 100 milliseconds, delay is 500 milliseconds.
+ * - `animate("5s ease-in")` : Duration is 5000 milliseconds, easing in.
+ * - `animate("5s 10ms cubic-bezier(.17,.67,.88,.1)")` : Duration is 5000 milliseconds, delay is 10
+ * milliseconds, easing according to a bezier curve.
+ *
+ * **Style examples**
+ *
+ * The following example calls `style()` to set a single CSS style.
+ * ```typescript
+ * animate(500, style({ background: "red" }))
+ * ```
+ * The following example calls `keyframes()` to set a CSS style
+ * to different values for successive keyframes.
+ * ```typescript
+ * animate(500, keyframes(
+ *  [
+ *   style({ background: "blue" })),
+ *   style({ background: "red" }))
+ *  ])
+ * ```
+ */
+function animate(timings, styles) {
+    if (styles === void 0) { styles = null; }
+    return { type: 4 /* Animate */, styles: styles, timings: timings };
+}
+/**
+ * @description Defines a list of animation steps to be run in parallel.
+ *
+ * @param steps An array of animation step objects.
+ * - When steps are defined by `style()` or `animate()`
+ * function calls, each call within the group is executed instantly.
+ * - To specify offset styles to be applied at a later time, define steps with
+ * `keyframes()`, or use `animate()` calls with a delay value.
+ * For example:
+ *
+ * ```typescript
+ * group([
+ *   animate("1s", { background: "black" }))
+ *   animate("2s", { color: "white" }))
+ * ])
+ * ```
+ *
+ * @param options An options object containing a delay and
+ * developer-defined parameters that provide styling defaults and
+ * can be overridden on invocation.
+ *
+ * @return An object that encapsulates the group data.
+ *
+ * @usageNotes
+ * Grouped animations are useful when a series of styles must be
+ * animated at different starting times and closed off at different ending times.
+ *
+ * When called within a `sequence()` or a
+ * `transition()` call, does not continue to the next
+ * instruction until all of the inner animation steps have completed.
+ */
+function group(steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 3 /* Group */, steps: steps, options: options };
+}
+/**
+ * Defines a list of animation steps to be run sequentially, one by one.
+ *
+ * @param steps An array of animation step objects.
+ * - Steps defined by `style()` calls apply the styling data immediately.
+ * - Steps defined by `animate()` calls apply the styling data over time
+ *   as specified by the timing data.
+ *
+ * ```typescript
+ * sequence([
+ *   style({ opacity: 0 })),
+ *   animate("1s", { opacity: 1 }))
+ * ])
+ * ```
+ *
+ * @param options An options object containing a delay and
+ * developer-defined parameters that provide styling defaults and
+ * can be overridden on invocation.
+ *
+ * @return An object that encapsulates the sequence data.
+ *
+ * @usageNotes
+ * When you pass an array of steps to a
+ * `transition()` call, the steps run sequentially by default.
+ * Compare this to the `{@link animations/group group()}` call, which runs animation steps in parallel.
+ *
+ * When a sequence is used within a `{@link animations/group group()}` or a `transition()` call,
+ * execution continues to the next instruction only after each of the inner animation
+ * steps have completed.
+ *
+ **/
+function sequence(steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 2 /* Sequence */, steps: steps, options: options };
+}
+/**
+ * Declares a key/value object containing CSS properties/styles that
+ * can then be used for an animation `state`, within an animation `sequence`,
+ * or as styling data for calls to `animate()` and `keyframes()`.
+ *
+ * @param tokens A set of CSS styles or HTML styles associated with an animation state.
+ * The value can be any of the following:
+ * - A key-value style pair associating a CSS property with a value.
+ * - An array of key-value style pairs.
+ * - An asterisk (*), to use auto-styling, where styles are derived from the element
+ * being animated and applied to the animation when it starts.
+ *
+ * Auto-styling can be used to define a state that depends on layout or other
+ * environmental factors.
+ *
+ * @return An object that encapsulates the style data.
+ *
+ * @usageNotes
+ * The following examples create animation styles that collect a set of
+ * CSS property values:
+ *
+ * ```typescript
+ * // string values for CSS properties
+ * style({ background: "red", color: "blue" })
+ *
+ * // numerical pixel values
+ * style({ width: 100, height: 0 })
+ * ```
+ *
+ * The following example uses auto-styling to allow a component to animate from
+ * a height of 0 up to the height of the parent element:
+ *
+ * ```
+ * style({ height: 0 }),
+ * animate("1s", style({ height: "*" }))
+ * ```
+ *
+ **/
+function style(tokens) {
+    return { type: 6 /* Style */, styles: tokens, offset: null };
+}
+/**
+ * Declares an animation state within a trigger attached to an element.
+ *
+ * @param name One or more names for the defined state in a comma-separated string.
+ * The following reserved state names can be supplied to define a style for specific use
+ * cases:
+ *
+ * - `void` You can associate styles with this name to be used when
+ * the element is detached from the application. For example, when an `ngIf` evaluates
+ * to false, the state of the associated element is void.
+ *  - `*` (asterisk) Indicates the default state. You can associate styles with this name
+ * to be used as the fallback when the state that is being animated is not declared
+ * within the trigger.
+ *
+ * @param styles A set of CSS styles associated with this state, created using the
+ * `style()` function.
+ * This set of styles persists on the element once the state has been reached.
+ * @param options Parameters that can be passed to the state when it is invoked.
+ * 0 or more key-value pairs.
+ * @return An object that encapsulates the new state data.
+ *
+ * @usageNotes
+ * Use the `trigger()` function to register states to an animation trigger.
+ * Use the `transition()` function to animate between states.
+ * When a state is active within a component, its associated styles persist on the element,
+ * even when the animation ends.
+ **/
+function state(name, styles, options) {
+    return { type: 0 /* State */, name: name, styles: styles, options: options };
+}
+/**
+ * Defines a set of animation styles, associating each style with an optional `offset` value.
+ *
+ * @param steps A set of animation styles with optional offset data.
+ * The optional `offset` value for a style specifies a percentage of the total animation
+ * time at which that style is applied.
+ * @returns An object that encapsulates the keyframes data.
+ *
+ * @usageNotes
+ * Use with the `animate()` call. Instead of applying animations
+ * from the current state
+ * to the destination state, keyframes describe how each style entry is applied and at what point
+ * within the animation arc.
+ * Compare [CSS Keyframe Animations](https://www.w3schools.com/css/css3_animations.asp).
+ *
+ * ### Usage
+ *
+ * In the following example, the offset values describe
+ * when each `backgroundColor` value is applied. The color is red at the start, and changes to
+ * blue when 20% of the total time has elapsed.
+ *
+ * ```typescript
+ * // the provided offset values
+ * animate("5s", keyframes([
+ *   style({ backgroundColor: "red", offset: 0 }),
+ *   style({ backgroundColor: "blue", offset: 0.2 }),
+ *   style({ backgroundColor: "orange", offset: 0.3 }),
+ *   style({ backgroundColor: "black", offset: 1 })
+ * ]))
+ * ```
+ *
+ * If there are no `offset` values specified in the style entries, the offsets
+ * are calculated automatically.
+ *
+ * ```typescript
+ * animate("5s", keyframes([
+ *   style({ backgroundColor: "red" }) // offset = 0
+ *   style({ backgroundColor: "blue" }) // offset = 0.33
+ *   style({ backgroundColor: "orange" }) // offset = 0.66
+ *   style({ backgroundColor: "black" }) // offset = 1
+ * ]))
+ *```
+ */
+function keyframes(steps) {
+    return { type: 5 /* Keyframes */, steps: steps };
+}
+/**
+ * Declares an animation transition as a sequence of animation steps to run when a given
+ * condition is satisfied. The condition is a Boolean expression or function that compares
+ * the previous and current animation states, and returns true if this transition should occur.
+ * When the state criteria of a defined transition are met, the associated animation is
+ * triggered.
+ *
+ * @param stateChangeExpr A Boolean expression or function that compares the previous and current
+ * animation states, and returns true if this transition should occur. Note that  "true" and "false"
+ * match 1 and 0, respectively. An expression is evaluated each time a state change occurs in the
+ * animation trigger element.
+ * The animation steps run when the expression evaluates to true.
+ *
+ * - A state-change string takes the form "state1 => state2", where each side is a defined animation
+ * state, or an asterix (*) to refer to a dynamic start or end state.
+ *   - The expression string can contain multiple comma-separated statements;
+ * for example "state1 => state2, state3 => state4".
+ *   - Special values `:enter` and `:leave` initiate a transition on the entry and exit states,
+ * equivalent to  "void => *"  and "* => void".
+ *   - Special values `:increment` and `:decrement` initiate a transition when a numeric value has
+ * increased or decreased in value.
+ * - A function is executed each time a state change occurs in the animation trigger element.
+ * The animation steps run when the function returns true.
+ *
+ * @param steps One or more animation objects, as returned by the `animate()` or
+ * `sequence()` function, that form a transformation from one state to another.
+ * A sequence is used by default when you pass an array.
+ * @param options An options object that can contain a delay value for the start of the animation,
+ * and additional developer-defined parameters. Provided values for additional parameters are used
+ * as defaults, and override values can be passed to the caller on invocation.
+ * @returns An object that encapsulates the transition data.
+ *
+ * @usageNotes
+ * The template associated with a component binds an animation trigger to an element.
+ *
+ * ```HTML
+ * <!-- somewhere inside of my-component-tpl.html -->
+ * <div [@myAnimationTrigger]="myStatusExp">...</div>
+ * ```
+ *
+ * All transitions are defined within an animation trigger,
+ * along with named states that the transitions change to and from.
+ *
+ * ```typescript
+ * trigger("myAnimationTrigger", [
+ *  // define states
+ *  state("on", style({ background: "green" })),
+ *  state("off", style({ background: "grey" })),
+ *  ...]
+ * ```
+ *
+ * Note that when you call the `sequence()` function within a `{@link animations/group group()}`
+ * or a `transition()` call, execution does not continue to the next instruction
+ * until each of the inner animation steps have completed.
+ *
+ * ### Syntax examples
+ *
+ * The following examples define transitions between the two defined states (and default states),
+ * using various options:
+ *
+ * ```typescript
+ * // Transition occurs when the state value
+ * // bound to "myAnimationTrigger" changes from "on" to "off"
+ * transition("on => off", animate(500))
+ * // Run the same animation for both directions
+ * transition("on <=> off", animate(500))
+ * // Define multiple state-change pairs separated by commas
+ * transition("on => off, off => void", animate(500))
+ * ```
+ *
+ * ### Special values for state-change expressions
+ *
+ * - Catch-all state change for when an element is inserted into the page and the
+ * destination state is unknown:
+ *
+ * ```typescript
+ * transition("void => *", [
+ *  style({ opacity: 0 }),
+ *  animate(500)
+ *  ])
+ * ```
+ *
+ * - Capture a state change between any states:
+ *
+ *  `transition("* => *", animate("1s 0s"))`
+ *
+ * - Entry and exit transitions:
+ *
+ * ```typescript
+ * transition(":enter", [
+ *   style({ opacity: 0 }),
+ *   animate(500, style({ opacity: 1 }))
+ *   ]),
+ * transition(":leave", [
+ *   animate(500, style({ opacity: 0 }))
+ *   ])
+ * ```
+ *
+ * - Use `:increment` and `:decrement` to initiate transitions:
+ *
+ * ```typescript
+ * transition(":increment", group([
+ *  query(':enter', [
+ *     style({ left: '100%' }),
+ *     animate('0.5s ease-out', style('*'))
+ *   ]),
+ *  query(':leave', [
+ *     animate('0.5s ease-out', style({ left: '-100%' }))
+ *  ])
+ * ]))
+ *
+ * transition(":decrement", group([
+ *  query(':enter', [
+ *     style({ left: '100%' }),
+ *     animate('0.5s ease-out', style('*'))
+ *   ]),
+ *  query(':leave', [
+ *     animate('0.5s ease-out', style({ left: '-100%' }))
+ *  ])
+ * ]))
+ * ```
+ *
+ * ### State-change functions
+ *
+ * Here is an example of a `fromState` specified as a state-change function that invokes an
+ * animation when true:
+ *
+ * ```typescript
+ * transition((fromState, toState) =>
+ *  {
+ *   return fromState == "off" && toState == "on";
+ *  },
+ *  animate("1s 0s"))
+ * ```
+ *
+ * ### Animating to the final state
+ *
+ * If the final step in a transition is a call to `animate()` that uses a timing value
+ * with no style data, that step is automatically considered the final animation arc,
+ * for the element to reach the final state. Angular automatically adds or removes
+ * CSS styles to ensure that the element is in the correct final state.
+ *
+ * The following example defines a transition that starts by hiding the element,
+ * then makes sure that it animates properly to whatever state is currently active for trigger:
+ *
+ * ```typescript
+ * transition("void => *", [
+ *   style({ opacity: 0 }),
+ *   animate(500)
+ *  ])
+ * ```
+ * ### Boolean value matching
+ * If a trigger binding value is a Boolean, it can be matched using a transition expression
+ * that compares true and false or 1 and 0. For example:
+ *
+ * ```
+ * // in the template
+ * <div [@openClose]="open ? true : false">...</div>
+ * // in the component metadata
+ * trigger('openClose', [
+ *   state('true', style({ height: '*' })),
+ *   state('false', style({ height: '0px' })),
+ *   transition('false <=> true', animate(500))
+ * ])
+ * ```
+ **/
+function transition(stateChangeExpr, steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 1 /* Transition */, expr: stateChangeExpr, animation: steps, options: options };
+}
+/**
+ * Produces a reusable animation that can be invoked in another animation or sequence,
+ * by calling the `useAnimation()` function.
+ *
+ * @param steps One or more animation objects, as returned by the `animate()`
+ * or `sequence()` function, that form a transformation from one state to another.
+ * A sequence is used by default when you pass an array.
+ * @param options An options object that can contain a delay value for the start of the
+ * animation, and additional developer-defined parameters.
+ * Provided values for additional parameters are used as defaults,
+ * and override values can be passed to the caller on invocation.
+ * @returns An object that encapsulates the animation data.
+ *
+ * @usageNotes
+ * The following example defines a reusable animation, providing some default parameter
+ * values.
+ *
+ * ```typescript
+ * var fadeAnimation = animation([
+ *   style({ opacity: '{{ start }}' }),
+ *   animate('{{ time }}',
+ *   style({ opacity: '{{ end }}'}))
+ *   ],
+ *   { params: { time: '1000ms', start: 0, end: 1 }});
+ * ```
+ *
+ * The following invokes the defined animation with a call to `useAnimation()`,
+ * passing in override parameter values.
+ *
+ * ```js
+ * useAnimation(fadeAnimation, {
+ *   params: {
+ *     time: '2s',
+ *     start: 1,
+ *     end: 0
+ *   }
+ * })
+ * ```
+ *
+ * If any of the passed-in parameter values are missing from this call,
+ * the default values are used. If one or more parameter values are missing before a step is
+ * animated, `useAnimation()` throws an error.
+ */
+function animation(steps, options) {
+    if (options === void 0) { options = null; }
+    return { type: 8 /* Reference */, animation: steps, options: options };
+}
+/**
+ * Executes a queried inner animation element within an animation sequence.
+ *
+ * @param options An options object that can contain a delay value for the start of the
+ * animation, and additional override values for developer-defined parameters.
+ * @return An object that encapsulates the child animation data.
+ *
+ * @usageNotes
+ * Each time an animation is triggered in Angular, the parent animation
+ * has priority and any child animations are blocked. In order
+ * for a child animation to run, the parent animation must query each of the elements
+ * containing child animations, and run them using this function.
+ *
+ * Note that this feature designed to be used with `query()` and it will only work
+ * with animations that are assigned using the Angular animation library. CSS keyframes
+ * and transitions are not handled by this API.
+ */
+function animateChild(options) {
+    if (options === void 0) { options = null; }
+    return { type: 9 /* AnimateChild */, options: options };
+}
+/**
+ * Starts a reusable animation that is created using the `animation()` function.
+ *
+ * @param animation The reusable animation to start.
+ * @param options An options object that can contain a delay value for the start of
+ * the animation, and additional override values for developer-defined parameters.
+ * @return An object that contains the animation parameters.
+ */
+function useAnimation(animation, options) {
+    if (options === void 0) { options = null; }
+    return { type: 10 /* AnimateRef */, animation: animation, options: options };
+}
+/**
+ * Finds one or more inner elements within the current element that is
+ * being animated within a sequence. Use with `animateChild()`.
+ *
+ * @param selector The element to query, or a set of elements that contain Angular-specific
+ * characteristics, specified with one or more of the following tokens.
+ *  - `query(":enter")` or `query(":leave")` : Query for newly inserted/removed elements.
+ *  - `query(":animating")` : Query all currently animating elements.
+ *  - `query("@triggerName")` : Query elements that contain an animation trigger.
+ *  - `query("@*")` : Query all elements that contain an animation triggers.
+ *  - `query(":self")` : Include the current element into the animation sequence.
+ *
+ * @param animation One or more animation steps to apply to the queried element or elements.
+ * An array is treated as an animation sequence.
+ * @param options An options object. Use the 'limit' field to limit the total number of
+ * items to collect.
+ * @return An object that encapsulates the query data.
+ *
+ * @usageNotes
+ * Tokens can be merged into a combined query selector string. For example:
+ *
+ * ```typescript
+ *  query(':self, .record:enter, .record:leave, @subTrigger', [...])
+ * ```
+ *
+ * The `query()` function collects multiple elements and works internally by using
+ * `element.querySelectorAll`. Use the `limit` field of an options object to limit
+ * the total number of items to be collected. For example:
+ *
+ * ```js
+ * query('div', [
+ *   animate(...),
+ *   animate(...)
+ * ], { limit: 1 })
+ * ```
+ *
+ * By default, throws an error when zero items are found. Set the
+ * `optional` flag to ignore this error. For example:
+ *
+ * ```js
+ * query('.some-element-that-may-not-be-there', [
+ *   animate(...),
+ *   animate(...)
+ * ], { optional: true })
+ * ```
+ *
+ * ### Usage Example
+ *
+ * The following example queries for inner elements and animates them
+ * individually using `animateChild()`.
+ *
+ * ```typescript
+ * @Component({
+ *   selector: 'inner',
+ *   template: `
+ *     <div [@queryAnimation]="exp">
+ *       <h1>Title</h1>
+ *       <div class="content">
+ *         Blah blah blah
+ *       </div>
+ *     </div>
+ *   `,
+ *   animations: [
+ *    trigger('queryAnimation', [
+ *      transition('* => goAnimate', [
+ *        // hide the inner elements
+ *        query('h1', style({ opacity: 0 })),
+ *        query('.content', style({ opacity: 0 })),
+ *
+ *        // animate the inner elements in, one by one
+ *        query('h1', animate(1000, style({ opacity: 1 })),
+ *        query('.content', animate(1000, style({ opacity: 1 })),
+ *      ])
+ *    ])
+ *  ]
+ * })
+ * class Cmp {
+ *   exp = '';
+ *
+ *   goAnimate() {
+ *     this.exp = 'goAnimate';
+ *   }
+ * }
+ * ```
+ */
+function query(selector, animation, options) {
+    if (options === void 0) { options = null; }
+    return { type: 11 /* Query */, selector: selector, animation: animation, options: options };
+}
+/**
+ * Use within an animation `query()` call to issue a timing gap after
+ * each queried item is animated.
+ *
+ * @param timings A delay value.
+ * @param animation One ore more animation steps.
+ * @returns An object that encapsulates the stagger data.
+ *
+ * @usageNotes
+ * In the following example, a container element wraps a list of items stamped out
+ * by an `ngFor`. The container element contains an animation trigger that will later be set
+ * to query for each of the inner items.
+ *
+ * Each time items are added, the opacity fade-in animation runs,
+ * and each removed item is faded out.
+ * When either of these animations occur, the stagger effect is
+ * applied after each item's animation is started.
+ *
+ * ```html
+ * <!-- list.component.html -->
+ * <button (click)="toggle()">Show / Hide Items</button>
+ * <hr />
+ * <div [@listAnimation]="items.length">
+ *   <div *ngFor="let item of items">
+ *     {{ item }}
+ *   </div>
+ * </div>
+ * ```
+ *
+ * Here is the component code:
+ *
+ * ```typescript
+ * import {trigger, transition, style, animate, query, stagger} from '@angular/animations';
+ * @Component({
+ *   templateUrl: 'list.component.html',
+ *   animations: [
+ *     trigger('listAnimation', [
+ *     ...
+ *     ])
+ *   ]
+ * })
+ * class ListComponent {
+ *   items = [];
+ *
+ *   showItems() {
+ *     this.items = [0,1,2,3,4];
+ *   }
+ *
+ *   hideItems() {
+ *     this.items = [];
+ *   }
+ *
+ *   toggle() {
+ *     this.items.length ? this.hideItems() : this.showItems();
+ *    }
+ *  }
+ * ```
+ *
+ * Here is the animation trigger code:
+ *
+ * ```typescript
+ * trigger('listAnimation', [
+ *   transition('* => *', [ // each time the binding value changes
+ *     query(':leave', [
+ *       stagger(100, [
+ *         animate('0.5s', style({ opacity: 0 }))
+ *       ])
+ *     ]),
+ *     query(':enter', [
+ *       style({ opacity: 0 }),
+ *       stagger(100, [
+ *         animate('0.5s', style({ opacity: 1 }))
+ *       ])
+ *     ])
+ *   ])
+ * ])
+ * ```
+ */
+function stagger(timings, animation) {
+    return { type: 12 /* Stagger */, timings: timings, animation: animation };
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+function scheduleMicroTask(cb) {
+    Promise.resolve(null).then(cb);
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * An empty programmatic controller for reusable animations.
+ * Used internally when animations are disabled, to avoid
+ * checking for the null case when an animation player is expected.
+ *
+ * @see `animate()`
+ * @see `AnimationPlayer`
+ * @see `GroupPlayer`
+ *
+ */
+var NoopAnimationPlayer = /** @class */ (function () {
+    function NoopAnimationPlayer(duration, delay) {
+        if (duration === void 0) { duration = 0; }
+        if (delay === void 0) { delay = 0; }
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._onDestroyFns = [];
+        this._started = false;
+        this._destroyed = false;
+        this._finished = false;
+        this.parentPlayer = null;
+        this.totalTime = duration + delay;
+    }
+    NoopAnimationPlayer.prototype._onFinish = function () {
+        if (!this._finished) {
+            this._finished = true;
+            this._onDoneFns.forEach(function (fn) { return fn(); });
+            this._onDoneFns = [];
+        }
+    };
+    NoopAnimationPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    NoopAnimationPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    NoopAnimationPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    NoopAnimationPlayer.prototype.hasStarted = function () { return this._started; };
+    NoopAnimationPlayer.prototype.init = function () { };
+    NoopAnimationPlayer.prototype.play = function () {
+        if (!this.hasStarted()) {
+            this._onStart();
+            this.triggerMicrotask();
+        }
+        this._started = true;
+    };
+    /** @internal */
+    NoopAnimationPlayer.prototype.triggerMicrotask = function () {
+        var _this = this;
+        scheduleMicroTask(function () { return _this._onFinish(); });
+    };
+    NoopAnimationPlayer.prototype._onStart = function () {
+        this._onStartFns.forEach(function (fn) { return fn(); });
+        this._onStartFns = [];
+    };
+    NoopAnimationPlayer.prototype.pause = function () { };
+    NoopAnimationPlayer.prototype.restart = function () { };
+    NoopAnimationPlayer.prototype.finish = function () { this._onFinish(); };
+    NoopAnimationPlayer.prototype.destroy = function () {
+        if (!this._destroyed) {
+            this._destroyed = true;
+            if (!this.hasStarted()) {
+                this._onStart();
+            }
+            this.finish();
+            this._onDestroyFns.forEach(function (fn) { return fn(); });
+            this._onDestroyFns = [];
+        }
+    };
+    NoopAnimationPlayer.prototype.reset = function () { };
+    NoopAnimationPlayer.prototype.setPosition = function (position) { };
+    NoopAnimationPlayer.prototype.getPosition = function () { return 0; };
+    /** @internal */
+    NoopAnimationPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    return NoopAnimationPlayer;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * A programmatic controller for a group of reusable animations.
+ * Used internally to control animations.
+ *
+ * @see `AnimationPlayer`
+ * @see `{@link animations/group group()}`
+ *
+ */
+var AnimationGroupPlayer = /** @class */ (function () {
+    function AnimationGroupPlayer(_players) {
+        var _this = this;
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._finished = false;
+        this._started = false;
+        this._destroyed = false;
+        this._onDestroyFns = [];
+        this.parentPlayer = null;
+        this.totalTime = 0;
+        this.players = _players;
+        var doneCount = 0;
+        var destroyCount = 0;
+        var startCount = 0;
+        var total = this.players.length;
+        if (total == 0) {
+            scheduleMicroTask(function () { return _this._onFinish(); });
+        }
+        else {
+            this.players.forEach(function (player) {
+                player.onDone(function () {
+                    if (++doneCount == total) {
+                        _this._onFinish();
+                    }
+                });
+                player.onDestroy(function () {
+                    if (++destroyCount == total) {
+                        _this._onDestroy();
+                    }
+                });
+                player.onStart(function () {
+                    if (++startCount == total) {
+                        _this._onStart();
+                    }
+                });
+            });
+        }
+        this.totalTime = this.players.reduce(function (time, player) { return Math.max(time, player.totalTime); }, 0);
+    }
+    AnimationGroupPlayer.prototype._onFinish = function () {
+        if (!this._finished) {
+            this._finished = true;
+            this._onDoneFns.forEach(function (fn) { return fn(); });
+            this._onDoneFns = [];
+        }
+    };
+    AnimationGroupPlayer.prototype.init = function () { this.players.forEach(function (player) { return player.init(); }); };
+    AnimationGroupPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    AnimationGroupPlayer.prototype._onStart = function () {
+        if (!this.hasStarted()) {
+            this._started = true;
+            this._onStartFns.forEach(function (fn) { return fn(); });
+            this._onStartFns = [];
+        }
+    };
+    AnimationGroupPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    AnimationGroupPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    AnimationGroupPlayer.prototype.hasStarted = function () { return this._started; };
+    AnimationGroupPlayer.prototype.play = function () {
+        if (!this.parentPlayer) {
+            this.init();
+        }
+        this._onStart();
+        this.players.forEach(function (player) { return player.play(); });
+    };
+    AnimationGroupPlayer.prototype.pause = function () { this.players.forEach(function (player) { return player.pause(); }); };
+    AnimationGroupPlayer.prototype.restart = function () { this.players.forEach(function (player) { return player.restart(); }); };
+    AnimationGroupPlayer.prototype.finish = function () {
+        this._onFinish();
+        this.players.forEach(function (player) { return player.finish(); });
+    };
+    AnimationGroupPlayer.prototype.destroy = function () { this._onDestroy(); };
+    AnimationGroupPlayer.prototype._onDestroy = function () {
+        if (!this._destroyed) {
+            this._destroyed = true;
+            this._onFinish();
+            this.players.forEach(function (player) { return player.destroy(); });
+            this._onDestroyFns.forEach(function (fn) { return fn(); });
+            this._onDestroyFns = [];
+        }
+    };
+    AnimationGroupPlayer.prototype.reset = function () {
+        this.players.forEach(function (player) { return player.reset(); });
+        this._destroyed = false;
+        this._finished = false;
+        this._started = false;
+    };
+    AnimationGroupPlayer.prototype.setPosition = function (p) {
+        var timeAtPosition = p * this.totalTime;
+        this.players.forEach(function (player) {
+            var position = player.totalTime ? Math.min(1, timeAtPosition / player.totalTime) : 1;
+            player.setPosition(position);
+        });
+    };
+    AnimationGroupPlayer.prototype.getPosition = function () {
+        var min = 0;
+        this.players.forEach(function (player) {
+            var p = player.getPosition();
+            min = Math.min(p, min);
+        });
+        return min;
+    };
+    AnimationGroupPlayer.prototype.beforeDestroy = function () {
+        this.players.forEach(function (player) {
+            if (player.beforeDestroy) {
+                player.beforeDestroy();
+            }
+        });
+    };
+    /** @internal */
+    AnimationGroupPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    return AnimationGroupPlayer;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ɵPRE_STYLE = '!';
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=animations.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/animations/fesm5/browser.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@angular/animations/fesm5/browser.js ***!
+  \***********************************************************/
+/*! exports provided: AnimationDriver, ɵAnimation, ɵAnimationStyleNormalizer, ɵNoopAnimationStyleNormalizer, ɵWebAnimationsStyleNormalizer, ɵAnimationDriver, ɵNoopAnimationDriver, ɵAnimationEngine, ɵCssKeyframesDriver, ɵCssKeyframesPlayer, ɵcontainsElement, ɵinvokeQuery, ɵmatchesElement, ɵvalidateStyleProperty, ɵWebAnimationsDriver, ɵsupportsWebAnimations, ɵWebAnimationsPlayer, ɵallowPreviousPlayerStylesMerge */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimationDriver", function() { return AnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimation", function() { return Animation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationStyleNormalizer", function() { return AnimationStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵNoopAnimationStyleNormalizer", function() { return NoopAnimationStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵWebAnimationsStyleNormalizer", function() { return WebAnimationsStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationDriver", function() { return AnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵNoopAnimationDriver", function() { return NoopAnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationEngine", function() { return AnimationEngine; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵCssKeyframesDriver", function() { return CssKeyframesDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵCssKeyframesPlayer", function() { return CssKeyframesPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵcontainsElement", function() { return containsElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵinvokeQuery", function() { return invokeQuery; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵmatchesElement", function() { return matchesElement; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵvalidateStyleProperty", function() { return validateStyleProperty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵWebAnimationsDriver", function() { return WebAnimationsDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵsupportsWebAnimations", function() { return supportsWebAnimations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵWebAnimationsPlayer", function() { return WebAnimationsPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵallowPreviousPlayerStylesMerge", function() { return allowPreviousPlayerStylesMerge; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/**
+ * @license Angular v6.1.10
+ * (c) 2010-2018 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+
+
+
+
+function isBrowser() {
+    return (typeof window !== 'undefined' && typeof window.document !== 'undefined');
+}
+function isNode() {
+    return (typeof process !== 'undefined');
+}
+function optimizeGroupPlayer(players) {
+    switch (players.length) {
+        case 0:
+            return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"]();
+        case 1:
+            return players[0];
+        default:
+            return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵAnimationGroupPlayer"](players);
+    }
+}
+function normalizeKeyframes(driver, normalizer, element, keyframes, preStyles, postStyles) {
+    if (preStyles === void 0) { preStyles = {}; }
+    if (postStyles === void 0) { postStyles = {}; }
+    var errors = [];
+    var normalizedKeyframes = [];
+    var previousOffset = -1;
+    var previousKeyframe = null;
+    keyframes.forEach(function (kf) {
+        var offset = kf['offset'];
+        var isSameOffset = offset == previousOffset;
+        var normalizedKeyframe = (isSameOffset && previousKeyframe) || {};
+        Object.keys(kf).forEach(function (prop) {
+            var normalizedProp = prop;
+            var normalizedValue = kf[prop];
+            if (prop !== 'offset') {
+                normalizedProp = normalizer.normalizePropertyName(normalizedProp, errors);
+                switch (normalizedValue) {
+                    case _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵPRE_STYLE"]:
+                        normalizedValue = preStyles[prop];
+                        break;
+                    case _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]:
+                        normalizedValue = postStyles[prop];
+                        break;
+                    default:
+                        normalizedValue =
+                            normalizer.normalizeStyleValue(prop, normalizedProp, normalizedValue, errors);
+                        break;
+                }
+            }
+            normalizedKeyframe[normalizedProp] = normalizedValue;
+        });
+        if (!isSameOffset) {
+            normalizedKeyframes.push(normalizedKeyframe);
+        }
+        previousKeyframe = normalizedKeyframe;
+        previousOffset = offset;
+    });
+    if (errors.length) {
+        var LINE_START = '\n - ';
+        throw new Error("Unable to animate due to the following errors:" + LINE_START + errors.join(LINE_START));
+    }
+    return normalizedKeyframes;
+}
+function listenOnPlayer(player, eventName, event, callback) {
+    switch (eventName) {
+        case 'start':
+            player.onStart(function () { return callback(event && copyAnimationEvent(event, 'start', player)); });
+            break;
+        case 'done':
+            player.onDone(function () { return callback(event && copyAnimationEvent(event, 'done', player)); });
+            break;
+        case 'destroy':
+            player.onDestroy(function () { return callback(event && copyAnimationEvent(event, 'destroy', player)); });
+            break;
+    }
+}
+function copyAnimationEvent(e, phaseName, player) {
+    var totalTime = player.totalTime;
+    var disabled = player.disabled ? true : false;
+    var event = makeAnimationEvent(e.element, e.triggerName, e.fromState, e.toState, phaseName || e.phaseName, totalTime == undefined ? e.totalTime : totalTime, disabled);
+    var data = e['_data'];
+    if (data != null) {
+        event['_data'] = data;
+    }
+    return event;
+}
+function makeAnimationEvent(element, triggerName, fromState, toState, phaseName, totalTime, disabled) {
+    if (phaseName === void 0) { phaseName = ''; }
+    if (totalTime === void 0) { totalTime = 0; }
+    return { element: element, triggerName: triggerName, fromState: fromState, toState: toState, phaseName: phaseName, totalTime: totalTime, disabled: !!disabled };
+}
+function getOrSetAsInMap(map, key, defaultValue) {
+    var value;
+    if (map instanceof Map) {
+        value = map.get(key);
+        if (!value) {
+            map.set(key, value = defaultValue);
+        }
+    }
+    else {
+        value = map[key];
+        if (!value) {
+            value = map[key] = defaultValue;
+        }
+    }
+    return value;
+}
+function parseTimelineCommand(command) {
+    var separatorPos = command.indexOf(':');
+    var id = command.substring(1, separatorPos);
+    var action = command.substr(separatorPos + 1);
+    return [id, action];
+}
+var _contains = function (elm1, elm2) { return false; };
+var _matches = function (element, selector) {
+    return false;
+};
+var _query = function (element, selector, multi) {
+    return [];
+};
+// Define utility methods for browsers and platform-server(domino) where Element
+// and utility methods exist.
+var _isNode = isNode();
+if (_isNode || typeof Element !== 'undefined') {
+    // this is well supported in all browsers
+    _contains = function (elm1, elm2) { return elm1.contains(elm2); };
+    if (_isNode || Element.prototype.matches) {
+        _matches = function (element, selector) { return element.matches(selector); };
+    }
+    else {
+        var proto = Element.prototype;
+        var fn_1 = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector ||
+            proto.oMatchesSelector || proto.webkitMatchesSelector;
+        if (fn_1) {
+            _matches = function (element, selector) { return fn_1.apply(element, [selector]); };
+        }
+    }
+    _query = function (element, selector, multi) {
+        var results = [];
+        if (multi) {
+            results.push.apply(results, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(element.querySelectorAll(selector)));
+        }
+        else {
+            var elm = element.querySelector(selector);
+            if (elm) {
+                results.push(elm);
+            }
+        }
+        return results;
+    };
+}
+function containsVendorPrefix(prop) {
+    // Webkit is the only real popular vendor prefix nowadays
+    // cc: http://shouldiprefix.com/
+    return prop.substring(1, 6) == 'ebkit'; // webkit or Webkit
+}
+var _CACHED_BODY = null;
+var _IS_WEBKIT = false;
+function validateStyleProperty(prop) {
+    if (!_CACHED_BODY) {
+        _CACHED_BODY = getBodyNode() || {};
+        _IS_WEBKIT = _CACHED_BODY.style ? ('WebkitAppearance' in _CACHED_BODY.style) : false;
+    }
+    var result = true;
+    if (_CACHED_BODY.style && !containsVendorPrefix(prop)) {
+        result = prop in _CACHED_BODY.style;
+        if (!result && _IS_WEBKIT) {
+            var camelProp = 'Webkit' + prop.charAt(0).toUpperCase() + prop.substr(1);
+            result = camelProp in _CACHED_BODY.style;
+        }
+    }
+    return result;
+}
+function getBodyNode() {
+    if (typeof document != 'undefined') {
+        return document.body;
+    }
+    return null;
+}
+var matchesElement = _matches;
+var containsElement = _contains;
+var invokeQuery = _query;
+function hypenatePropsObject(object) {
+    var newObj = {};
+    Object.keys(object).forEach(function (prop) {
+        var newProp = prop.replace(/([a-z])([A-Z])/g, '$1-$2');
+        newObj[newProp] = object[prop];
+    });
+    return newObj;
+}
+
+/**
+ * @experimental
+ */
+var NoopAnimationDriver = /** @class */ (function () {
+    function NoopAnimationDriver() {
+    }
+    NoopAnimationDriver.prototype.validateStyleProperty = function (prop) { return validateStyleProperty(prop); };
+    NoopAnimationDriver.prototype.matchesElement = function (element, selector) {
+        return matchesElement(element, selector);
+    };
+    NoopAnimationDriver.prototype.containsElement = function (elm1, elm2) { return containsElement(elm1, elm2); };
+    NoopAnimationDriver.prototype.query = function (element, selector, multi) {
+        return invokeQuery(element, selector, multi);
+    };
+    NoopAnimationDriver.prototype.computeStyle = function (element, prop, defaultValue) {
+        return defaultValue || '';
+    };
+    NoopAnimationDriver.prototype.animate = function (element, keyframes, duration, delay, easing, previousPlayers, scrubberAccessRequested) {
+        if (previousPlayers === void 0) { previousPlayers = []; }
+        return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"](duration, delay);
+    };
+    NoopAnimationDriver = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])()
+    ], NoopAnimationDriver);
+    return NoopAnimationDriver;
+}());
+/**
+ * @experimental
+ */
+var AnimationDriver = /** @class */ (function () {
+    function AnimationDriver() {
+    }
+    AnimationDriver.NOOP = new NoopAnimationDriver();
+    return AnimationDriver;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ONE_SECOND = 1000;
+var SUBSTITUTION_EXPR_START = '{{';
+var SUBSTITUTION_EXPR_END = '}}';
+var ENTER_CLASSNAME = 'ng-enter';
+var LEAVE_CLASSNAME = 'ng-leave';
+var NG_TRIGGER_CLASSNAME = 'ng-trigger';
+var NG_TRIGGER_SELECTOR = '.ng-trigger';
+var NG_ANIMATING_CLASSNAME = 'ng-animating';
+var NG_ANIMATING_SELECTOR = '.ng-animating';
+function resolveTimingValue(value) {
+    if (typeof value == 'number')
+        return value;
+    var matches = value.match(/^(-?[\.\d]+)(m?s)/);
+    if (!matches || matches.length < 2)
+        return 0;
+    return _convertTimeValueToMS(parseFloat(matches[1]), matches[2]);
+}
+function _convertTimeValueToMS(value, unit) {
+    switch (unit) {
+        case 's':
+            return value * ONE_SECOND;
+        default: // ms or something else
+            return value;
+    }
+}
+function resolveTiming(timings, errors, allowNegativeValues) {
+    return timings.hasOwnProperty('duration') ?
+        timings :
+        parseTimeExpression(timings, errors, allowNegativeValues);
+}
+function parseTimeExpression(exp, errors, allowNegativeValues) {
+    var regex = /^(-?[\.\d]+)(m?s)(?:\s+(-?[\.\d]+)(m?s))?(?:\s+([-a-z]+(?:\(.+?\))?))?$/i;
+    var duration;
+    var delay = 0;
+    var easing = '';
+    if (typeof exp === 'string') {
+        var matches = exp.match(regex);
+        if (matches === null) {
+            errors.push("The provided timing value \"" + exp + "\" is invalid.");
+            return { duration: 0, delay: 0, easing: '' };
+        }
+        duration = _convertTimeValueToMS(parseFloat(matches[1]), matches[2]);
+        var delayMatch = matches[3];
+        if (delayMatch != null) {
+            delay = _convertTimeValueToMS(Math.floor(parseFloat(delayMatch)), matches[4]);
+        }
+        var easingVal = matches[5];
+        if (easingVal) {
+            easing = easingVal;
+        }
+    }
+    else {
+        duration = exp;
+    }
+    if (!allowNegativeValues) {
+        var containsErrors = false;
+        var startIndex = errors.length;
+        if (duration < 0) {
+            errors.push("Duration values below 0 are not allowed for this animation step.");
+            containsErrors = true;
+        }
+        if (delay < 0) {
+            errors.push("Delay values below 0 are not allowed for this animation step.");
+            containsErrors = true;
+        }
+        if (containsErrors) {
+            errors.splice(startIndex, 0, "The provided timing value \"" + exp + "\" is invalid.");
+        }
+    }
+    return { duration: duration, delay: delay, easing: easing };
+}
+function copyObj(obj, destination) {
+    if (destination === void 0) { destination = {}; }
+    Object.keys(obj).forEach(function (prop) { destination[prop] = obj[prop]; });
+    return destination;
+}
+function normalizeStyles(styles) {
+    var normalizedStyles = {};
+    if (Array.isArray(styles)) {
+        styles.forEach(function (data) { return copyStyles(data, false, normalizedStyles); });
+    }
+    else {
+        copyStyles(styles, false, normalizedStyles);
+    }
+    return normalizedStyles;
+}
+function copyStyles(styles, readPrototype, destination) {
+    if (destination === void 0) { destination = {}; }
+    if (readPrototype) {
+        // we make use of a for-in loop so that the
+        // prototypically inherited properties are
+        // revealed from the backFill map
+        for (var prop in styles) {
+            destination[prop] = styles[prop];
+        }
+    }
+    else {
+        copyObj(styles, destination);
+    }
+    return destination;
+}
+function getStyleAttributeString(element, key, value) {
+    // Return the key-value pair string to be added to the style attribute for the
+    // given CSS style key.
+    if (value) {
+        return key + ':' + value + ';';
+    }
+    else {
+        return '';
+    }
+}
+function writeStyleAttribute(element) {
+    // Read the style property of the element and manually reflect it to the
+    // style attribute. This is needed because Domino on platform-server doesn't
+    // understand the full set of allowed CSS properties and doesn't reflect some
+    // of them automatically.
+    var styleAttrValue = '';
+    for (var i = 0; i < element.style.length; i++) {
+        var key = element.style.item(i);
+        styleAttrValue += getStyleAttributeString(element, key, element.style.getPropertyValue(key));
+    }
+    for (var key in element.style) {
+        // Skip internal Domino properties that don't need to be reflected.
+        if (!element.style.hasOwnProperty(key) || key.startsWith('_')) {
+            continue;
+        }
+        var dashKey = camelCaseToDashCase(key);
+        styleAttrValue += getStyleAttributeString(element, dashKey, element.style[key]);
+    }
+    element.setAttribute('style', styleAttrValue);
+}
+function setStyles(element, styles) {
+    if (element['style']) {
+        Object.keys(styles).forEach(function (prop) {
+            var camelProp = dashCaseToCamelCase(prop);
+            element.style[camelProp] = styles[prop];
+        });
+        // On the server set the 'style' attribute since it's not automatically reflected.
+        if (isNode()) {
+            writeStyleAttribute(element);
+        }
+    }
+}
+function eraseStyles(element, styles) {
+    if (element['style']) {
+        Object.keys(styles).forEach(function (prop) {
+            var camelProp = dashCaseToCamelCase(prop);
+            element.style[camelProp] = '';
+        });
+        // On the server set the 'style' attribute since it's not automatically reflected.
+        if (isNode()) {
+            writeStyleAttribute(element);
+        }
+    }
+}
+function normalizeAnimationEntry(steps) {
+    if (Array.isArray(steps)) {
+        if (steps.length == 1)
+            return steps[0];
+        return Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["sequence"])(steps);
+    }
+    return steps;
+}
+function validateStyleParams(value, options, errors) {
+    var params = options.params || {};
+    var matches = extractStyleParams(value);
+    if (matches.length) {
+        matches.forEach(function (varName) {
+            if (!params.hasOwnProperty(varName)) {
+                errors.push("Unable to resolve the local animation param " + varName + " in the given list of values");
+            }
+        });
+    }
+}
+var PARAM_REGEX = new RegExp(SUBSTITUTION_EXPR_START + "\\s*(.+?)\\s*" + SUBSTITUTION_EXPR_END, 'g');
+function extractStyleParams(value) {
+    var params = [];
+    if (typeof value === 'string') {
+        var val = value.toString();
+        var match = void 0;
+        while (match = PARAM_REGEX.exec(val)) {
+            params.push(match[1]);
+        }
+        PARAM_REGEX.lastIndex = 0;
+    }
+    return params;
+}
+function interpolateParams(value, params, errors) {
+    var original = value.toString();
+    var str = original.replace(PARAM_REGEX, function (_, varName) {
+        var localVal = params[varName];
+        // this means that the value was never overridden by the data passed in by the user
+        if (!params.hasOwnProperty(varName)) {
+            errors.push("Please provide a value for the animation param " + varName);
+            localVal = '';
+        }
+        return localVal.toString();
+    });
+    // we do this to assert that numeric values stay as they are
+    return str == original ? value : str;
+}
+function iteratorToArray(iterator) {
+    var arr = [];
+    var item = iterator.next();
+    while (!item.done) {
+        arr.push(item.value);
+        item = iterator.next();
+    }
+    return arr;
+}
+var DASH_CASE_REGEXP = /-+([a-z0-9])/g;
+function dashCaseToCamelCase(input) {
+    return input.replace(DASH_CASE_REGEXP, function () {
+        var m = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            m[_i] = arguments[_i];
+        }
+        return m[1].toUpperCase();
+    });
+}
+function camelCaseToDashCase(input) {
+    return input.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+function allowPreviousPlayerStylesMerge(duration, delay) {
+    return duration === 0 || delay === 0;
+}
+function balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles) {
+    var previousStyleProps = Object.keys(previousStyles);
+    if (previousStyleProps.length && keyframes.length) {
+        var startingKeyframe_1 = keyframes[0];
+        var missingStyleProps_1 = [];
+        previousStyleProps.forEach(function (prop) {
+            if (!startingKeyframe_1.hasOwnProperty(prop)) {
+                missingStyleProps_1.push(prop);
+            }
+            startingKeyframe_1[prop] = previousStyles[prop];
+        });
+        if (missingStyleProps_1.length) {
+            var _loop_1 = function () {
+                var kf = keyframes[i];
+                missingStyleProps_1.forEach(function (prop) { kf[prop] = computeStyle(element, prop); });
+            };
+            // tslint:disable-next-line
+            for (var i = 1; i < keyframes.length; i++) {
+                _loop_1();
+            }
+        }
+    }
+    return keyframes;
+}
+function visitDslNode(visitor, node, context) {
+    switch (node.type) {
+        case 7 /* Trigger */:
+            return visitor.visitTrigger(node, context);
+        case 0 /* State */:
+            return visitor.visitState(node, context);
+        case 1 /* Transition */:
+            return visitor.visitTransition(node, context);
+        case 2 /* Sequence */:
+            return visitor.visitSequence(node, context);
+        case 3 /* Group */:
+            return visitor.visitGroup(node, context);
+        case 4 /* Animate */:
+            return visitor.visitAnimate(node, context);
+        case 5 /* Keyframes */:
+            return visitor.visitKeyframes(node, context);
+        case 6 /* Style */:
+            return visitor.visitStyle(node, context);
+        case 8 /* Reference */:
+            return visitor.visitReference(node, context);
+        case 9 /* AnimateChild */:
+            return visitor.visitAnimateChild(node, context);
+        case 10 /* AnimateRef */:
+            return visitor.visitAnimateRef(node, context);
+        case 11 /* Query */:
+            return visitor.visitQuery(node, context);
+        case 12 /* Stagger */:
+            return visitor.visitStagger(node, context);
+        default:
+            throw new Error("Unable to resolve animation metadata node #" + node.type);
+    }
+}
+function computeStyle(element, prop) {
+    return window.getComputedStyle(element)[prop];
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ANY_STATE = '*';
+function parseTransitionExpr(transitionValue, errors) {
+    var expressions = [];
+    if (typeof transitionValue == 'string') {
+        transitionValue
+            .split(/\s*,\s*/)
+            .forEach(function (str) { return parseInnerTransitionStr(str, expressions, errors); });
+    }
+    else {
+        expressions.push(transitionValue);
+    }
+    return expressions;
+}
+function parseInnerTransitionStr(eventStr, expressions, errors) {
+    if (eventStr[0] == ':') {
+        var result = parseAnimationAlias(eventStr, errors);
+        if (typeof result == 'function') {
+            expressions.push(result);
+            return;
+        }
+        eventStr = result;
+    }
+    var match = eventStr.match(/^(\*|[-\w]+)\s*(<?[=-]>)\s*(\*|[-\w]+)$/);
+    if (match == null || match.length < 4) {
+        errors.push("The provided transition expression \"" + eventStr + "\" is not supported");
+        return expressions;
+    }
+    var fromState = match[1];
+    var separator = match[2];
+    var toState = match[3];
+    expressions.push(makeLambdaFromStates(fromState, toState));
+    var isFullAnyStateExpr = fromState == ANY_STATE && toState == ANY_STATE;
+    if (separator[0] == '<' && !isFullAnyStateExpr) {
+        expressions.push(makeLambdaFromStates(toState, fromState));
+    }
+}
+function parseAnimationAlias(alias, errors) {
+    switch (alias) {
+        case ':enter':
+            return 'void => *';
+        case ':leave':
+            return '* => void';
+        case ':increment':
+            return function (fromState, toState) { return parseFloat(toState) > parseFloat(fromState); };
+        case ':decrement':
+            return function (fromState, toState) { return parseFloat(toState) < parseFloat(fromState); };
+        default:
+            errors.push("The transition alias value \"" + alias + "\" is not supported");
+            return '* => *';
+    }
+}
+// DO NOT REFACTOR ... keep the follow set instantiations
+// with the values intact (closure compiler for some reason
+// removes follow-up lines that add the values outside of
+// the constructor...
+var TRUE_BOOLEAN_VALUES = new Set(['true', '1']);
+var FALSE_BOOLEAN_VALUES = new Set(['false', '0']);
+function makeLambdaFromStates(lhs, rhs) {
+    var LHS_MATCH_BOOLEAN = TRUE_BOOLEAN_VALUES.has(lhs) || FALSE_BOOLEAN_VALUES.has(lhs);
+    var RHS_MATCH_BOOLEAN = TRUE_BOOLEAN_VALUES.has(rhs) || FALSE_BOOLEAN_VALUES.has(rhs);
+    return function (fromState, toState) {
+        var lhsMatch = lhs == ANY_STATE || lhs == fromState;
+        var rhsMatch = rhs == ANY_STATE || rhs == toState;
+        if (!lhsMatch && LHS_MATCH_BOOLEAN && typeof fromState === 'boolean') {
+            lhsMatch = fromState ? TRUE_BOOLEAN_VALUES.has(lhs) : FALSE_BOOLEAN_VALUES.has(lhs);
+        }
+        if (!rhsMatch && RHS_MATCH_BOOLEAN && typeof toState === 'boolean') {
+            rhsMatch = toState ? TRUE_BOOLEAN_VALUES.has(rhs) : FALSE_BOOLEAN_VALUES.has(rhs);
+        }
+        return lhsMatch && rhsMatch;
+    };
+}
+
+var SELF_TOKEN = ':self';
+var SELF_TOKEN_REGEX = new RegExp("s*" + SELF_TOKEN + "s*,?", 'g');
+/*
+ * [Validation]
+ * The visitor code below will traverse the animation AST generated by the animation verb functions
+ * (the output is a tree of objects) and attempt to perform a series of validations on the data. The
+ * following corner-cases will be validated:
+ *
+ * 1. Overlap of animations
+ * Given that a CSS property cannot be animated in more than one place at the same time, it's
+ * important that this behaviour is detected and validated. The way in which this occurs is that
+ * each time a style property is examined, a string-map containing the property will be updated with
+ * the start and end times for when the property is used within an animation step.
+ *
+ * If there are two or more parallel animations that are currently running (these are invoked by the
+ * group()) on the same element then the validator will throw an error. Since the start/end timing
+ * values are collected for each property then if the current animation step is animating the same
+ * property and its timing values fall anywhere into the window of time that the property is
+ * currently being animated within then this is what causes an error.
+ *
+ * 2. Timing values
+ * The validator will validate to see if a timing value of `duration delay easing` or
+ * `durationNumber` is valid or not.
+ *
+ * (note that upon validation the code below will replace the timing data with an object containing
+ * {duration,delay,easing}.
+ *
+ * 3. Offset Validation
+ * Each of the style() calls are allowed to have an offset value when placed inside of keyframes().
+ * Offsets within keyframes() are considered valid when:
+ *
+ *   - No offsets are used at all
+ *   - Each style() entry contains an offset value
+ *   - Each offset is between 0 and 1
+ *   - Each offset is greater to or equal than the previous one
+ *
+ * Otherwise an error will be thrown.
+ */
+function buildAnimationAst(driver, metadata, errors) {
+    return new AnimationAstBuilderVisitor(driver).build(metadata, errors);
+}
+var ROOT_SELECTOR = '';
+var AnimationAstBuilderVisitor = /** @class */ (function () {
+    function AnimationAstBuilderVisitor(_driver) {
+        this._driver = _driver;
+    }
+    AnimationAstBuilderVisitor.prototype.build = function (metadata, errors) {
+        var context = new AnimationAstBuilderContext(errors);
+        this._resetContextStyleTimingState(context);
+        return visitDslNode(this, normalizeAnimationEntry(metadata), context);
+    };
+    AnimationAstBuilderVisitor.prototype._resetContextStyleTimingState = function (context) {
+        context.currentQuerySelector = ROOT_SELECTOR;
+        context.collectedStyles = {};
+        context.collectedStyles[ROOT_SELECTOR] = {};
+        context.currentTime = 0;
+    };
+    AnimationAstBuilderVisitor.prototype.visitTrigger = function (metadata, context) {
+        var _this = this;
+        var queryCount = context.queryCount = 0;
+        var depCount = context.depCount = 0;
+        var states = [];
+        var transitions = [];
+        if (metadata.name.charAt(0) == '@') {
+            context.errors.push('animation triggers cannot be prefixed with an `@` sign (e.g. trigger(\'@foo\', [...]))');
+        }
+        metadata.definitions.forEach(function (def) {
+            _this._resetContextStyleTimingState(context);
+            if (def.type == 0 /* State */) {
+                var stateDef_1 = def;
+                var name_1 = stateDef_1.name;
+                name_1.toString().split(/\s*,\s*/).forEach(function (n) {
+                    stateDef_1.name = n;
+                    states.push(_this.visitState(stateDef_1, context));
+                });
+                stateDef_1.name = name_1;
+            }
+            else if (def.type == 1 /* Transition */) {
+                var transition = _this.visitTransition(def, context);
+                queryCount += transition.queryCount;
+                depCount += transition.depCount;
+                transitions.push(transition);
+            }
+            else {
+                context.errors.push('only state() and transition() definitions can sit inside of a trigger()');
+            }
+        });
+        return {
+            type: 7 /* Trigger */,
+            name: metadata.name, states: states, transitions: transitions, queryCount: queryCount, depCount: depCount,
+            options: null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitState = function (metadata, context) {
+        var styleAst = this.visitStyle(metadata.styles, context);
+        var astParams = (metadata.options && metadata.options.params) || null;
+        if (styleAst.containsDynamicStyles) {
+            var missingSubs_1 = new Set();
+            var params_1 = astParams || {};
+            styleAst.styles.forEach(function (value) {
+                if (isObject(value)) {
+                    var stylesObj_1 = value;
+                    Object.keys(stylesObj_1).forEach(function (prop) {
+                        extractStyleParams(stylesObj_1[prop]).forEach(function (sub) {
+                            if (!params_1.hasOwnProperty(sub)) {
+                                missingSubs_1.add(sub);
+                            }
+                        });
+                    });
+                }
+            });
+            if (missingSubs_1.size) {
+                var missingSubsArr = iteratorToArray(missingSubs_1.values());
+                context.errors.push("state(\"" + metadata.name + "\", ...) must define default values for all the following style substitutions: " + missingSubsArr.join(', '));
+            }
+        }
+        return {
+            type: 0 /* State */,
+            name: metadata.name,
+            style: styleAst,
+            options: astParams ? { params: astParams } : null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitTransition = function (metadata, context) {
+        context.queryCount = 0;
+        context.depCount = 0;
+        var animation = visitDslNode(this, normalizeAnimationEntry(metadata.animation), context);
+        var matchers = parseTransitionExpr(metadata.expr, context.errors);
+        return {
+            type: 1 /* Transition */,
+            matchers: matchers,
+            animation: animation,
+            queryCount: context.queryCount,
+            depCount: context.depCount,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitSequence = function (metadata, context) {
+        var _this = this;
+        return {
+            type: 2 /* Sequence */,
+            steps: metadata.steps.map(function (s) { return visitDslNode(_this, s, context); }),
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitGroup = function (metadata, context) {
+        var _this = this;
+        var currentTime = context.currentTime;
+        var furthestTime = 0;
+        var steps = metadata.steps.map(function (step) {
+            context.currentTime = currentTime;
+            var innerAst = visitDslNode(_this, step, context);
+            furthestTime = Math.max(furthestTime, context.currentTime);
+            return innerAst;
+        });
+        context.currentTime = furthestTime;
+        return {
+            type: 3 /* Group */,
+            steps: steps,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitAnimate = function (metadata, context) {
+        var timingAst = constructTimingAst(metadata.timings, context.errors);
+        context.currentAnimateTimings = timingAst;
+        var styleAst;
+        var styleMetadata = metadata.styles ? metadata.styles : Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({});
+        if (styleMetadata.type == 5 /* Keyframes */) {
+            styleAst = this.visitKeyframes(styleMetadata, context);
+        }
+        else {
+            var styleMetadata_1 = metadata.styles;
+            var isEmpty = false;
+            if (!styleMetadata_1) {
+                isEmpty = true;
+                var newStyleData = {};
+                if (timingAst.easing) {
+                    newStyleData['easing'] = timingAst.easing;
+                }
+                styleMetadata_1 = Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])(newStyleData);
+            }
+            context.currentTime += timingAst.duration + timingAst.delay;
+            var _styleAst = this.visitStyle(styleMetadata_1, context);
+            _styleAst.isEmptyStep = isEmpty;
+            styleAst = _styleAst;
+        }
+        context.currentAnimateTimings = null;
+        return {
+            type: 4 /* Animate */,
+            timings: timingAst,
+            style: styleAst,
+            options: null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitStyle = function (metadata, context) {
+        var ast = this._makeStyleAst(metadata, context);
+        this._validateStyleAst(ast, context);
+        return ast;
+    };
+    AnimationAstBuilderVisitor.prototype._makeStyleAst = function (metadata, context) {
+        var styles = [];
+        if (Array.isArray(metadata.styles)) {
+            metadata.styles.forEach(function (styleTuple) {
+                if (typeof styleTuple == 'string') {
+                    if (styleTuple == _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]) {
+                        styles.push(styleTuple);
+                    }
+                    else {
+                        context.errors.push("The provided style string value " + styleTuple + " is not allowed.");
+                    }
+                }
+                else {
+                    styles.push(styleTuple);
+                }
+            });
+        }
+        else {
+            styles.push(metadata.styles);
+        }
+        var containsDynamicStyles = false;
+        var collectedEasing = null;
+        styles.forEach(function (styleData) {
+            if (isObject(styleData)) {
+                var styleMap = styleData;
+                var easing = styleMap['easing'];
+                if (easing) {
+                    collectedEasing = easing;
+                    delete styleMap['easing'];
+                }
+                if (!containsDynamicStyles) {
+                    for (var prop in styleMap) {
+                        var value = styleMap[prop];
+                        if (value.toString().indexOf(SUBSTITUTION_EXPR_START) >= 0) {
+                            containsDynamicStyles = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        return {
+            type: 6 /* Style */,
+            styles: styles,
+            easing: collectedEasing,
+            offset: metadata.offset, containsDynamicStyles: containsDynamicStyles,
+            options: null
+        };
+    };
+    AnimationAstBuilderVisitor.prototype._validateStyleAst = function (ast, context) {
+        var _this = this;
+        var timings = context.currentAnimateTimings;
+        var endTime = context.currentTime;
+        var startTime = context.currentTime;
+        if (timings && startTime > 0) {
+            startTime -= timings.duration + timings.delay;
+        }
+        ast.styles.forEach(function (tuple) {
+            if (typeof tuple == 'string')
+                return;
+            Object.keys(tuple).forEach(function (prop) {
+                if (!_this._driver.validateStyleProperty(prop)) {
+                    context.errors.push("The provided animation property \"" + prop + "\" is not a supported CSS property for animations");
+                    return;
+                }
+                var collectedStyles = context.collectedStyles[context.currentQuerySelector];
+                var collectedEntry = collectedStyles[prop];
+                var updateCollectedStyle = true;
+                if (collectedEntry) {
+                    if (startTime != endTime && startTime >= collectedEntry.startTime &&
+                        endTime <= collectedEntry.endTime) {
+                        context.errors.push("The CSS property \"" + prop + "\" that exists between the times of \"" + collectedEntry.startTime + "ms\" and \"" + collectedEntry.endTime + "ms\" is also being animated in a parallel animation between the times of \"" + startTime + "ms\" and \"" + endTime + "ms\"");
+                        updateCollectedStyle = false;
+                    }
+                    // we always choose the smaller start time value since we
+                    // want to have a record of the entire animation window where
+                    // the style property is being animated in between
+                    startTime = collectedEntry.startTime;
+                }
+                if (updateCollectedStyle) {
+                    collectedStyles[prop] = { startTime: startTime, endTime: endTime };
+                }
+                if (context.options) {
+                    validateStyleParams(tuple[prop], context.options, context.errors);
+                }
+            });
+        });
+    };
+    AnimationAstBuilderVisitor.prototype.visitKeyframes = function (metadata, context) {
+        var _this = this;
+        var ast = { type: 5 /* Keyframes */, styles: [], options: null };
+        if (!context.currentAnimateTimings) {
+            context.errors.push("keyframes() must be placed inside of a call to animate()");
+            return ast;
+        }
+        var MAX_KEYFRAME_OFFSET = 1;
+        var totalKeyframesWithOffsets = 0;
+        var offsets = [];
+        var offsetsOutOfOrder = false;
+        var keyframesOutOfRange = false;
+        var previousOffset = 0;
+        var keyframes = metadata.steps.map(function (styles) {
+            var style$$1 = _this._makeStyleAst(styles, context);
+            var offsetVal = style$$1.offset != null ? style$$1.offset : consumeOffset(style$$1.styles);
+            var offset = 0;
+            if (offsetVal != null) {
+                totalKeyframesWithOffsets++;
+                offset = style$$1.offset = offsetVal;
+            }
+            keyframesOutOfRange = keyframesOutOfRange || offset < 0 || offset > 1;
+            offsetsOutOfOrder = offsetsOutOfOrder || offset < previousOffset;
+            previousOffset = offset;
+            offsets.push(offset);
+            return style$$1;
+        });
+        if (keyframesOutOfRange) {
+            context.errors.push("Please ensure that all keyframe offsets are between 0 and 1");
+        }
+        if (offsetsOutOfOrder) {
+            context.errors.push("Please ensure that all keyframe offsets are in order");
+        }
+        var length = metadata.steps.length;
+        var generatedOffset = 0;
+        if (totalKeyframesWithOffsets > 0 && totalKeyframesWithOffsets < length) {
+            context.errors.push("Not all style() steps within the declared keyframes() contain offsets");
+        }
+        else if (totalKeyframesWithOffsets == 0) {
+            generatedOffset = MAX_KEYFRAME_OFFSET / (length - 1);
+        }
+        var limit = length - 1;
+        var currentTime = context.currentTime;
+        var currentAnimateTimings = context.currentAnimateTimings;
+        var animateDuration = currentAnimateTimings.duration;
+        keyframes.forEach(function (kf, i) {
+            var offset = generatedOffset > 0 ? (i == limit ? 1 : (generatedOffset * i)) : offsets[i];
+            var durationUpToThisFrame = offset * animateDuration;
+            context.currentTime = currentTime + currentAnimateTimings.delay + durationUpToThisFrame;
+            currentAnimateTimings.duration = durationUpToThisFrame;
+            _this._validateStyleAst(kf, context);
+            kf.offset = offset;
+            ast.styles.push(kf);
+        });
+        return ast;
+    };
+    AnimationAstBuilderVisitor.prototype.visitReference = function (metadata, context) {
+        return {
+            type: 8 /* Reference */,
+            animation: visitDslNode(this, normalizeAnimationEntry(metadata.animation), context),
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitAnimateChild = function (metadata, context) {
+        context.depCount++;
+        return {
+            type: 9 /* AnimateChild */,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitAnimateRef = function (metadata, context) {
+        return {
+            type: 10 /* AnimateRef */,
+            animation: this.visitReference(metadata.animation, context),
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitQuery = function (metadata, context) {
+        var parentSelector = context.currentQuerySelector;
+        var options = (metadata.options || {});
+        context.queryCount++;
+        context.currentQuery = metadata;
+        var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(normalizeSelector(metadata.selector), 2), selector = _a[0], includeSelf = _a[1];
+        context.currentQuerySelector =
+            parentSelector.length ? (parentSelector + ' ' + selector) : selector;
+        getOrSetAsInMap(context.collectedStyles, context.currentQuerySelector, {});
+        var animation = visitDslNode(this, normalizeAnimationEntry(metadata.animation), context);
+        context.currentQuery = null;
+        context.currentQuerySelector = parentSelector;
+        return {
+            type: 11 /* Query */,
+            selector: selector,
+            limit: options.limit || 0,
+            optional: !!options.optional, includeSelf: includeSelf, animation: animation,
+            originalSelector: metadata.selector,
+            options: normalizeAnimationOptions(metadata.options)
+        };
+    };
+    AnimationAstBuilderVisitor.prototype.visitStagger = function (metadata, context) {
+        if (!context.currentQuery) {
+            context.errors.push("stagger() can only be used inside of query()");
+        }
+        var timings = metadata.timings === 'full' ?
+            { duration: 0, delay: 0, easing: 'full' } :
+            resolveTiming(metadata.timings, context.errors, true);
+        return {
+            type: 12 /* Stagger */,
+            animation: visitDslNode(this, normalizeAnimationEntry(metadata.animation), context), timings: timings,
+            options: null
+        };
+    };
+    return AnimationAstBuilderVisitor;
+}());
+function normalizeSelector(selector) {
+    var hasAmpersand = selector.split(/\s*,\s*/).find(function (token) { return token == SELF_TOKEN; }) ? true : false;
+    if (hasAmpersand) {
+        selector = selector.replace(SELF_TOKEN_REGEX, '');
+    }
+    // the :enter and :leave selectors are filled in at runtime during timeline building
+    selector = selector.replace(/@\*/g, NG_TRIGGER_SELECTOR)
+        .replace(/@\w+/g, function (match) { return NG_TRIGGER_SELECTOR + '-' + match.substr(1); })
+        .replace(/:animating/g, NG_ANIMATING_SELECTOR);
+    return [selector, hasAmpersand];
+}
+function normalizeParams(obj) {
+    return obj ? copyObj(obj) : null;
+}
+var AnimationAstBuilderContext = /** @class */ (function () {
+    function AnimationAstBuilderContext(errors) {
+        this.errors = errors;
+        this.queryCount = 0;
+        this.depCount = 0;
+        this.currentTransition = null;
+        this.currentQuery = null;
+        this.currentQuerySelector = null;
+        this.currentAnimateTimings = null;
+        this.currentTime = 0;
+        this.collectedStyles = {};
+        this.options = null;
+    }
+    return AnimationAstBuilderContext;
+}());
+function consumeOffset(styles) {
+    if (typeof styles == 'string')
+        return null;
+    var offset = null;
+    if (Array.isArray(styles)) {
+        styles.forEach(function (styleTuple) {
+            if (isObject(styleTuple) && styleTuple.hasOwnProperty('offset')) {
+                var obj = styleTuple;
+                offset = parseFloat(obj['offset']);
+                delete obj['offset'];
+            }
+        });
+    }
+    else if (isObject(styles) && styles.hasOwnProperty('offset')) {
+        var obj = styles;
+        offset = parseFloat(obj['offset']);
+        delete obj['offset'];
+    }
+    return offset;
+}
+function isObject(value) {
+    return !Array.isArray(value) && typeof value == 'object';
+}
+function constructTimingAst(value, errors) {
+    var timings = null;
+    if (value.hasOwnProperty('duration')) {
+        timings = value;
+    }
+    else if (typeof value == 'number') {
+        var duration = resolveTiming(value, errors).duration;
+        return makeTimingAst(duration, 0, '');
+    }
+    var strValue = value;
+    var isDynamic = strValue.split(/\s+/).some(function (v) { return v.charAt(0) == '{' && v.charAt(1) == '{'; });
+    if (isDynamic) {
+        var ast = makeTimingAst(0, 0, '');
+        ast.dynamic = true;
+        ast.strValue = strValue;
+        return ast;
+    }
+    timings = timings || resolveTiming(strValue, errors);
+    return makeTimingAst(timings.duration, timings.delay, timings.easing);
+}
+function normalizeAnimationOptions(options) {
+    if (options) {
+        options = copyObj(options);
+        if (options['params']) {
+            options['params'] = normalizeParams(options['params']);
+        }
+    }
+    else {
+        options = {};
+    }
+    return options;
+}
+function makeTimingAst(duration, delay, easing) {
+    return { duration: duration, delay: delay, easing: easing };
+}
+
+function createTimelineInstruction(element, keyframes, preStyleProps, postStyleProps, duration, delay, easing, subTimeline) {
+    if (easing === void 0) { easing = null; }
+    if (subTimeline === void 0) { subTimeline = false; }
+    return {
+        type: 1 /* TimelineAnimation */,
+        element: element,
+        keyframes: keyframes,
+        preStyleProps: preStyleProps,
+        postStyleProps: postStyleProps,
+        duration: duration,
+        delay: delay,
+        totalTime: duration + delay, easing: easing, subTimeline: subTimeline
+    };
+}
+
+var ElementInstructionMap = /** @class */ (function () {
+    function ElementInstructionMap() {
+        this._map = new Map();
+    }
+    ElementInstructionMap.prototype.consume = function (element) {
+        var instructions = this._map.get(element);
+        if (instructions) {
+            this._map.delete(element);
+        }
+        else {
+            instructions = [];
+        }
+        return instructions;
+    };
+    ElementInstructionMap.prototype.append = function (element, instructions) {
+        var existingInstructions = this._map.get(element);
+        if (!existingInstructions) {
+            this._map.set(element, existingInstructions = []);
+        }
+        existingInstructions.push.apply(existingInstructions, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(instructions));
+    };
+    ElementInstructionMap.prototype.has = function (element) { return this._map.has(element); };
+    ElementInstructionMap.prototype.clear = function () { this._map.clear(); };
+    return ElementInstructionMap;
+}());
+
+var ONE_FRAME_IN_MILLISECONDS = 1;
+var ENTER_TOKEN = ':enter';
+var ENTER_TOKEN_REGEX = new RegExp(ENTER_TOKEN, 'g');
+var LEAVE_TOKEN = ':leave';
+var LEAVE_TOKEN_REGEX = new RegExp(LEAVE_TOKEN, 'g');
+/*
+ * The code within this file aims to generate web-animations-compatible keyframes from Angular's
+ * animation DSL code.
+ *
+ * The code below will be converted from:
+ *
+ * ```
+ * sequence([
+ *   style({ opacity: 0 }),
+ *   animate(1000, style({ opacity: 0 }))
+ * ])
+ * ```
+ *
+ * To:
+ * ```
+ * keyframes = [{ opacity: 0, offset: 0 }, { opacity: 1, offset: 1 }]
+ * duration = 1000
+ * delay = 0
+ * easing = ''
+ * ```
+ *
+ * For this operation to cover the combination of animation verbs (style, animate, group, etc...) a
+ * combination of prototypical inheritance, AST traversal and merge-sort-like algorithms are used.
+ *
+ * [AST Traversal]
+ * Each of the animation verbs, when executed, will return an string-map object representing what
+ * type of action it is (style, animate, group, etc...) and the data associated with it. This means
+ * that when functional composition mix of these functions is evaluated (like in the example above)
+ * then it will end up producing a tree of objects representing the animation itself.
+ *
+ * When this animation object tree is processed by the visitor code below it will visit each of the
+ * verb statements within the visitor. And during each visit it will build the context of the
+ * animation keyframes by interacting with the `TimelineBuilder`.
+ *
+ * [TimelineBuilder]
+ * This class is responsible for tracking the styles and building a series of keyframe objects for a
+ * timeline between a start and end time. The builder starts off with an initial timeline and each
+ * time the AST comes across a `group()`, `keyframes()` or a combination of the two wihtin a
+ * `sequence()` then it will generate a sub timeline for each step as well as a new one after
+ * they are complete.
+ *
+ * As the AST is traversed, the timing state on each of the timelines will be incremented. If a sub
+ * timeline was created (based on one of the cases above) then the parent timeline will attempt to
+ * merge the styles used within the sub timelines into itself (only with group() this will happen).
+ * This happens with a merge operation (much like how the merge works in mergesort) and it will only
+ * copy the most recently used styles from the sub timelines into the parent timeline. This ensures
+ * that if the styles are used later on in another phase of the animation then they will be the most
+ * up-to-date values.
+ *
+ * [How Missing Styles Are Updated]
+ * Each timeline has a `backFill` property which is responsible for filling in new styles into
+ * already processed keyframes if a new style shows up later within the animation sequence.
+ *
+ * ```
+ * sequence([
+ *   style({ width: 0 }),
+ *   animate(1000, style({ width: 100 })),
+ *   animate(1000, style({ width: 200 })),
+ *   animate(1000, style({ width: 300 }))
+ *   animate(1000, style({ width: 400, height: 400 })) // notice how `height` doesn't exist anywhere
+ * else
+ * ])
+ * ```
+ *
+ * What is happening here is that the `height` value is added later in the sequence, but is missing
+ * from all previous animation steps. Therefore when a keyframe is created it would also be missing
+ * from all previous keyframes up until where it is first used. For the timeline keyframe generation
+ * to properly fill in the style it will place the previous value (the value from the parent
+ * timeline) or a default value of `*` into the backFill object. Given that each of the keyframe
+ * styles are objects that prototypically inhert from the backFill object, this means that if a
+ * value is added into the backFill then it will automatically propagate any missing values to all
+ * keyframes. Therefore the missing `height` value will be properly filled into the already
+ * processed keyframes.
+ *
+ * When a sub-timeline is created it will have its own backFill property. This is done so that
+ * styles present within the sub-timeline do not accidentally seep into the previous/future timeline
+ * keyframes
+ *
+ * (For prototypically-inherited contents to be detected a `for(i in obj)` loop must be used.)
+ *
+ * [Validation]
+ * The code in this file is not responsible for validation. That functionality happens with within
+ * the `AnimationValidatorVisitor` code.
+ */
+function buildAnimationTimelines(driver, rootElement, ast, enterClassName, leaveClassName, startingStyles, finalStyles, options, subInstructions, errors) {
+    if (startingStyles === void 0) { startingStyles = {}; }
+    if (finalStyles === void 0) { finalStyles = {}; }
+    if (errors === void 0) { errors = []; }
+    return new AnimationTimelineBuilderVisitor().buildKeyframes(driver, rootElement, ast, enterClassName, leaveClassName, startingStyles, finalStyles, options, subInstructions, errors);
+}
+var AnimationTimelineBuilderVisitor = /** @class */ (function () {
+    function AnimationTimelineBuilderVisitor() {
+    }
+    AnimationTimelineBuilderVisitor.prototype.buildKeyframes = function (driver, rootElement, ast, enterClassName, leaveClassName, startingStyles, finalStyles, options, subInstructions, errors) {
+        if (errors === void 0) { errors = []; }
+        subInstructions = subInstructions || new ElementInstructionMap();
+        var context = new AnimationTimelineContext(driver, rootElement, subInstructions, enterClassName, leaveClassName, errors, []);
+        context.options = options;
+        context.currentTimeline.setStyles([startingStyles], null, context.errors, options);
+        visitDslNode(this, ast, context);
+        // this checks to see if an actual animation happened
+        var timelines = context.timelines.filter(function (timeline) { return timeline.containsAnimation(); });
+        if (timelines.length && Object.keys(finalStyles).length) {
+            var tl = timelines[timelines.length - 1];
+            if (!tl.allowOnlyTimelineStyles()) {
+                tl.setStyles([finalStyles], null, context.errors, options);
+            }
+        }
+        return timelines.length ? timelines.map(function (timeline) { return timeline.buildKeyframes(); }) :
+            [createTimelineInstruction(rootElement, [], [], [], 0, 0, '', false)];
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitTrigger = function (ast, context) {
+        // these values are not visited in this AST
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitState = function (ast, context) {
+        // these values are not visited in this AST
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitTransition = function (ast, context) {
+        // these values are not visited in this AST
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitAnimateChild = function (ast, context) {
+        var elementInstructions = context.subInstructions.consume(context.element);
+        if (elementInstructions) {
+            var innerContext = context.createSubContext(ast.options);
+            var startTime = context.currentTimeline.currentTime;
+            var endTime = this._visitSubInstructions(elementInstructions, innerContext, innerContext.options);
+            if (startTime != endTime) {
+                // we do this on the upper context because we created a sub context for
+                // the sub child animations
+                context.transformIntoNewTimeline(endTime);
+            }
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitAnimateRef = function (ast, context) {
+        var innerContext = context.createSubContext(ast.options);
+        innerContext.transformIntoNewTimeline();
+        this.visitReference(ast.animation, innerContext);
+        context.transformIntoNewTimeline(innerContext.currentTimeline.currentTime);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype._visitSubInstructions = function (instructions, context, options) {
+        var startTime = context.currentTimeline.currentTime;
+        var furthestTime = startTime;
+        // this is a special-case for when a user wants to skip a sub
+        // animation from being fired entirely.
+        var duration = options.duration != null ? resolveTimingValue(options.duration) : null;
+        var delay = options.delay != null ? resolveTimingValue(options.delay) : null;
+        if (duration !== 0) {
+            instructions.forEach(function (instruction) {
+                var instructionTimings = context.appendInstructionToTimeline(instruction, duration, delay);
+                furthestTime =
+                    Math.max(furthestTime, instructionTimings.duration + instructionTimings.delay);
+            });
+        }
+        return furthestTime;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitReference = function (ast, context) {
+        context.updateOptions(ast.options, true);
+        visitDslNode(this, ast.animation, context);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitSequence = function (ast, context) {
+        var _this = this;
+        var subContextCount = context.subContextCount;
+        var ctx = context;
+        var options = ast.options;
+        if (options && (options.params || options.delay)) {
+            ctx = context.createSubContext(options);
+            ctx.transformIntoNewTimeline();
+            if (options.delay != null) {
+                if (ctx.previousNode.type == 6 /* Style */) {
+                    ctx.currentTimeline.snapshotCurrentStyles();
+                    ctx.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+                }
+                var delay = resolveTimingValue(options.delay);
+                ctx.delayNextStep(delay);
+            }
+        }
+        if (ast.steps.length) {
+            ast.steps.forEach(function (s) { return visitDslNode(_this, s, ctx); });
+            // this is here just incase the inner steps only contain or end with a style() call
+            ctx.currentTimeline.applyStylesToKeyframe();
+            // this means that some animation function within the sequence
+            // ended up creating a sub timeline (which means the current
+            // timeline cannot overlap with the contents of the sequence)
+            if (ctx.subContextCount > subContextCount) {
+                ctx.transformIntoNewTimeline();
+            }
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitGroup = function (ast, context) {
+        var _this = this;
+        var innerTimelines = [];
+        var furthestTime = context.currentTimeline.currentTime;
+        var delay = ast.options && ast.options.delay ? resolveTimingValue(ast.options.delay) : 0;
+        ast.steps.forEach(function (s) {
+            var innerContext = context.createSubContext(ast.options);
+            if (delay) {
+                innerContext.delayNextStep(delay);
+            }
+            visitDslNode(_this, s, innerContext);
+            furthestTime = Math.max(furthestTime, innerContext.currentTimeline.currentTime);
+            innerTimelines.push(innerContext.currentTimeline);
+        });
+        // this operation is run after the AST loop because otherwise
+        // if the parent timeline's collected styles were updated then
+        // it would pass in invalid data into the new-to-be forked items
+        innerTimelines.forEach(function (timeline) { return context.currentTimeline.mergeTimelineCollectedStyles(timeline); });
+        context.transformIntoNewTimeline(furthestTime);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype._visitTiming = function (ast, context) {
+        if (ast.dynamic) {
+            var strValue = ast.strValue;
+            var timingValue = context.params ? interpolateParams(strValue, context.params, context.errors) : strValue;
+            return resolveTiming(timingValue, context.errors);
+        }
+        else {
+            return { duration: ast.duration, delay: ast.delay, easing: ast.easing };
+        }
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitAnimate = function (ast, context) {
+        var timings = context.currentAnimateTimings = this._visitTiming(ast.timings, context);
+        var timeline = context.currentTimeline;
+        if (timings.delay) {
+            context.incrementTime(timings.delay);
+            timeline.snapshotCurrentStyles();
+        }
+        var style$$1 = ast.style;
+        if (style$$1.type == 5 /* Keyframes */) {
+            this.visitKeyframes(style$$1, context);
+        }
+        else {
+            context.incrementTime(timings.duration);
+            this.visitStyle(style$$1, context);
+            timeline.applyStylesToKeyframe();
+        }
+        context.currentAnimateTimings = null;
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitStyle = function (ast, context) {
+        var timeline = context.currentTimeline;
+        var timings = context.currentAnimateTimings;
+        // this is a special case for when a style() call
+        // directly follows  an animate() call (but not inside of an animate() call)
+        if (!timings && timeline.getCurrentStyleProperties().length) {
+            timeline.forwardFrame();
+        }
+        var easing = (timings && timings.easing) || ast.easing;
+        if (ast.isEmptyStep) {
+            timeline.applyEmptyStep(easing);
+        }
+        else {
+            timeline.setStyles(ast.styles, easing, context.errors, context.options);
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitKeyframes = function (ast, context) {
+        var currentAnimateTimings = context.currentAnimateTimings;
+        var startTime = (context.currentTimeline).duration;
+        var duration = currentAnimateTimings.duration;
+        var innerContext = context.createSubContext();
+        var innerTimeline = innerContext.currentTimeline;
+        innerTimeline.easing = currentAnimateTimings.easing;
+        ast.styles.forEach(function (step) {
+            var offset = step.offset || 0;
+            innerTimeline.forwardTime(offset * duration);
+            innerTimeline.setStyles(step.styles, step.easing, context.errors, context.options);
+            innerTimeline.applyStylesToKeyframe();
+        });
+        // this will ensure that the parent timeline gets all the styles from
+        // the child even if the new timeline below is not used
+        context.currentTimeline.mergeTimelineCollectedStyles(innerTimeline);
+        // we do this because the window between this timeline and the sub timeline
+        // should ensure that the styles within are exactly the same as they were before
+        context.transformIntoNewTimeline(startTime + duration);
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitQuery = function (ast, context) {
+        var _this = this;
+        // in the event that the first step before this is a style step we need
+        // to ensure the styles are applied before the children are animated
+        var startTime = context.currentTimeline.currentTime;
+        var options = (ast.options || {});
+        var delay = options.delay ? resolveTimingValue(options.delay) : 0;
+        if (delay && (context.previousNode.type === 6 /* Style */ ||
+            (startTime == 0 && context.currentTimeline.getCurrentStyleProperties().length))) {
+            context.currentTimeline.snapshotCurrentStyles();
+            context.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+        }
+        var furthestTime = startTime;
+        var elms = context.invokeQuery(ast.selector, ast.originalSelector, ast.limit, ast.includeSelf, options.optional ? true : false, context.errors);
+        context.currentQueryTotal = elms.length;
+        var sameElementTimeline = null;
+        elms.forEach(function (element, i) {
+            context.currentQueryIndex = i;
+            var innerContext = context.createSubContext(ast.options, element);
+            if (delay) {
+                innerContext.delayNextStep(delay);
+            }
+            if (element === context.element) {
+                sameElementTimeline = innerContext.currentTimeline;
+            }
+            visitDslNode(_this, ast.animation, innerContext);
+            // this is here just incase the inner steps only contain or end
+            // with a style() call (which is here to signal that this is a preparatory
+            // call to style an element before it is animated again)
+            innerContext.currentTimeline.applyStylesToKeyframe();
+            var endTime = innerContext.currentTimeline.currentTime;
+            furthestTime = Math.max(furthestTime, endTime);
+        });
+        context.currentQueryIndex = 0;
+        context.currentQueryTotal = 0;
+        context.transformIntoNewTimeline(furthestTime);
+        if (sameElementTimeline) {
+            context.currentTimeline.mergeTimelineCollectedStyles(sameElementTimeline);
+            context.currentTimeline.snapshotCurrentStyles();
+        }
+        context.previousNode = ast;
+    };
+    AnimationTimelineBuilderVisitor.prototype.visitStagger = function (ast, context) {
+        var parentContext = context.parentContext;
+        var tl = context.currentTimeline;
+        var timings = ast.timings;
+        var duration = Math.abs(timings.duration);
+        var maxTime = duration * (context.currentQueryTotal - 1);
+        var delay = duration * context.currentQueryIndex;
+        var staggerTransformer = timings.duration < 0 ? 'reverse' : timings.easing;
+        switch (staggerTransformer) {
+            case 'reverse':
+                delay = maxTime - delay;
+                break;
+            case 'full':
+                delay = parentContext.currentStaggerTime;
+                break;
+        }
+        var timeline = context.currentTimeline;
+        if (delay) {
+            timeline.delayNextStep(delay);
+        }
+        var startingTime = timeline.currentTime;
+        visitDslNode(this, ast.animation, context);
+        context.previousNode = ast;
+        // time = duration + delay
+        // the reason why this computation is so complex is because
+        // the inner timeline may either have a delay value or a stretched
+        // keyframe depending on if a subtimeline is not used or is used.
+        parentContext.currentStaggerTime =
+            (tl.currentTime - startingTime) + (tl.startTime - parentContext.currentTimeline.startTime);
+    };
+    return AnimationTimelineBuilderVisitor;
+}());
+var DEFAULT_NOOP_PREVIOUS_NODE = {};
+var AnimationTimelineContext = /** @class */ (function () {
+    function AnimationTimelineContext(_driver, element, subInstructions, _enterClassName, _leaveClassName, errors, timelines, initialTimeline) {
+        this._driver = _driver;
+        this.element = element;
+        this.subInstructions = subInstructions;
+        this._enterClassName = _enterClassName;
+        this._leaveClassName = _leaveClassName;
+        this.errors = errors;
+        this.timelines = timelines;
+        this.parentContext = null;
+        this.currentAnimateTimings = null;
+        this.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+        this.subContextCount = 0;
+        this.options = {};
+        this.currentQueryIndex = 0;
+        this.currentQueryTotal = 0;
+        this.currentStaggerTime = 0;
+        this.currentTimeline = initialTimeline || new TimelineBuilder(this._driver, element, 0);
+        timelines.push(this.currentTimeline);
+    }
+    Object.defineProperty(AnimationTimelineContext.prototype, "params", {
+        get: function () { return this.options.params; },
+        enumerable: true,
+        configurable: true
+    });
+    AnimationTimelineContext.prototype.updateOptions = function (options, skipIfExists) {
+        var _this = this;
+        if (!options)
+            return;
+        var newOptions = options;
+        var optionsToUpdate = this.options;
+        // NOTE: this will get patched up when other animation methods support duration overrides
+        if (newOptions.duration != null) {
+            optionsToUpdate.duration = resolveTimingValue(newOptions.duration);
+        }
+        if (newOptions.delay != null) {
+            optionsToUpdate.delay = resolveTimingValue(newOptions.delay);
+        }
+        var newParams = newOptions.params;
+        if (newParams) {
+            var paramsToUpdate_1 = optionsToUpdate.params;
+            if (!paramsToUpdate_1) {
+                paramsToUpdate_1 = this.options.params = {};
+            }
+            Object.keys(newParams).forEach(function (name) {
+                if (!skipIfExists || !paramsToUpdate_1.hasOwnProperty(name)) {
+                    paramsToUpdate_1[name] = interpolateParams(newParams[name], paramsToUpdate_1, _this.errors);
+                }
+            });
+        }
+    };
+    AnimationTimelineContext.prototype._copyOptions = function () {
+        var options = {};
+        if (this.options) {
+            var oldParams_1 = this.options.params;
+            if (oldParams_1) {
+                var params_1 = options['params'] = {};
+                Object.keys(oldParams_1).forEach(function (name) { params_1[name] = oldParams_1[name]; });
+            }
+        }
+        return options;
+    };
+    AnimationTimelineContext.prototype.createSubContext = function (options, element, newTime) {
+        if (options === void 0) { options = null; }
+        var target = element || this.element;
+        var context = new AnimationTimelineContext(this._driver, target, this.subInstructions, this._enterClassName, this._leaveClassName, this.errors, this.timelines, this.currentTimeline.fork(target, newTime || 0));
+        context.previousNode = this.previousNode;
+        context.currentAnimateTimings = this.currentAnimateTimings;
+        context.options = this._copyOptions();
+        context.updateOptions(options);
+        context.currentQueryIndex = this.currentQueryIndex;
+        context.currentQueryTotal = this.currentQueryTotal;
+        context.parentContext = this;
+        this.subContextCount++;
+        return context;
+    };
+    AnimationTimelineContext.prototype.transformIntoNewTimeline = function (newTime) {
+        this.previousNode = DEFAULT_NOOP_PREVIOUS_NODE;
+        this.currentTimeline = this.currentTimeline.fork(this.element, newTime);
+        this.timelines.push(this.currentTimeline);
+        return this.currentTimeline;
+    };
+    AnimationTimelineContext.prototype.appendInstructionToTimeline = function (instruction, duration, delay) {
+        var updatedTimings = {
+            duration: duration != null ? duration : instruction.duration,
+            delay: this.currentTimeline.currentTime + (delay != null ? delay : 0) + instruction.delay,
+            easing: ''
+        };
+        var builder = new SubTimelineBuilder(this._driver, instruction.element, instruction.keyframes, instruction.preStyleProps, instruction.postStyleProps, updatedTimings, instruction.stretchStartingKeyframe);
+        this.timelines.push(builder);
+        return updatedTimings;
+    };
+    AnimationTimelineContext.prototype.incrementTime = function (time) {
+        this.currentTimeline.forwardTime(this.currentTimeline.duration + time);
+    };
+    AnimationTimelineContext.prototype.delayNextStep = function (delay) {
+        // negative delays are not yet supported
+        if (delay > 0) {
+            this.currentTimeline.delayNextStep(delay);
+        }
+    };
+    AnimationTimelineContext.prototype.invokeQuery = function (selector, originalSelector, limit, includeSelf, optional, errors) {
+        var results = [];
+        if (includeSelf) {
+            results.push(this.element);
+        }
+        if (selector.length > 0) { // if :self is only used then the selector is empty
+            selector = selector.replace(ENTER_TOKEN_REGEX, '.' + this._enterClassName);
+            selector = selector.replace(LEAVE_TOKEN_REGEX, '.' + this._leaveClassName);
+            var multi = limit != 1;
+            var elements = this._driver.query(this.element, selector, multi);
+            if (limit !== 0) {
+                elements = limit < 0 ? elements.slice(elements.length + limit, elements.length) :
+                    elements.slice(0, limit);
+            }
+            results.push.apply(results, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(elements));
+        }
+        if (!optional && results.length == 0) {
+            errors.push("`query(\"" + originalSelector + "\")` returned zero elements. (Use `query(\"" + originalSelector + "\", { optional: true })` if you wish to allow this.)");
+        }
+        return results;
+    };
+    return AnimationTimelineContext;
+}());
+var TimelineBuilder = /** @class */ (function () {
+    function TimelineBuilder(_driver, element, startTime, _elementTimelineStylesLookup) {
+        this._driver = _driver;
+        this.element = element;
+        this.startTime = startTime;
+        this._elementTimelineStylesLookup = _elementTimelineStylesLookup;
+        this.duration = 0;
+        this._previousKeyframe = {};
+        this._currentKeyframe = {};
+        this._keyframes = new Map();
+        this._styleSummary = {};
+        this._pendingStyles = {};
+        this._backFill = {};
+        this._currentEmptyStepKeyframe = null;
+        if (!this._elementTimelineStylesLookup) {
+            this._elementTimelineStylesLookup = new Map();
+        }
+        this._localTimelineStyles = Object.create(this._backFill, {});
+        this._globalTimelineStyles = this._elementTimelineStylesLookup.get(element);
+        if (!this._globalTimelineStyles) {
+            this._globalTimelineStyles = this._localTimelineStyles;
+            this._elementTimelineStylesLookup.set(element, this._localTimelineStyles);
+        }
+        this._loadKeyframe();
+    }
+    TimelineBuilder.prototype.containsAnimation = function () {
+        switch (this._keyframes.size) {
+            case 0:
+                return false;
+            case 1:
+                return this.getCurrentStyleProperties().length > 0;
+            default:
+                return true;
+        }
+    };
+    TimelineBuilder.prototype.getCurrentStyleProperties = function () { return Object.keys(this._currentKeyframe); };
+    Object.defineProperty(TimelineBuilder.prototype, "currentTime", {
+        get: function () { return this.startTime + this.duration; },
+        enumerable: true,
+        configurable: true
+    });
+    TimelineBuilder.prototype.delayNextStep = function (delay) {
+        // in the event that a style() step is placed right before a stagger()
+        // and that style() step is the very first style() value in the animation
+        // then we need to make a copy of the keyframe [0, copy, 1] so that the delay
+        // properly applies the style() values to work with the stagger...
+        var hasPreStyleStep = this._keyframes.size == 1 && Object.keys(this._pendingStyles).length;
+        if (this.duration || hasPreStyleStep) {
+            this.forwardTime(this.currentTime + delay);
+            if (hasPreStyleStep) {
+                this.snapshotCurrentStyles();
+            }
+        }
+        else {
+            this.startTime += delay;
+        }
+    };
+    TimelineBuilder.prototype.fork = function (element, currentTime) {
+        this.applyStylesToKeyframe();
+        return new TimelineBuilder(this._driver, element, currentTime || this.currentTime, this._elementTimelineStylesLookup);
+    };
+    TimelineBuilder.prototype._loadKeyframe = function () {
+        if (this._currentKeyframe) {
+            this._previousKeyframe = this._currentKeyframe;
+        }
+        this._currentKeyframe = this._keyframes.get(this.duration);
+        if (!this._currentKeyframe) {
+            this._currentKeyframe = Object.create(this._backFill, {});
+            this._keyframes.set(this.duration, this._currentKeyframe);
+        }
+    };
+    TimelineBuilder.prototype.forwardFrame = function () {
+        this.duration += ONE_FRAME_IN_MILLISECONDS;
+        this._loadKeyframe();
+    };
+    TimelineBuilder.prototype.forwardTime = function (time) {
+        this.applyStylesToKeyframe();
+        this.duration = time;
+        this._loadKeyframe();
+    };
+    TimelineBuilder.prototype._updateStyle = function (prop, value) {
+        this._localTimelineStyles[prop] = value;
+        this._globalTimelineStyles[prop] = value;
+        this._styleSummary[prop] = { time: this.currentTime, value: value };
+    };
+    TimelineBuilder.prototype.allowOnlyTimelineStyles = function () { return this._currentEmptyStepKeyframe !== this._currentKeyframe; };
+    TimelineBuilder.prototype.applyEmptyStep = function (easing) {
+        var _this = this;
+        if (easing) {
+            this._previousKeyframe['easing'] = easing;
+        }
+        // special case for animate(duration):
+        // all missing styles are filled with a `*` value then
+        // if any destination styles are filled in later on the same
+        // keyframe then they will override the overridden styles
+        // We use `_globalTimelineStyles` here because there may be
+        // styles in previous keyframes that are not present in this timeline
+        Object.keys(this._globalTimelineStyles).forEach(function (prop) {
+            _this._backFill[prop] = _this._globalTimelineStyles[prop] || _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"];
+            _this._currentKeyframe[prop] = _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"];
+        });
+        this._currentEmptyStepKeyframe = this._currentKeyframe;
+    };
+    TimelineBuilder.prototype.setStyles = function (input, easing, errors, options) {
+        var _this = this;
+        if (easing) {
+            this._previousKeyframe['easing'] = easing;
+        }
+        var params = (options && options.params) || {};
+        var styles = flattenStyles(input, this._globalTimelineStyles);
+        Object.keys(styles).forEach(function (prop) {
+            var val = interpolateParams(styles[prop], params, errors);
+            _this._pendingStyles[prop] = val;
+            if (!_this._localTimelineStyles.hasOwnProperty(prop)) {
+                _this._backFill[prop] = _this._globalTimelineStyles.hasOwnProperty(prop) ?
+                    _this._globalTimelineStyles[prop] :
+                    _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"];
+            }
+            _this._updateStyle(prop, val);
+        });
+    };
+    TimelineBuilder.prototype.applyStylesToKeyframe = function () {
+        var _this = this;
+        var styles = this._pendingStyles;
+        var props = Object.keys(styles);
+        if (props.length == 0)
+            return;
+        this._pendingStyles = {};
+        props.forEach(function (prop) {
+            var val = styles[prop];
+            _this._currentKeyframe[prop] = val;
+        });
+        Object.keys(this._localTimelineStyles).forEach(function (prop) {
+            if (!_this._currentKeyframe.hasOwnProperty(prop)) {
+                _this._currentKeyframe[prop] = _this._localTimelineStyles[prop];
+            }
+        });
+    };
+    TimelineBuilder.prototype.snapshotCurrentStyles = function () {
+        var _this = this;
+        Object.keys(this._localTimelineStyles).forEach(function (prop) {
+            var val = _this._localTimelineStyles[prop];
+            _this._pendingStyles[prop] = val;
+            _this._updateStyle(prop, val);
+        });
+    };
+    TimelineBuilder.prototype.getFinalKeyframe = function () { return this._keyframes.get(this.duration); };
+    Object.defineProperty(TimelineBuilder.prototype, "properties", {
+        get: function () {
+            var properties = [];
+            for (var prop in this._currentKeyframe) {
+                properties.push(prop);
+            }
+            return properties;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TimelineBuilder.prototype.mergeTimelineCollectedStyles = function (timeline) {
+        var _this = this;
+        Object.keys(timeline._styleSummary).forEach(function (prop) {
+            var details0 = _this._styleSummary[prop];
+            var details1 = timeline._styleSummary[prop];
+            if (!details0 || details1.time > details0.time) {
+                _this._updateStyle(prop, details1.value);
+            }
+        });
+    };
+    TimelineBuilder.prototype.buildKeyframes = function () {
+        var _this = this;
+        this.applyStylesToKeyframe();
+        var preStyleProps = new Set();
+        var postStyleProps = new Set();
+        var isEmpty = this._keyframes.size === 1 && this.duration === 0;
+        var finalKeyframes = [];
+        this._keyframes.forEach(function (keyframe, time) {
+            var finalKeyframe = copyStyles(keyframe, true);
+            Object.keys(finalKeyframe).forEach(function (prop) {
+                var value = finalKeyframe[prop];
+                if (value == _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵPRE_STYLE"]) {
+                    preStyleProps.add(prop);
+                }
+                else if (value == _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]) {
+                    postStyleProps.add(prop);
+                }
+            });
+            if (!isEmpty) {
+                finalKeyframe['offset'] = time / _this.duration;
+            }
+            finalKeyframes.push(finalKeyframe);
+        });
+        var preProps = preStyleProps.size ? iteratorToArray(preStyleProps.values()) : [];
+        var postProps = postStyleProps.size ? iteratorToArray(postStyleProps.values()) : [];
+        // special case for a 0-second animation (which is designed just to place styles onscreen)
+        if (isEmpty) {
+            var kf0 = finalKeyframes[0];
+            var kf1 = copyObj(kf0);
+            kf0['offset'] = 0;
+            kf1['offset'] = 1;
+            finalKeyframes = [kf0, kf1];
+        }
+        return createTimelineInstruction(this.element, finalKeyframes, preProps, postProps, this.duration, this.startTime, this.easing, false);
+    };
+    return TimelineBuilder;
+}());
+var SubTimelineBuilder = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(SubTimelineBuilder, _super);
+    function SubTimelineBuilder(driver, element, keyframes, preStyleProps, postStyleProps, timings, _stretchStartingKeyframe) {
+        if (_stretchStartingKeyframe === void 0) { _stretchStartingKeyframe = false; }
+        var _this = _super.call(this, driver, element, timings.delay) || this;
+        _this.element = element;
+        _this.keyframes = keyframes;
+        _this.preStyleProps = preStyleProps;
+        _this.postStyleProps = postStyleProps;
+        _this._stretchStartingKeyframe = _stretchStartingKeyframe;
+        _this.timings = { duration: timings.duration, delay: timings.delay, easing: timings.easing };
+        return _this;
+    }
+    SubTimelineBuilder.prototype.containsAnimation = function () { return this.keyframes.length > 1; };
+    SubTimelineBuilder.prototype.buildKeyframes = function () {
+        var keyframes = this.keyframes;
+        var _a = this.timings, delay = _a.delay, duration = _a.duration, easing = _a.easing;
+        if (this._stretchStartingKeyframe && delay) {
+            var newKeyframes = [];
+            var totalTime = duration + delay;
+            var startingGap = delay / totalTime;
+            // the original starting keyframe now starts once the delay is done
+            var newFirstKeyframe = copyStyles(keyframes[0], false);
+            newFirstKeyframe['offset'] = 0;
+            newKeyframes.push(newFirstKeyframe);
+            var oldFirstKeyframe = copyStyles(keyframes[0], false);
+            oldFirstKeyframe['offset'] = roundOffset(startingGap);
+            newKeyframes.push(oldFirstKeyframe);
+            /*
+              When the keyframe is stretched then it means that the delay before the animation
+              starts is gone. Instead the first keyframe is placed at the start of the animation
+              and it is then copied to where it starts when the original delay is over. This basically
+              means nothing animates during that delay, but the styles are still renderered. For this
+              to work the original offset values that exist in the original keyframes must be "warped"
+              so that they can take the new keyframe + delay into account.
+      
+              delay=1000, duration=1000, keyframes = 0 .5 1
+      
+              turns into
+      
+              delay=0, duration=2000, keyframes = 0 .33 .66 1
+             */
+            // offsets between 1 ... n -1 are all warped by the keyframe stretch
+            var limit = keyframes.length - 1;
+            for (var i = 1; i <= limit; i++) {
+                var kf = copyStyles(keyframes[i], false);
+                var oldOffset = kf['offset'];
+                var timeAtKeyframe = delay + oldOffset * duration;
+                kf['offset'] = roundOffset(timeAtKeyframe / totalTime);
+                newKeyframes.push(kf);
+            }
+            // the new starting keyframe should be added at the start
+            duration = totalTime;
+            delay = 0;
+            easing = '';
+            keyframes = newKeyframes;
+        }
+        return createTimelineInstruction(this.element, keyframes, this.preStyleProps, this.postStyleProps, duration, delay, easing, true);
+    };
+    return SubTimelineBuilder;
+}(TimelineBuilder));
+function roundOffset(offset, decimalPoints) {
+    if (decimalPoints === void 0) { decimalPoints = 3; }
+    var mult = Math.pow(10, decimalPoints - 1);
+    return Math.round(offset * mult) / mult;
+}
+function flattenStyles(input, allStyles) {
+    var styles = {};
+    var allProperties;
+    input.forEach(function (token) {
+        if (token === '*') {
+            allProperties = allProperties || Object.keys(allStyles);
+            allProperties.forEach(function (prop) { styles[prop] = _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]; });
+        }
+        else {
+            copyStyles(token, false, styles);
+        }
+    });
+    return styles;
+}
+
+var Animation = /** @class */ (function () {
+    function Animation(_driver, input) {
+        this._driver = _driver;
+        var errors = [];
+        var ast = buildAnimationAst(_driver, input, errors);
+        if (errors.length) {
+            var errorMessage = "animation validation failed:\n" + errors.join("\n");
+            throw new Error(errorMessage);
+        }
+        this._animationAst = ast;
+    }
+    Animation.prototype.buildTimelines = function (element, startingStyles, destinationStyles, options, subInstructions) {
+        var start = Array.isArray(startingStyles) ? normalizeStyles(startingStyles) :
+            startingStyles;
+        var dest = Array.isArray(destinationStyles) ? normalizeStyles(destinationStyles) :
+            destinationStyles;
+        var errors = [];
+        subInstructions = subInstructions || new ElementInstructionMap();
+        var result = buildAnimationTimelines(this._driver, element, this._animationAst, ENTER_CLASSNAME, LEAVE_CLASSNAME, start, dest, options, subInstructions, errors);
+        if (errors.length) {
+            var errorMessage = "animation building failed:\n" + errors.join("\n");
+            throw new Error(errorMessage);
+        }
+        return result;
+    };
+    return Animation;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @experimental Animation support is experimental.
+ */
+var AnimationStyleNormalizer = /** @class */ (function () {
+    function AnimationStyleNormalizer() {
+    }
+    return AnimationStyleNormalizer;
+}());
+/**
+ * @experimental Animation support is experimental.
+ */
+var NoopAnimationStyleNormalizer = /** @class */ (function () {
+    function NoopAnimationStyleNormalizer() {
+    }
+    NoopAnimationStyleNormalizer.prototype.normalizePropertyName = function (propertyName, errors) { return propertyName; };
+    NoopAnimationStyleNormalizer.prototype.normalizeStyleValue = function (userProvidedProperty, normalizedProperty, value, errors) {
+        return value;
+    };
+    return NoopAnimationStyleNormalizer;
+}());
+
+var WebAnimationsStyleNormalizer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(WebAnimationsStyleNormalizer, _super);
+    function WebAnimationsStyleNormalizer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    WebAnimationsStyleNormalizer.prototype.normalizePropertyName = function (propertyName, errors) {
+        return dashCaseToCamelCase(propertyName);
+    };
+    WebAnimationsStyleNormalizer.prototype.normalizeStyleValue = function (userProvidedProperty, normalizedProperty, value, errors) {
+        var unit = '';
+        var strVal = value.toString().trim();
+        if (DIMENSIONAL_PROP_MAP[normalizedProperty] && value !== 0 && value !== '0') {
+            if (typeof value === 'number') {
+                unit = 'px';
+            }
+            else {
+                var valAndSuffixMatch = value.match(/^[+-]?[\d\.]+([a-z]*)$/);
+                if (valAndSuffixMatch && valAndSuffixMatch[1].length == 0) {
+                    errors.push("Please provide a CSS unit value for " + userProvidedProperty + ":" + value);
+                }
+            }
+        }
+        return strVal + unit;
+    };
+    return WebAnimationsStyleNormalizer;
+}(AnimationStyleNormalizer));
+var DIMENSIONAL_PROP_MAP = makeBooleanMap('width,height,minWidth,minHeight,maxWidth,maxHeight,left,top,bottom,right,fontSize,outlineWidth,outlineOffset,paddingTop,paddingLeft,paddingBottom,paddingRight,marginTop,marginLeft,marginBottom,marginRight,borderRadius,borderWidth,borderTopWidth,borderLeftWidth,borderRightWidth,borderBottomWidth,textIndent,perspective'
+    .split(','));
+function makeBooleanMap(keys) {
+    var map = {};
+    keys.forEach(function (key) { return map[key] = true; });
+    return map;
+}
+
+function createTransitionInstruction(element, triggerName, fromState, toState, isRemovalTransition, fromStyles, toStyles, timelines, queriedElements, preStyleProps, postStyleProps, totalTime, errors) {
+    return {
+        type: 0 /* TransitionAnimation */,
+        element: element,
+        triggerName: triggerName,
+        isRemovalTransition: isRemovalTransition,
+        fromState: fromState,
+        fromStyles: fromStyles,
+        toState: toState,
+        toStyles: toStyles,
+        timelines: timelines,
+        queriedElements: queriedElements,
+        preStyleProps: preStyleProps,
+        postStyleProps: postStyleProps,
+        totalTime: totalTime,
+        errors: errors
+    };
+}
+
+var EMPTY_OBJECT = {};
+var AnimationTransitionFactory = /** @class */ (function () {
+    function AnimationTransitionFactory(_triggerName, ast, _stateStyles) {
+        this._triggerName = _triggerName;
+        this.ast = ast;
+        this._stateStyles = _stateStyles;
+    }
+    AnimationTransitionFactory.prototype.match = function (currentState, nextState, element, params) {
+        return oneOrMoreTransitionsMatch(this.ast.matchers, currentState, nextState, element, params);
+    };
+    AnimationTransitionFactory.prototype.buildStyles = function (stateName, params, errors) {
+        var backupStateStyler = this._stateStyles['*'];
+        var stateStyler = this._stateStyles[stateName];
+        var backupStyles = backupStateStyler ? backupStateStyler.buildStyles(params, errors) : {};
+        return stateStyler ? stateStyler.buildStyles(params, errors) : backupStyles;
+    };
+    AnimationTransitionFactory.prototype.build = function (driver, element, currentState, nextState, enterClassName, leaveClassName, currentOptions, nextOptions, subInstructions, skipAstBuild) {
+        var errors = [];
+        var transitionAnimationParams = this.ast.options && this.ast.options.params || EMPTY_OBJECT;
+        var currentAnimationParams = currentOptions && currentOptions.params || EMPTY_OBJECT;
+        var currentStateStyles = this.buildStyles(currentState, currentAnimationParams, errors);
+        var nextAnimationParams = nextOptions && nextOptions.params || EMPTY_OBJECT;
+        var nextStateStyles = this.buildStyles(nextState, nextAnimationParams, errors);
+        var queriedElements = new Set();
+        var preStyleMap = new Map();
+        var postStyleMap = new Map();
+        var isRemoval = nextState === 'void';
+        var animationOptions = { params: Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, transitionAnimationParams, nextAnimationParams) };
+        var timelines = skipAstBuild ? [] : buildAnimationTimelines(driver, element, this.ast.animation, enterClassName, leaveClassName, currentStateStyles, nextStateStyles, animationOptions, subInstructions, errors);
+        var totalTime = 0;
+        timelines.forEach(function (tl) { totalTime = Math.max(tl.duration + tl.delay, totalTime); });
+        if (errors.length) {
+            return createTransitionInstruction(element, this._triggerName, currentState, nextState, isRemoval, currentStateStyles, nextStateStyles, [], [], preStyleMap, postStyleMap, totalTime, errors);
+        }
+        timelines.forEach(function (tl) {
+            var elm = tl.element;
+            var preProps = getOrSetAsInMap(preStyleMap, elm, {});
+            tl.preStyleProps.forEach(function (prop) { return preProps[prop] = true; });
+            var postProps = getOrSetAsInMap(postStyleMap, elm, {});
+            tl.postStyleProps.forEach(function (prop) { return postProps[prop] = true; });
+            if (elm !== element) {
+                queriedElements.add(elm);
+            }
+        });
+        var queriedElementsList = iteratorToArray(queriedElements.values());
+        return createTransitionInstruction(element, this._triggerName, currentState, nextState, isRemoval, currentStateStyles, nextStateStyles, timelines, queriedElementsList, preStyleMap, postStyleMap, totalTime);
+    };
+    return AnimationTransitionFactory;
+}());
+function oneOrMoreTransitionsMatch(matchFns, currentState, nextState, element, params) {
+    return matchFns.some(function (fn) { return fn(currentState, nextState, element, params); });
+}
+var AnimationStateStyles = /** @class */ (function () {
+    function AnimationStateStyles(styles, defaultParams) {
+        this.styles = styles;
+        this.defaultParams = defaultParams;
+    }
+    AnimationStateStyles.prototype.buildStyles = function (params, errors) {
+        var finalStyles = {};
+        var combinedParams = copyObj(this.defaultParams);
+        Object.keys(params).forEach(function (key) {
+            var value = params[key];
+            if (value != null) {
+                combinedParams[key] = value;
+            }
+        });
+        this.styles.styles.forEach(function (value) {
+            if (typeof value !== 'string') {
+                var styleObj_1 = value;
+                Object.keys(styleObj_1).forEach(function (prop) {
+                    var val = styleObj_1[prop];
+                    if (val.length > 1) {
+                        val = interpolateParams(val, combinedParams, errors);
+                    }
+                    finalStyles[prop] = val;
+                });
+            }
+        });
+        return finalStyles;
+    };
+    return AnimationStateStyles;
+}());
+
+/**
+ * @experimental Animation support is experimental.
+ */
+function buildTrigger(name, ast) {
+    return new AnimationTrigger(name, ast);
+}
+/**
+* @experimental Animation support is experimental.
+*/
+var AnimationTrigger = /** @class */ (function () {
+    function AnimationTrigger(name, ast) {
+        var _this = this;
+        this.name = name;
+        this.ast = ast;
+        this.transitionFactories = [];
+        this.states = {};
+        ast.states.forEach(function (ast) {
+            var defaultParams = (ast.options && ast.options.params) || {};
+            _this.states[ast.name] = new AnimationStateStyles(ast.style, defaultParams);
+        });
+        balanceProperties(this.states, 'true', '1');
+        balanceProperties(this.states, 'false', '0');
+        ast.transitions.forEach(function (ast) {
+            _this.transitionFactories.push(new AnimationTransitionFactory(name, ast, _this.states));
+        });
+        this.fallbackTransition = createFallbackTransition(name, this.states);
+    }
+    Object.defineProperty(AnimationTrigger.prototype, "containsQueries", {
+        get: function () { return this.ast.queryCount > 0; },
+        enumerable: true,
+        configurable: true
+    });
+    AnimationTrigger.prototype.matchTransition = function (currentState, nextState, element, params) {
+        var entry = this.transitionFactories.find(function (f) { return f.match(currentState, nextState, element, params); });
+        return entry || null;
+    };
+    AnimationTrigger.prototype.matchStyles = function (currentState, params, errors) {
+        return this.fallbackTransition.buildStyles(currentState, params, errors);
+    };
+    return AnimationTrigger;
+}());
+function createFallbackTransition(triggerName, states) {
+    var matchers = [function (fromState, toState) { return true; }];
+    var animation = { type: 2 /* Sequence */, steps: [], options: null };
+    var transition = {
+        type: 1 /* Transition */,
+        animation: animation,
+        matchers: matchers,
+        options: null,
+        queryCount: 0,
+        depCount: 0
+    };
+    return new AnimationTransitionFactory(triggerName, transition, states);
+}
+function balanceProperties(obj, key1, key2) {
+    if (obj.hasOwnProperty(key1)) {
+        if (!obj.hasOwnProperty(key2)) {
+            obj[key2] = obj[key1];
+        }
+    }
+    else if (obj.hasOwnProperty(key2)) {
+        obj[key1] = obj[key2];
+    }
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var EMPTY_INSTRUCTION_MAP = new ElementInstructionMap();
+var TimelineAnimationEngine = /** @class */ (function () {
+    function TimelineAnimationEngine(bodyNode, _driver, _normalizer) {
+        this.bodyNode = bodyNode;
+        this._driver = _driver;
+        this._normalizer = _normalizer;
+        this._animations = {};
+        this._playersById = {};
+        this.players = [];
+    }
+    TimelineAnimationEngine.prototype.register = function (id, metadata) {
+        var errors = [];
+        var ast = buildAnimationAst(this._driver, metadata, errors);
+        if (errors.length) {
+            throw new Error("Unable to build the animation due to the following errors: " + errors.join("\n"));
+        }
+        else {
+            this._animations[id] = ast;
+        }
+    };
+    TimelineAnimationEngine.prototype._buildPlayer = function (i, preStyles, postStyles) {
+        var element = i.element;
+        var keyframes = normalizeKeyframes(this._driver, this._normalizer, element, i.keyframes, preStyles, postStyles);
+        return this._driver.animate(element, keyframes, i.duration, i.delay, i.easing, [], true);
+    };
+    TimelineAnimationEngine.prototype.create = function (id, element, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        var errors = [];
+        var ast = this._animations[id];
+        var instructions;
+        var autoStylesMap = new Map();
+        if (ast) {
+            instructions = buildAnimationTimelines(this._driver, element, ast, ENTER_CLASSNAME, LEAVE_CLASSNAME, {}, {}, options, EMPTY_INSTRUCTION_MAP, errors);
+            instructions.forEach(function (inst) {
+                var styles = getOrSetAsInMap(autoStylesMap, inst.element, {});
+                inst.postStyleProps.forEach(function (prop) { return styles[prop] = null; });
+            });
+        }
+        else {
+            errors.push('The requested animation doesn\'t exist or has already been destroyed');
+            instructions = [];
+        }
+        if (errors.length) {
+            throw new Error("Unable to create the animation due to the following errors: " + errors.join("\n"));
+        }
+        autoStylesMap.forEach(function (styles, element) {
+            Object.keys(styles).forEach(function (prop) { styles[prop] = _this._driver.computeStyle(element, prop, _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]); });
+        });
+        var players = instructions.map(function (i) {
+            var styles = autoStylesMap.get(i.element);
+            return _this._buildPlayer(i, {}, styles);
+        });
+        var player = optimizeGroupPlayer(players);
+        this._playersById[id] = player;
+        player.onDestroy(function () { return _this.destroy(id); });
+        this.players.push(player);
+        return player;
+    };
+    TimelineAnimationEngine.prototype.destroy = function (id) {
+        var player = this._getPlayer(id);
+        player.destroy();
+        delete this._playersById[id];
+        var index = this.players.indexOf(player);
+        if (index >= 0) {
+            this.players.splice(index, 1);
+        }
+    };
+    TimelineAnimationEngine.prototype._getPlayer = function (id) {
+        var player = this._playersById[id];
+        if (!player) {
+            throw new Error("Unable to find the timeline player referenced by " + id);
+        }
+        return player;
+    };
+    TimelineAnimationEngine.prototype.listen = function (id, element, eventName, callback) {
+        // triggerName, fromState, toState are all ignored for timeline animations
+        var baseEvent = makeAnimationEvent(element, '', '', '');
+        listenOnPlayer(this._getPlayer(id), eventName, baseEvent, callback);
+        return function () { };
+    };
+    TimelineAnimationEngine.prototype.command = function (id, element, command, args) {
+        if (command == 'register') {
+            this.register(id, args[0]);
+            return;
+        }
+        if (command == 'create') {
+            var options = (args[0] || {});
+            this.create(id, element, options);
+            return;
+        }
+        var player = this._getPlayer(id);
+        switch (command) {
+            case 'play':
+                player.play();
+                break;
+            case 'pause':
+                player.pause();
+                break;
+            case 'reset':
+                player.reset();
+                break;
+            case 'restart':
+                player.restart();
+                break;
+            case 'finish':
+                player.finish();
+                break;
+            case 'init':
+                player.init();
+                break;
+            case 'setPosition':
+                player.setPosition(parseFloat(args[0]));
+                break;
+            case 'destroy':
+                this.destroy(id);
+                break;
+        }
+    };
+    return TimelineAnimationEngine;
+}());
+
+var QUEUED_CLASSNAME = 'ng-animate-queued';
+var QUEUED_SELECTOR = '.ng-animate-queued';
+var DISABLED_CLASSNAME = 'ng-animate-disabled';
+var DISABLED_SELECTOR = '.ng-animate-disabled';
+var STAR_CLASSNAME = 'ng-star-inserted';
+var STAR_SELECTOR = '.ng-star-inserted';
+var EMPTY_PLAYER_ARRAY = [];
+var NULL_REMOVAL_STATE = {
+    namespaceId: '',
+    setForRemoval: false,
+    setForMove: false,
+    hasAnimation: false,
+    removedBeforeQueried: false
+};
+var NULL_REMOVED_QUERIED_STATE = {
+    namespaceId: '',
+    setForMove: false,
+    setForRemoval: false,
+    hasAnimation: false,
+    removedBeforeQueried: true
+};
+var REMOVAL_FLAG = '__ng_removed';
+var StateValue = /** @class */ (function () {
+    function StateValue(input, namespaceId) {
+        if (namespaceId === void 0) { namespaceId = ''; }
+        this.namespaceId = namespaceId;
+        var isObj = input && input.hasOwnProperty('value');
+        var value = isObj ? input['value'] : input;
+        this.value = normalizeTriggerValue(value);
+        if (isObj) {
+            var options = copyObj(input);
+            delete options['value'];
+            this.options = options;
+        }
+        else {
+            this.options = {};
+        }
+        if (!this.options.params) {
+            this.options.params = {};
+        }
+    }
+    Object.defineProperty(StateValue.prototype, "params", {
+        get: function () { return this.options.params; },
+        enumerable: true,
+        configurable: true
+    });
+    StateValue.prototype.absorbOptions = function (options) {
+        var newParams = options.params;
+        if (newParams) {
+            var oldParams_1 = this.options.params;
+            Object.keys(newParams).forEach(function (prop) {
+                if (oldParams_1[prop] == null) {
+                    oldParams_1[prop] = newParams[prop];
+                }
+            });
+        }
+    };
+    return StateValue;
+}());
+var VOID_VALUE = 'void';
+var DEFAULT_STATE_VALUE = new StateValue(VOID_VALUE);
+var AnimationTransitionNamespace = /** @class */ (function () {
+    function AnimationTransitionNamespace(id, hostElement, _engine) {
+        this.id = id;
+        this.hostElement = hostElement;
+        this._engine = _engine;
+        this.players = [];
+        this._triggers = {};
+        this._queue = [];
+        this._elementListeners = new Map();
+        this._hostClassName = 'ng-tns-' + id;
+        addClass(hostElement, this._hostClassName);
+    }
+    AnimationTransitionNamespace.prototype.listen = function (element, name, phase, callback) {
+        var _this = this;
+        if (!this._triggers.hasOwnProperty(name)) {
+            throw new Error("Unable to listen on the animation trigger event \"" + phase + "\" because the animation trigger \"" + name + "\" doesn't exist!");
+        }
+        if (phase == null || phase.length == 0) {
+            throw new Error("Unable to listen on the animation trigger \"" + name + "\" because the provided event is undefined!");
+        }
+        if (!isTriggerEventValid(phase)) {
+            throw new Error("The provided animation trigger event \"" + phase + "\" for the animation trigger \"" + name + "\" is not supported!");
+        }
+        var listeners = getOrSetAsInMap(this._elementListeners, element, []);
+        var data = { name: name, phase: phase, callback: callback };
+        listeners.push(data);
+        var triggersWithStates = getOrSetAsInMap(this._engine.statesByElement, element, {});
+        if (!triggersWithStates.hasOwnProperty(name)) {
+            addClass(element, NG_TRIGGER_CLASSNAME);
+            addClass(element, NG_TRIGGER_CLASSNAME + '-' + name);
+            triggersWithStates[name] = DEFAULT_STATE_VALUE;
+        }
+        return function () {
+            // the event listener is removed AFTER the flush has occurred such
+            // that leave animations callbacks can fire (otherwise if the node
+            // is removed in between then the listeners would be deregistered)
+            _this._engine.afterFlush(function () {
+                var index = listeners.indexOf(data);
+                if (index >= 0) {
+                    listeners.splice(index, 1);
+                }
+                if (!_this._triggers[name]) {
+                    delete triggersWithStates[name];
+                }
+            });
+        };
+    };
+    AnimationTransitionNamespace.prototype.register = function (name, ast) {
+        if (this._triggers[name]) {
+            // throw
+            return false;
+        }
+        else {
+            this._triggers[name] = ast;
+            return true;
+        }
+    };
+    AnimationTransitionNamespace.prototype._getTrigger = function (name) {
+        var trigger = this._triggers[name];
+        if (!trigger) {
+            throw new Error("The provided animation trigger \"" + name + "\" has not been registered!");
+        }
+        return trigger;
+    };
+    AnimationTransitionNamespace.prototype.trigger = function (element, triggerName, value, defaultToFallback) {
+        var _this = this;
+        if (defaultToFallback === void 0) { defaultToFallback = true; }
+        var trigger = this._getTrigger(triggerName);
+        var player = new TransitionAnimationPlayer(this.id, triggerName, element);
+        var triggersWithStates = this._engine.statesByElement.get(element);
+        if (!triggersWithStates) {
+            addClass(element, NG_TRIGGER_CLASSNAME);
+            addClass(element, NG_TRIGGER_CLASSNAME + '-' + triggerName);
+            this._engine.statesByElement.set(element, triggersWithStates = {});
+        }
+        var fromState = triggersWithStates[triggerName];
+        var toState = new StateValue(value, this.id);
+        var isObj = value && value.hasOwnProperty('value');
+        if (!isObj && fromState) {
+            toState.absorbOptions(fromState.options);
+        }
+        triggersWithStates[triggerName] = toState;
+        if (!fromState) {
+            fromState = DEFAULT_STATE_VALUE;
+        }
+        var isRemoval = toState.value === VOID_VALUE;
+        // normally this isn't reached by here, however, if an object expression
+        // is passed in then it may be a new object each time. Comparing the value
+        // is important since that will stay the same despite there being a new object.
+        // The removal arc here is special cased because the same element is triggered
+        // twice in the event that it contains animations on the outer/inner portions
+        // of the host container
+        if (!isRemoval && fromState.value === toState.value) {
+            // this means that despite the value not changing, some inner params
+            // have changed which means that the animation final styles need to be applied
+            if (!objEquals(fromState.params, toState.params)) {
+                var errors = [];
+                var fromStyles_1 = trigger.matchStyles(fromState.value, fromState.params, errors);
+                var toStyles_1 = trigger.matchStyles(toState.value, toState.params, errors);
+                if (errors.length) {
+                    this._engine.reportError(errors);
+                }
+                else {
+                    this._engine.afterFlush(function () {
+                        eraseStyles(element, fromStyles_1);
+                        setStyles(element, toStyles_1);
+                    });
+                }
+            }
+            return;
+        }
+        var playersOnElement = getOrSetAsInMap(this._engine.playersByElement, element, []);
+        playersOnElement.forEach(function (player) {
+            // only remove the player if it is queued on the EXACT same trigger/namespace
+            // we only also deal with queued players here because if the animation has
+            // started then we want to keep the player alive until the flush happens
+            // (which is where the previousPlayers are passed into the new palyer)
+            if (player.namespaceId == _this.id && player.triggerName == triggerName && player.queued) {
+                player.destroy();
+            }
+        });
+        var transition = trigger.matchTransition(fromState.value, toState.value, element, toState.params);
+        var isFallbackTransition = false;
+        if (!transition) {
+            if (!defaultToFallback)
+                return;
+            transition = trigger.fallbackTransition;
+            isFallbackTransition = true;
+        }
+        this._engine.totalQueuedPlayers++;
+        this._queue.push({ element: element, triggerName: triggerName, transition: transition, fromState: fromState, toState: toState, player: player, isFallbackTransition: isFallbackTransition });
+        if (!isFallbackTransition) {
+            addClass(element, QUEUED_CLASSNAME);
+            player.onStart(function () { removeClass(element, QUEUED_CLASSNAME); });
+        }
+        player.onDone(function () {
+            var index = _this.players.indexOf(player);
+            if (index >= 0) {
+                _this.players.splice(index, 1);
+            }
+            var players = _this._engine.playersByElement.get(element);
+            if (players) {
+                var index_1 = players.indexOf(player);
+                if (index_1 >= 0) {
+                    players.splice(index_1, 1);
+                }
+            }
+        });
+        this.players.push(player);
+        playersOnElement.push(player);
+        return player;
+    };
+    AnimationTransitionNamespace.prototype.deregister = function (name) {
+        var _this = this;
+        delete this._triggers[name];
+        this._engine.statesByElement.forEach(function (stateMap, element) { delete stateMap[name]; });
+        this._elementListeners.forEach(function (listeners, element) {
+            _this._elementListeners.set(element, listeners.filter(function (entry) { return entry.name != name; }));
+        });
+    };
+    AnimationTransitionNamespace.prototype.clearElementCache = function (element) {
+        this._engine.statesByElement.delete(element);
+        this._elementListeners.delete(element);
+        var elementPlayers = this._engine.playersByElement.get(element);
+        if (elementPlayers) {
+            elementPlayers.forEach(function (player) { return player.destroy(); });
+            this._engine.playersByElement.delete(element);
+        }
+    };
+    AnimationTransitionNamespace.prototype._signalRemovalForInnerTriggers = function (rootElement, context, animate) {
+        var _this = this;
+        if (animate === void 0) { animate = false; }
+        // emulate a leave animation for all inner nodes within this node.
+        // If there are no animations found for any of the nodes then clear the cache
+        // for the element.
+        this._engine.driver.query(rootElement, NG_TRIGGER_SELECTOR, true).forEach(function (elm) {
+            // this means that an inner remove() operation has already kicked off
+            // the animation on this element...
+            if (elm[REMOVAL_FLAG])
+                return;
+            var namespaces = _this._engine.fetchNamespacesByElement(elm);
+            if (namespaces.size) {
+                namespaces.forEach(function (ns) { return ns.triggerLeaveAnimation(elm, context, false, true); });
+            }
+            else {
+                _this.clearElementCache(elm);
+            }
+        });
+    };
+    AnimationTransitionNamespace.prototype.triggerLeaveAnimation = function (element, context, destroyAfterComplete, defaultToFallback) {
+        var _this = this;
+        var triggerStates = this._engine.statesByElement.get(element);
+        if (triggerStates) {
+            var players_1 = [];
+            Object.keys(triggerStates).forEach(function (triggerName) {
+                // this check is here in the event that an element is removed
+                // twice (both on the host level and the component level)
+                if (_this._triggers[triggerName]) {
+                    var player = _this.trigger(element, triggerName, VOID_VALUE, defaultToFallback);
+                    if (player) {
+                        players_1.push(player);
+                    }
+                }
+            });
+            if (players_1.length) {
+                this._engine.markElementAsRemoved(this.id, element, true, context);
+                if (destroyAfterComplete) {
+                    optimizeGroupPlayer(players_1).onDone(function () { return _this._engine.processLeaveNode(element); });
+                }
+                return true;
+            }
+        }
+        return false;
+    };
+    AnimationTransitionNamespace.prototype.prepareLeaveAnimationListeners = function (element) {
+        var _this = this;
+        var listeners = this._elementListeners.get(element);
+        if (listeners) {
+            var visitedTriggers_1 = new Set();
+            listeners.forEach(function (listener) {
+                var triggerName = listener.name;
+                if (visitedTriggers_1.has(triggerName))
+                    return;
+                visitedTriggers_1.add(triggerName);
+                var trigger = _this._triggers[triggerName];
+                var transition = trigger.fallbackTransition;
+                var elementStates = _this._engine.statesByElement.get(element);
+                var fromState = elementStates[triggerName] || DEFAULT_STATE_VALUE;
+                var toState = new StateValue(VOID_VALUE);
+                var player = new TransitionAnimationPlayer(_this.id, triggerName, element);
+                _this._engine.totalQueuedPlayers++;
+                _this._queue.push({
+                    element: element,
+                    triggerName: triggerName,
+                    transition: transition,
+                    fromState: fromState,
+                    toState: toState,
+                    player: player,
+                    isFallbackTransition: true
+                });
+            });
+        }
+    };
+    AnimationTransitionNamespace.prototype.removeNode = function (element, context) {
+        var _this = this;
+        var engine = this._engine;
+        if (element.childElementCount) {
+            this._signalRemovalForInnerTriggers(element, context, true);
+        }
+        // this means that a * => VOID animation was detected and kicked off
+        if (this.triggerLeaveAnimation(element, context, true))
+            return;
+        // find the player that is animating and make sure that the
+        // removal is delayed until that player has completed
+        var containsPotentialParentTransition = false;
+        if (engine.totalAnimations) {
+            var currentPlayers = engine.players.length ? engine.playersByQueriedElement.get(element) : [];
+            // when this `if statement` does not continue forward it means that
+            // a previous animation query has selected the current element and
+            // is animating it. In this situation want to continue forwards and
+            // allow the element to be queued up for animation later.
+            if (currentPlayers && currentPlayers.length) {
+                containsPotentialParentTransition = true;
+            }
+            else {
+                var parent_1 = element;
+                while (parent_1 = parent_1.parentNode) {
+                    var triggers = engine.statesByElement.get(parent_1);
+                    if (triggers) {
+                        containsPotentialParentTransition = true;
+                        break;
+                    }
+                }
+            }
+        }
+        // at this stage we know that the element will either get removed
+        // during flush or will be picked up by a parent query. Either way
+        // we need to fire the listeners for this element when it DOES get
+        // removed (once the query parent animation is done or after flush)
+        this.prepareLeaveAnimationListeners(element);
+        // whether or not a parent has an animation we need to delay the deferral of the leave
+        // operation until we have more information (which we do after flush() has been called)
+        if (containsPotentialParentTransition) {
+            engine.markElementAsRemoved(this.id, element, false, context);
+        }
+        else {
+            // we do this after the flush has occurred such
+            // that the callbacks can be fired
+            engine.afterFlush(function () { return _this.clearElementCache(element); });
+            engine.destroyInnerAnimations(element);
+            engine._onRemovalComplete(element, context);
+        }
+    };
+    AnimationTransitionNamespace.prototype.insertNode = function (element, parent) { addClass(element, this._hostClassName); };
+    AnimationTransitionNamespace.prototype.drainQueuedTransitions = function (microtaskId) {
+        var _this = this;
+        var instructions = [];
+        this._queue.forEach(function (entry) {
+            var player = entry.player;
+            if (player.destroyed)
+                return;
+            var element = entry.element;
+            var listeners = _this._elementListeners.get(element);
+            if (listeners) {
+                listeners.forEach(function (listener) {
+                    if (listener.name == entry.triggerName) {
+                        var baseEvent = makeAnimationEvent(element, entry.triggerName, entry.fromState.value, entry.toState.value);
+                        baseEvent['_data'] = microtaskId;
+                        listenOnPlayer(entry.player, listener.phase, baseEvent, listener.callback);
+                    }
+                });
+            }
+            if (player.markedForDestroy) {
+                _this._engine.afterFlush(function () {
+                    // now we can destroy the element properly since the event listeners have
+                    // been bound to the player
+                    player.destroy();
+                });
+            }
+            else {
+                instructions.push(entry);
+            }
+        });
+        this._queue = [];
+        return instructions.sort(function (a, b) {
+            // if depCount == 0 them move to front
+            // otherwise if a contains b then move back
+            var d0 = a.transition.ast.depCount;
+            var d1 = b.transition.ast.depCount;
+            if (d0 == 0 || d1 == 0) {
+                return d0 - d1;
+            }
+            return _this._engine.driver.containsElement(a.element, b.element) ? 1 : -1;
+        });
+    };
+    AnimationTransitionNamespace.prototype.destroy = function (context) {
+        this.players.forEach(function (p) { return p.destroy(); });
+        this._signalRemovalForInnerTriggers(this.hostElement, context);
+    };
+    AnimationTransitionNamespace.prototype.elementContainsData = function (element) {
+        var containsData = false;
+        if (this._elementListeners.has(element))
+            containsData = true;
+        containsData =
+            (this._queue.find(function (entry) { return entry.element === element; }) ? true : false) || containsData;
+        return containsData;
+    };
+    return AnimationTransitionNamespace;
+}());
+var TransitionAnimationEngine = /** @class */ (function () {
+    function TransitionAnimationEngine(bodyNode, driver, _normalizer) {
+        this.bodyNode = bodyNode;
+        this.driver = driver;
+        this._normalizer = _normalizer;
+        this.players = [];
+        this.newHostElements = new Map();
+        this.playersByElement = new Map();
+        this.playersByQueriedElement = new Map();
+        this.statesByElement = new Map();
+        this.disabledNodes = new Set();
+        this.totalAnimations = 0;
+        this.totalQueuedPlayers = 0;
+        this._namespaceLookup = {};
+        this._namespaceList = [];
+        this._flushFns = [];
+        this._whenQuietFns = [];
+        this.namespacesByHostElement = new Map();
+        this.collectedEnterElements = [];
+        this.collectedLeaveElements = [];
+        // this method is designed to be overridden by the code that uses this engine
+        this.onRemovalComplete = function (element, context) { };
+    }
+    /** @internal */
+    TransitionAnimationEngine.prototype._onRemovalComplete = function (element, context) { this.onRemovalComplete(element, context); };
+    Object.defineProperty(TransitionAnimationEngine.prototype, "queuedPlayers", {
+        get: function () {
+            var players = [];
+            this._namespaceList.forEach(function (ns) {
+                ns.players.forEach(function (player) {
+                    if (player.queued) {
+                        players.push(player);
+                    }
+                });
+            });
+            return players;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TransitionAnimationEngine.prototype.createNamespace = function (namespaceId, hostElement) {
+        var ns = new AnimationTransitionNamespace(namespaceId, hostElement, this);
+        if (hostElement.parentNode) {
+            this._balanceNamespaceList(ns, hostElement);
+        }
+        else {
+            // defer this later until flush during when the host element has
+            // been inserted so that we know exactly where to place it in
+            // the namespace list
+            this.newHostElements.set(hostElement, ns);
+            // given that this host element is apart of the animation code, it
+            // may or may not be inserted by a parent node that is an of an
+            // animation renderer type. If this happens then we can still have
+            // access to this item when we query for :enter nodes. If the parent
+            // is a renderer then the set data-structure will normalize the entry
+            this.collectEnterElement(hostElement);
+        }
+        return this._namespaceLookup[namespaceId] = ns;
+    };
+    TransitionAnimationEngine.prototype._balanceNamespaceList = function (ns, hostElement) {
+        var limit = this._namespaceList.length - 1;
+        if (limit >= 0) {
+            var found = false;
+            for (var i = limit; i >= 0; i--) {
+                var nextNamespace = this._namespaceList[i];
+                if (this.driver.containsElement(nextNamespace.hostElement, hostElement)) {
+                    this._namespaceList.splice(i + 1, 0, ns);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                this._namespaceList.splice(0, 0, ns);
+            }
+        }
+        else {
+            this._namespaceList.push(ns);
+        }
+        this.namespacesByHostElement.set(hostElement, ns);
+        return ns;
+    };
+    TransitionAnimationEngine.prototype.register = function (namespaceId, hostElement) {
+        var ns = this._namespaceLookup[namespaceId];
+        if (!ns) {
+            ns = this.createNamespace(namespaceId, hostElement);
+        }
+        return ns;
+    };
+    TransitionAnimationEngine.prototype.registerTrigger = function (namespaceId, name, trigger) {
+        var ns = this._namespaceLookup[namespaceId];
+        if (ns && ns.register(name, trigger)) {
+            this.totalAnimations++;
+        }
+    };
+    TransitionAnimationEngine.prototype.destroy = function (namespaceId, context) {
+        var _this = this;
+        if (!namespaceId)
+            return;
+        var ns = this._fetchNamespace(namespaceId);
+        this.afterFlush(function () {
+            _this.namespacesByHostElement.delete(ns.hostElement);
+            delete _this._namespaceLookup[namespaceId];
+            var index = _this._namespaceList.indexOf(ns);
+            if (index >= 0) {
+                _this._namespaceList.splice(index, 1);
+            }
+        });
+        this.afterFlushAnimationsDone(function () { return ns.destroy(context); });
+    };
+    TransitionAnimationEngine.prototype._fetchNamespace = function (id) { return this._namespaceLookup[id]; };
+    TransitionAnimationEngine.prototype.fetchNamespacesByElement = function (element) {
+        // normally there should only be one namespace per element, however
+        // if @triggers are placed on both the component element and then
+        // its host element (within the component code) then there will be
+        // two namespaces returned. We use a set here to simply the dedupe
+        // of namespaces incase there are multiple triggers both the elm and host
+        var namespaces = new Set();
+        var elementStates = this.statesByElement.get(element);
+        if (elementStates) {
+            var keys = Object.keys(elementStates);
+            for (var i = 0; i < keys.length; i++) {
+                var nsId = elementStates[keys[i]].namespaceId;
+                if (nsId) {
+                    var ns = this._fetchNamespace(nsId);
+                    if (ns) {
+                        namespaces.add(ns);
+                    }
+                }
+            }
+        }
+        return namespaces;
+    };
+    TransitionAnimationEngine.prototype.trigger = function (namespaceId, element, name, value) {
+        if (isElementNode(element)) {
+            var ns = this._fetchNamespace(namespaceId);
+            if (ns) {
+                ns.trigger(element, name, value);
+                return true;
+            }
+        }
+        return false;
+    };
+    TransitionAnimationEngine.prototype.insertNode = function (namespaceId, element, parent, insertBefore) {
+        if (!isElementNode(element))
+            return;
+        // special case for when an element is removed and reinserted (move operation)
+        // when this occurs we do not want to use the element for deletion later
+        var details = element[REMOVAL_FLAG];
+        if (details && details.setForRemoval) {
+            details.setForRemoval = false;
+            details.setForMove = true;
+            var index = this.collectedLeaveElements.indexOf(element);
+            if (index >= 0) {
+                this.collectedLeaveElements.splice(index, 1);
+            }
+        }
+        // in the event that the namespaceId is blank then the caller
+        // code does not contain any animation code in it, but it is
+        // just being called so that the node is marked as being inserted
+        if (namespaceId) {
+            var ns = this._fetchNamespace(namespaceId);
+            // This if-statement is a workaround for router issue #21947.
+            // The router sometimes hits a race condition where while a route
+            // is being instantiated a new navigation arrives, triggering leave
+            // animation of DOM that has not been fully initialized, until this
+            // is resolved, we need to handle the scenario when DOM is not in a
+            // consistent state during the animation.
+            if (ns) {
+                ns.insertNode(element, parent);
+            }
+        }
+        // only *directives and host elements are inserted before
+        if (insertBefore) {
+            this.collectEnterElement(element);
+        }
+    };
+    TransitionAnimationEngine.prototype.collectEnterElement = function (element) { this.collectedEnterElements.push(element); };
+    TransitionAnimationEngine.prototype.markElementAsDisabled = function (element, value) {
+        if (value) {
+            if (!this.disabledNodes.has(element)) {
+                this.disabledNodes.add(element);
+                addClass(element, DISABLED_CLASSNAME);
+            }
+        }
+        else if (this.disabledNodes.has(element)) {
+            this.disabledNodes.delete(element);
+            removeClass(element, DISABLED_CLASSNAME);
+        }
+    };
+    TransitionAnimationEngine.prototype.removeNode = function (namespaceId, element, context) {
+        if (!isElementNode(element)) {
+            this._onRemovalComplete(element, context);
+            return;
+        }
+        var ns = namespaceId ? this._fetchNamespace(namespaceId) : null;
+        if (ns) {
+            ns.removeNode(element, context);
+        }
+        else {
+            this.markElementAsRemoved(namespaceId, element, false, context);
+        }
+    };
+    TransitionAnimationEngine.prototype.markElementAsRemoved = function (namespaceId, element, hasAnimation, context) {
+        this.collectedLeaveElements.push(element);
+        element[REMOVAL_FLAG] = {
+            namespaceId: namespaceId,
+            setForRemoval: context, hasAnimation: hasAnimation,
+            removedBeforeQueried: false
+        };
+    };
+    TransitionAnimationEngine.prototype.listen = function (namespaceId, element, name, phase, callback) {
+        if (isElementNode(element)) {
+            return this._fetchNamespace(namespaceId).listen(element, name, phase, callback);
+        }
+        return function () { };
+    };
+    TransitionAnimationEngine.prototype._buildInstruction = function (entry, subTimelines, enterClassName, leaveClassName, skipBuildAst) {
+        return entry.transition.build(this.driver, entry.element, entry.fromState.value, entry.toState.value, enterClassName, leaveClassName, entry.fromState.options, entry.toState.options, subTimelines, skipBuildAst);
+    };
+    TransitionAnimationEngine.prototype.destroyInnerAnimations = function (containerElement) {
+        var _this = this;
+        var elements = this.driver.query(containerElement, NG_TRIGGER_SELECTOR, true);
+        elements.forEach(function (element) { return _this.destroyActiveAnimationsForElement(element); });
+        if (this.playersByQueriedElement.size == 0)
+            return;
+        elements = this.driver.query(containerElement, NG_ANIMATING_SELECTOR, true);
+        elements.forEach(function (element) { return _this.finishActiveQueriedAnimationOnElement(element); });
+    };
+    TransitionAnimationEngine.prototype.destroyActiveAnimationsForElement = function (element) {
+        var players = this.playersByElement.get(element);
+        if (players) {
+            players.forEach(function (player) {
+                // special case for when an element is set for destruction, but hasn't started.
+                // in this situation we want to delay the destruction until the flush occurs
+                // so that any event listeners attached to the player are triggered.
+                if (player.queued) {
+                    player.markedForDestroy = true;
+                }
+                else {
+                    player.destroy();
+                }
+            });
+        }
+    };
+    TransitionAnimationEngine.prototype.finishActiveQueriedAnimationOnElement = function (element) {
+        var players = this.playersByQueriedElement.get(element);
+        if (players) {
+            players.forEach(function (player) { return player.finish(); });
+        }
+    };
+    TransitionAnimationEngine.prototype.whenRenderingDone = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            if (_this.players.length) {
+                return optimizeGroupPlayer(_this.players).onDone(function () { return resolve(); });
+            }
+            else {
+                resolve();
+            }
+        });
+    };
+    TransitionAnimationEngine.prototype.processLeaveNode = function (element) {
+        var _this = this;
+        var details = element[REMOVAL_FLAG];
+        if (details && details.setForRemoval) {
+            // this will prevent it from removing it twice
+            element[REMOVAL_FLAG] = NULL_REMOVAL_STATE;
+            if (details.namespaceId) {
+                this.destroyInnerAnimations(element);
+                var ns = this._fetchNamespace(details.namespaceId);
+                if (ns) {
+                    ns.clearElementCache(element);
+                }
+            }
+            this._onRemovalComplete(element, details.setForRemoval);
+        }
+        if (this.driver.matchesElement(element, DISABLED_SELECTOR)) {
+            this.markElementAsDisabled(element, false);
+        }
+        this.driver.query(element, DISABLED_SELECTOR, true).forEach(function (node) {
+            _this.markElementAsDisabled(element, false);
+        });
+    };
+    TransitionAnimationEngine.prototype.flush = function (microtaskId) {
+        var _this = this;
+        if (microtaskId === void 0) { microtaskId = -1; }
+        var players = [];
+        if (this.newHostElements.size) {
+            this.newHostElements.forEach(function (ns, element) { return _this._balanceNamespaceList(ns, element); });
+            this.newHostElements.clear();
+        }
+        if (this.totalAnimations && this.collectedEnterElements.length) {
+            for (var i = 0; i < this.collectedEnterElements.length; i++) {
+                var elm = this.collectedEnterElements[i];
+                addClass(elm, STAR_CLASSNAME);
+            }
+        }
+        if (this._namespaceList.length &&
+            (this.totalQueuedPlayers || this.collectedLeaveElements.length)) {
+            var cleanupFns = [];
+            try {
+                players = this._flushAnimations(cleanupFns, microtaskId);
+            }
+            finally {
+                for (var i = 0; i < cleanupFns.length; i++) {
+                    cleanupFns[i]();
+                }
+            }
+        }
+        else {
+            for (var i = 0; i < this.collectedLeaveElements.length; i++) {
+                var element = this.collectedLeaveElements[i];
+                this.processLeaveNode(element);
+            }
+        }
+        this.totalQueuedPlayers = 0;
+        this.collectedEnterElements.length = 0;
+        this.collectedLeaveElements.length = 0;
+        this._flushFns.forEach(function (fn) { return fn(); });
+        this._flushFns = [];
+        if (this._whenQuietFns.length) {
+            // we move these over to a variable so that
+            // if any new callbacks are registered in another
+            // flush they do not populate the existing set
+            var quietFns_1 = this._whenQuietFns;
+            this._whenQuietFns = [];
+            if (players.length) {
+                optimizeGroupPlayer(players).onDone(function () { quietFns_1.forEach(function (fn) { return fn(); }); });
+            }
+            else {
+                quietFns_1.forEach(function (fn) { return fn(); });
+            }
+        }
+    };
+    TransitionAnimationEngine.prototype.reportError = function (errors) {
+        throw new Error("Unable to process animations due to the following failed trigger transitions\n " + errors.join('\n'));
+    };
+    TransitionAnimationEngine.prototype._flushAnimations = function (cleanupFns, microtaskId) {
+        var _this = this;
+        var subTimelines = new ElementInstructionMap();
+        var skippedPlayers = [];
+        var skippedPlayersMap = new Map();
+        var queuedInstructions = [];
+        var queriedElements = new Map();
+        var allPreStyleElements = new Map();
+        var allPostStyleElements = new Map();
+        var disabledElementsSet = new Set();
+        this.disabledNodes.forEach(function (node) {
+            disabledElementsSet.add(node);
+            var nodesThatAreDisabled = _this.driver.query(node, QUEUED_SELECTOR, true);
+            for (var i_1 = 0; i_1 < nodesThatAreDisabled.length; i_1++) {
+                disabledElementsSet.add(nodesThatAreDisabled[i_1]);
+            }
+        });
+        var bodyNode = this.bodyNode;
+        var allTriggerElements = Array.from(this.statesByElement.keys());
+        var enterNodeMap = buildRootMap(allTriggerElements, this.collectedEnterElements);
+        // this must occur before the instructions are built below such that
+        // the :enter queries match the elements (since the timeline queries
+        // are fired during instruction building).
+        var enterNodeMapIds = new Map();
+        var i = 0;
+        enterNodeMap.forEach(function (nodes, root) {
+            var className = ENTER_CLASSNAME + i++;
+            enterNodeMapIds.set(root, className);
+            nodes.forEach(function (node) { return addClass(node, className); });
+        });
+        var allLeaveNodes = [];
+        var mergedLeaveNodes = new Set();
+        var leaveNodesWithoutAnimations = new Set();
+        for (var i_2 = 0; i_2 < this.collectedLeaveElements.length; i_2++) {
+            var element = this.collectedLeaveElements[i_2];
+            var details = element[REMOVAL_FLAG];
+            if (details && details.setForRemoval) {
+                allLeaveNodes.push(element);
+                mergedLeaveNodes.add(element);
+                if (details.hasAnimation) {
+                    this.driver.query(element, STAR_SELECTOR, true).forEach(function (elm) { return mergedLeaveNodes.add(elm); });
+                }
+                else {
+                    leaveNodesWithoutAnimations.add(element);
+                }
+            }
+        }
+        var leaveNodeMapIds = new Map();
+        var leaveNodeMap = buildRootMap(allTriggerElements, Array.from(mergedLeaveNodes));
+        leaveNodeMap.forEach(function (nodes, root) {
+            var className = LEAVE_CLASSNAME + i++;
+            leaveNodeMapIds.set(root, className);
+            nodes.forEach(function (node) { return addClass(node, className); });
+        });
+        cleanupFns.push(function () {
+            enterNodeMap.forEach(function (nodes, root) {
+                var className = enterNodeMapIds.get(root);
+                nodes.forEach(function (node) { return removeClass(node, className); });
+            });
+            leaveNodeMap.forEach(function (nodes, root) {
+                var className = leaveNodeMapIds.get(root);
+                nodes.forEach(function (node) { return removeClass(node, className); });
+            });
+            allLeaveNodes.forEach(function (element) { _this.processLeaveNode(element); });
+        });
+        var allPlayers = [];
+        var erroneousTransitions = [];
+        for (var i_3 = this._namespaceList.length - 1; i_3 >= 0; i_3--) {
+            var ns = this._namespaceList[i_3];
+            ns.drainQueuedTransitions(microtaskId).forEach(function (entry) {
+                var player = entry.player;
+                var element = entry.element;
+                allPlayers.push(player);
+                if (_this.collectedEnterElements.length) {
+                    var details = element[REMOVAL_FLAG];
+                    // move animations are currently not supported...
+                    if (details && details.setForMove) {
+                        player.destroy();
+                        return;
+                    }
+                }
+                var nodeIsOrphaned = !bodyNode || !_this.driver.containsElement(bodyNode, element);
+                var leaveClassName = leaveNodeMapIds.get(element);
+                var enterClassName = enterNodeMapIds.get(element);
+                var instruction = _this._buildInstruction(entry, subTimelines, enterClassName, leaveClassName, nodeIsOrphaned);
+                if (instruction.errors && instruction.errors.length) {
+                    erroneousTransitions.push(instruction);
+                    return;
+                }
+                // even though the element may not be apart of the DOM, it may
+                // still be added at a later point (due to the mechanics of content
+                // projection and/or dynamic component insertion) therefore it's
+                // important we still style the element.
+                if (nodeIsOrphaned) {
+                    player.onStart(function () { return eraseStyles(element, instruction.fromStyles); });
+                    player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                    skippedPlayers.push(player);
+                    return;
+                }
+                // if a unmatched transition is queued to go then it SHOULD NOT render
+                // an animation and cancel the previously running animations.
+                if (entry.isFallbackTransition) {
+                    player.onStart(function () { return eraseStyles(element, instruction.fromStyles); });
+                    player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                    skippedPlayers.push(player);
+                    return;
+                }
+                // this means that if a parent animation uses this animation as a sub trigger
+                // then it will instruct the timeline builder to not add a player delay, but
+                // instead stretch the first keyframe gap up until the animation starts. The
+                // reason this is important is to prevent extra initialization styles from being
+                // required by the user in the animation.
+                instruction.timelines.forEach(function (tl) { return tl.stretchStartingKeyframe = true; });
+                subTimelines.append(element, instruction.timelines);
+                var tuple = { instruction: instruction, player: player, element: element };
+                queuedInstructions.push(tuple);
+                instruction.queriedElements.forEach(function (element) { return getOrSetAsInMap(queriedElements, element, []).push(player); });
+                instruction.preStyleProps.forEach(function (stringMap, element) {
+                    var props = Object.keys(stringMap);
+                    if (props.length) {
+                        var setVal_1 = allPreStyleElements.get(element);
+                        if (!setVal_1) {
+                            allPreStyleElements.set(element, setVal_1 = new Set());
+                        }
+                        props.forEach(function (prop) { return setVal_1.add(prop); });
+                    }
+                });
+                instruction.postStyleProps.forEach(function (stringMap, element) {
+                    var props = Object.keys(stringMap);
+                    var setVal = allPostStyleElements.get(element);
+                    if (!setVal) {
+                        allPostStyleElements.set(element, setVal = new Set());
+                    }
+                    props.forEach(function (prop) { return setVal.add(prop); });
+                });
+            });
+        }
+        if (erroneousTransitions.length) {
+            var errors_1 = [];
+            erroneousTransitions.forEach(function (instruction) {
+                errors_1.push("@" + instruction.triggerName + " has failed due to:\n");
+                instruction.errors.forEach(function (error) { return errors_1.push("- " + error + "\n"); });
+            });
+            allPlayers.forEach(function (player) { return player.destroy(); });
+            this.reportError(errors_1);
+        }
+        var allPreviousPlayersMap = new Map();
+        // this map works to tell which element in the DOM tree is contained by
+        // which animation. Further down below this map will get populated once
+        // the players are built and in doing so it can efficiently figure out
+        // if a sub player is skipped due to a parent player having priority.
+        var animationElementMap = new Map();
+        queuedInstructions.forEach(function (entry) {
+            var element = entry.element;
+            if (subTimelines.has(element)) {
+                animationElementMap.set(element, element);
+                _this._beforeAnimationBuild(entry.player.namespaceId, entry.instruction, allPreviousPlayersMap);
+            }
+        });
+        skippedPlayers.forEach(function (player) {
+            var element = player.element;
+            var previousPlayers = _this._getPreviousPlayers(element, false, player.namespaceId, player.triggerName, null);
+            previousPlayers.forEach(function (prevPlayer) {
+                getOrSetAsInMap(allPreviousPlayersMap, element, []).push(prevPlayer);
+                prevPlayer.destroy();
+            });
+        });
+        // this is a special case for nodes that will be removed (either by)
+        // having their own leave animations or by being queried in a container
+        // that will be removed once a parent animation is complete. The idea
+        // here is that * styles must be identical to ! styles because of
+        // backwards compatibility (* is also filled in by default in many places).
+        // Otherwise * styles will return an empty value or auto since the element
+        // that is being getComputedStyle'd will not be visible (since * = destination)
+        var replaceNodes = allLeaveNodes.filter(function (node) {
+            return replacePostStylesAsPre(node, allPreStyleElements, allPostStyleElements);
+        });
+        // POST STAGE: fill the * styles
+        var postStylesMap = new Map();
+        var allLeaveQueriedNodes = cloakAndComputeStyles(postStylesMap, this.driver, leaveNodesWithoutAnimations, allPostStyleElements, _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AUTO_STYLE"]);
+        allLeaveQueriedNodes.forEach(function (node) {
+            if (replacePostStylesAsPre(node, allPreStyleElements, allPostStyleElements)) {
+                replaceNodes.push(node);
+            }
+        });
+        // PRE STAGE: fill the ! styles
+        var preStylesMap = new Map();
+        enterNodeMap.forEach(function (nodes, root) {
+            cloakAndComputeStyles(preStylesMap, _this.driver, new Set(nodes), allPreStyleElements, _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵPRE_STYLE"]);
+        });
+        replaceNodes.forEach(function (node) {
+            var post = postStylesMap.get(node);
+            var pre = preStylesMap.get(node);
+            postStylesMap.set(node, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, post, pre));
+        });
+        var rootPlayers = [];
+        var subPlayers = [];
+        var NO_PARENT_ANIMATION_ELEMENT_DETECTED = {};
+        queuedInstructions.forEach(function (entry) {
+            var element = entry.element, player = entry.player, instruction = entry.instruction;
+            // this means that it was never consumed by a parent animation which
+            // means that it is independent and therefore should be set for animation
+            if (subTimelines.has(element)) {
+                if (disabledElementsSet.has(element)) {
+                    player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                    player.disabled = true;
+                    player.overrideTotalTime(instruction.totalTime);
+                    skippedPlayers.push(player);
+                    return;
+                }
+                // this will flow up the DOM and query the map to figure out
+                // if a parent animation has priority over it. In the situation
+                // that a parent is detected then it will cancel the loop. If
+                // nothing is detected, or it takes a few hops to find a parent,
+                // then it will fill in the missing nodes and signal them as having
+                // a detected parent (or a NO_PARENT value via a special constant).
+                var parentWithAnimation_1 = NO_PARENT_ANIMATION_ELEMENT_DETECTED;
+                if (animationElementMap.size > 1) {
+                    var elm = element;
+                    var parentsToAdd = [];
+                    while (elm = elm.parentNode) {
+                        var detectedParent = animationElementMap.get(elm);
+                        if (detectedParent) {
+                            parentWithAnimation_1 = detectedParent;
+                            break;
+                        }
+                        parentsToAdd.push(elm);
+                    }
+                    parentsToAdd.forEach(function (parent) { return animationElementMap.set(parent, parentWithAnimation_1); });
+                }
+                var innerPlayer = _this._buildAnimation(player.namespaceId, instruction, allPreviousPlayersMap, skippedPlayersMap, preStylesMap, postStylesMap);
+                player.setRealPlayer(innerPlayer);
+                if (parentWithAnimation_1 === NO_PARENT_ANIMATION_ELEMENT_DETECTED) {
+                    rootPlayers.push(player);
+                }
+                else {
+                    var parentPlayers = _this.playersByElement.get(parentWithAnimation_1);
+                    if (parentPlayers && parentPlayers.length) {
+                        player.parentPlayer = optimizeGroupPlayer(parentPlayers);
+                    }
+                    skippedPlayers.push(player);
+                }
+            }
+            else {
+                eraseStyles(element, instruction.fromStyles);
+                player.onDestroy(function () { return setStyles(element, instruction.toStyles); });
+                // there still might be a ancestor player animating this
+                // element therefore we will still add it as a sub player
+                // even if its animation may be disabled
+                subPlayers.push(player);
+                if (disabledElementsSet.has(element)) {
+                    skippedPlayers.push(player);
+                }
+            }
+        });
+        // find all of the sub players' corresponding inner animation player
+        subPlayers.forEach(function (player) {
+            // even if any players are not found for a sub animation then it
+            // will still complete itself after the next tick since it's Noop
+            var playersForElement = skippedPlayersMap.get(player.element);
+            if (playersForElement && playersForElement.length) {
+                var innerPlayer = optimizeGroupPlayer(playersForElement);
+                player.setRealPlayer(innerPlayer);
+            }
+        });
+        // the reason why we don't actually play the animation is
+        // because all that a skipped player is designed to do is to
+        // fire the start/done transition callback events
+        skippedPlayers.forEach(function (player) {
+            if (player.parentPlayer) {
+                player.syncPlayerEvents(player.parentPlayer);
+            }
+            else {
+                player.destroy();
+            }
+        });
+        // run through all of the queued removals and see if they
+        // were picked up by a query. If not then perform the removal
+        // operation right away unless a parent animation is ongoing.
+        for (var i_4 = 0; i_4 < allLeaveNodes.length; i_4++) {
+            var element = allLeaveNodes[i_4];
+            var details = element[REMOVAL_FLAG];
+            removeClass(element, LEAVE_CLASSNAME);
+            // this means the element has a removal animation that is being
+            // taken care of and therefore the inner elements will hang around
+            // until that animation is over (or the parent queried animation)
+            if (details && details.hasAnimation)
+                continue;
+            var players = [];
+            // if this element is queried or if it contains queried children
+            // then we want for the element not to be removed from the page
+            // until the queried animations have finished
+            if (queriedElements.size) {
+                var queriedPlayerResults = queriedElements.get(element);
+                if (queriedPlayerResults && queriedPlayerResults.length) {
+                    players.push.apply(players, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(queriedPlayerResults));
+                }
+                var queriedInnerElements = this.driver.query(element, NG_ANIMATING_SELECTOR, true);
+                for (var j = 0; j < queriedInnerElements.length; j++) {
+                    var queriedPlayers = queriedElements.get(queriedInnerElements[j]);
+                    if (queriedPlayers && queriedPlayers.length) {
+                        players.push.apply(players, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(queriedPlayers));
+                    }
+                }
+            }
+            var activePlayers = players.filter(function (p) { return !p.destroyed; });
+            if (activePlayers.length) {
+                removeNodesAfterAnimationDone(this, element, activePlayers);
+            }
+            else {
+                this.processLeaveNode(element);
+            }
+        }
+        // this is required so the cleanup method doesn't remove them
+        allLeaveNodes.length = 0;
+        rootPlayers.forEach(function (player) {
+            _this.players.push(player);
+            player.onDone(function () {
+                player.destroy();
+                var index = _this.players.indexOf(player);
+                _this.players.splice(index, 1);
+            });
+            player.play();
+        });
+        return rootPlayers;
+    };
+    TransitionAnimationEngine.prototype.elementContainsData = function (namespaceId, element) {
+        var containsData = false;
+        var details = element[REMOVAL_FLAG];
+        if (details && details.setForRemoval)
+            containsData = true;
+        if (this.playersByElement.has(element))
+            containsData = true;
+        if (this.playersByQueriedElement.has(element))
+            containsData = true;
+        if (this.statesByElement.has(element))
+            containsData = true;
+        return this._fetchNamespace(namespaceId).elementContainsData(element) || containsData;
+    };
+    TransitionAnimationEngine.prototype.afterFlush = function (callback) { this._flushFns.push(callback); };
+    TransitionAnimationEngine.prototype.afterFlushAnimationsDone = function (callback) { this._whenQuietFns.push(callback); };
+    TransitionAnimationEngine.prototype._getPreviousPlayers = function (element, isQueriedElement, namespaceId, triggerName, toStateValue) {
+        var players = [];
+        if (isQueriedElement) {
+            var queriedElementPlayers = this.playersByQueriedElement.get(element);
+            if (queriedElementPlayers) {
+                players = queriedElementPlayers;
+            }
+        }
+        else {
+            var elementPlayers = this.playersByElement.get(element);
+            if (elementPlayers) {
+                var isRemovalAnimation_1 = !toStateValue || toStateValue == VOID_VALUE;
+                elementPlayers.forEach(function (player) {
+                    if (player.queued)
+                        return;
+                    if (!isRemovalAnimation_1 && player.triggerName != triggerName)
+                        return;
+                    players.push(player);
+                });
+            }
+        }
+        if (namespaceId || triggerName) {
+            players = players.filter(function (player) {
+                if (namespaceId && namespaceId != player.namespaceId)
+                    return false;
+                if (triggerName && triggerName != player.triggerName)
+                    return false;
+                return true;
+            });
+        }
+        return players;
+    };
+    TransitionAnimationEngine.prototype._beforeAnimationBuild = function (namespaceId, instruction, allPreviousPlayersMap) {
+        var e_1, _a;
+        var triggerName = instruction.triggerName;
+        var rootElement = instruction.element;
+        // when a removal animation occurs, ALL previous players are collected
+        // and destroyed (even if they are outside of the current namespace)
+        var targetNameSpaceId = instruction.isRemovalTransition ? undefined : namespaceId;
+        var targetTriggerName = instruction.isRemovalTransition ? undefined : triggerName;
+        var _loop_1 = function (timelineInstruction) {
+            var element = timelineInstruction.element;
+            var isQueriedElement = element !== rootElement;
+            var players = getOrSetAsInMap(allPreviousPlayersMap, element, []);
+            var previousPlayers = this_1._getPreviousPlayers(element, isQueriedElement, targetNameSpaceId, targetTriggerName, instruction.toState);
+            previousPlayers.forEach(function (player) {
+                var realPlayer = player.getRealPlayer();
+                if (realPlayer.beforeDestroy) {
+                    realPlayer.beforeDestroy();
+                }
+                player.destroy();
+                players.push(player);
+            });
+        };
+        var this_1 = this;
+        try {
+            for (var _b = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__values"])(instruction.timelines), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var timelineInstruction = _c.value;
+                _loop_1(timelineInstruction);
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+        // this needs to be done so that the PRE/POST styles can be
+        // computed properly without interfering with the previous animation
+        eraseStyles(rootElement, instruction.fromStyles);
+    };
+    TransitionAnimationEngine.prototype._buildAnimation = function (namespaceId, instruction, allPreviousPlayersMap, skippedPlayersMap, preStylesMap, postStylesMap) {
+        var _this = this;
+        var triggerName = instruction.triggerName;
+        var rootElement = instruction.element;
+        // we first run this so that the previous animation player
+        // data can be passed into the successive animation players
+        var allQueriedPlayers = [];
+        var allConsumedElements = new Set();
+        var allSubElements = new Set();
+        var allNewPlayers = instruction.timelines.map(function (timelineInstruction) {
+            var element = timelineInstruction.element;
+            allConsumedElements.add(element);
+            // FIXME (matsko): make sure to-be-removed animations are removed properly
+            var details = element[REMOVAL_FLAG];
+            if (details && details.removedBeforeQueried)
+                return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"](timelineInstruction.duration, timelineInstruction.delay);
+            var isQueriedElement = element !== rootElement;
+            var previousPlayers = flattenGroupPlayers((allPreviousPlayersMap.get(element) || EMPTY_PLAYER_ARRAY)
+                .map(function (p) { return p.getRealPlayer(); }))
+                .filter(function (p) {
+                // the `element` is not apart of the AnimationPlayer definition, but
+                // Mock/WebAnimations
+                // use the element within their implementation. This will be added in Angular5 to
+                // AnimationPlayer
+                var pp = p;
+                return pp.element ? pp.element === element : false;
+            });
+            var preStyles = preStylesMap.get(element);
+            var postStyles = postStylesMap.get(element);
+            var keyframes = normalizeKeyframes(_this.driver, _this._normalizer, element, timelineInstruction.keyframes, preStyles, postStyles);
+            var player = _this._buildPlayer(timelineInstruction, keyframes, previousPlayers);
+            // this means that this particular player belongs to a sub trigger. It is
+            // important that we match this player up with the corresponding (@trigger.listener)
+            if (timelineInstruction.subTimeline && skippedPlayersMap) {
+                allSubElements.add(element);
+            }
+            if (isQueriedElement) {
+                var wrappedPlayer = new TransitionAnimationPlayer(namespaceId, triggerName, element);
+                wrappedPlayer.setRealPlayer(player);
+                allQueriedPlayers.push(wrappedPlayer);
+            }
+            return player;
+        });
+        allQueriedPlayers.forEach(function (player) {
+            getOrSetAsInMap(_this.playersByQueriedElement, player.element, []).push(player);
+            player.onDone(function () { return deleteOrUnsetInMap(_this.playersByQueriedElement, player.element, player); });
+        });
+        allConsumedElements.forEach(function (element) { return addClass(element, NG_ANIMATING_CLASSNAME); });
+        var player = optimizeGroupPlayer(allNewPlayers);
+        player.onDestroy(function () {
+            allConsumedElements.forEach(function (element) { return removeClass(element, NG_ANIMATING_CLASSNAME); });
+            setStyles(rootElement, instruction.toStyles);
+        });
+        // this basically makes all of the callbacks for sub element animations
+        // be dependent on the upper players for when they finish
+        allSubElements.forEach(function (element) { getOrSetAsInMap(skippedPlayersMap, element, []).push(player); });
+        return player;
+    };
+    TransitionAnimationEngine.prototype._buildPlayer = function (instruction, keyframes, previousPlayers) {
+        if (keyframes.length > 0) {
+            return this.driver.animate(instruction.element, keyframes, instruction.duration, instruction.delay, instruction.easing, previousPlayers);
+        }
+        // special case for when an empty transition|definition is provided
+        // ... there is no point in rendering an empty animation
+        return new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"](instruction.duration, instruction.delay);
+    };
+    return TransitionAnimationEngine;
+}());
+var TransitionAnimationPlayer = /** @class */ (function () {
+    function TransitionAnimationPlayer(namespaceId, triggerName, element) {
+        this.namespaceId = namespaceId;
+        this.triggerName = triggerName;
+        this.element = element;
+        this._player = new _angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"]();
+        this._containsRealPlayer = false;
+        this._queuedCallbacks = {};
+        this.destroyed = false;
+        this.markedForDestroy = false;
+        this.disabled = false;
+        this.queued = true;
+        this.totalTime = 0;
+    }
+    TransitionAnimationPlayer.prototype.setRealPlayer = function (player) {
+        var _this = this;
+        if (this._containsRealPlayer)
+            return;
+        this._player = player;
+        Object.keys(this._queuedCallbacks).forEach(function (phase) {
+            _this._queuedCallbacks[phase].forEach(function (callback) { return listenOnPlayer(player, phase, undefined, callback); });
+        });
+        this._queuedCallbacks = {};
+        this._containsRealPlayer = true;
+        this.overrideTotalTime(player.totalTime);
+        this.queued = false;
+    };
+    TransitionAnimationPlayer.prototype.getRealPlayer = function () { return this._player; };
+    TransitionAnimationPlayer.prototype.overrideTotalTime = function (totalTime) { this.totalTime = totalTime; };
+    TransitionAnimationPlayer.prototype.syncPlayerEvents = function (player) {
+        var _this = this;
+        var p = this._player;
+        if (p.triggerCallback) {
+            player.onStart(function () { return p.triggerCallback('start'); });
+        }
+        player.onDone(function () { return _this.finish(); });
+        player.onDestroy(function () { return _this.destroy(); });
+    };
+    TransitionAnimationPlayer.prototype._queueEvent = function (name, callback) {
+        getOrSetAsInMap(this._queuedCallbacks, name, []).push(callback);
+    };
+    TransitionAnimationPlayer.prototype.onDone = function (fn) {
+        if (this.queued) {
+            this._queueEvent('done', fn);
+        }
+        this._player.onDone(fn);
+    };
+    TransitionAnimationPlayer.prototype.onStart = function (fn) {
+        if (this.queued) {
+            this._queueEvent('start', fn);
+        }
+        this._player.onStart(fn);
+    };
+    TransitionAnimationPlayer.prototype.onDestroy = function (fn) {
+        if (this.queued) {
+            this._queueEvent('destroy', fn);
+        }
+        this._player.onDestroy(fn);
+    };
+    TransitionAnimationPlayer.prototype.init = function () { this._player.init(); };
+    TransitionAnimationPlayer.prototype.hasStarted = function () { return this.queued ? false : this._player.hasStarted(); };
+    TransitionAnimationPlayer.prototype.play = function () { !this.queued && this._player.play(); };
+    TransitionAnimationPlayer.prototype.pause = function () { !this.queued && this._player.pause(); };
+    TransitionAnimationPlayer.prototype.restart = function () { !this.queued && this._player.restart(); };
+    TransitionAnimationPlayer.prototype.finish = function () { this._player.finish(); };
+    TransitionAnimationPlayer.prototype.destroy = function () {
+        this.destroyed = true;
+        this._player.destroy();
+    };
+    TransitionAnimationPlayer.prototype.reset = function () { !this.queued && this._player.reset(); };
+    TransitionAnimationPlayer.prototype.setPosition = function (p) {
+        if (!this.queued) {
+            this._player.setPosition(p);
+        }
+    };
+    TransitionAnimationPlayer.prototype.getPosition = function () { return this.queued ? 0 : this._player.getPosition(); };
+    /** @internal */
+    TransitionAnimationPlayer.prototype.triggerCallback = function (phaseName) {
+        var p = this._player;
+        if (p.triggerCallback) {
+            p.triggerCallback(phaseName);
+        }
+    };
+    return TransitionAnimationPlayer;
+}());
+function deleteOrUnsetInMap(map, key, value) {
+    var currentValues;
+    if (map instanceof Map) {
+        currentValues = map.get(key);
+        if (currentValues) {
+            if (currentValues.length) {
+                var index = currentValues.indexOf(value);
+                currentValues.splice(index, 1);
+            }
+            if (currentValues.length == 0) {
+                map.delete(key);
+            }
+        }
+    }
+    else {
+        currentValues = map[key];
+        if (currentValues) {
+            if (currentValues.length) {
+                var index = currentValues.indexOf(value);
+                currentValues.splice(index, 1);
+            }
+            if (currentValues.length == 0) {
+                delete map[key];
+            }
+        }
+    }
+    return currentValues;
+}
+function normalizeTriggerValue(value) {
+    // we use `!= null` here because it's the most simple
+    // way to test against a "falsy" value without mixing
+    // in empty strings or a zero value. DO NOT OPTIMIZE.
+    return value != null ? value : null;
+}
+function isElementNode(node) {
+    return node && node['nodeType'] === 1;
+}
+function isTriggerEventValid(eventName) {
+    return eventName == 'start' || eventName == 'done';
+}
+function cloakElement(element, value) {
+    var oldValue = element.style.display;
+    element.style.display = value != null ? value : 'none';
+    return oldValue;
+}
+function cloakAndComputeStyles(valuesMap, driver, elements, elementPropsMap, defaultStyle) {
+    var cloakVals = [];
+    elements.forEach(function (element) { return cloakVals.push(cloakElement(element)); });
+    var failedElements = [];
+    elementPropsMap.forEach(function (props, element) {
+        var styles = {};
+        props.forEach(function (prop) {
+            var value = styles[prop] = driver.computeStyle(element, prop, defaultStyle);
+            // there is no easy way to detect this because a sub element could be removed
+            // by a parent animation element being detached.
+            if (!value || value.length == 0) {
+                element[REMOVAL_FLAG] = NULL_REMOVED_QUERIED_STATE;
+                failedElements.push(element);
+            }
+        });
+        valuesMap.set(element, styles);
+    });
+    // we use a index variable here since Set.forEach(a, i) does not return
+    // an index value for the closure (but instead just the value)
+    var i = 0;
+    elements.forEach(function (element) { return cloakElement(element, cloakVals[i++]); });
+    return failedElements;
+}
+/*
+Since the Angular renderer code will return a collection of inserted
+nodes in all areas of a DOM tree, it's up to this algorithm to figure
+out which nodes are roots for each animation @trigger.
+
+By placing each inserted node into a Set and traversing upwards, it
+is possible to find the @trigger elements and well any direct *star
+insertion nodes, if a @trigger root is found then the enter element
+is placed into the Map[@trigger] spot.
+ */
+function buildRootMap(roots, nodes) {
+    var rootMap = new Map();
+    roots.forEach(function (root) { return rootMap.set(root, []); });
+    if (nodes.length == 0)
+        return rootMap;
+    var NULL_NODE = 1;
+    var nodeSet = new Set(nodes);
+    var localRootMap = new Map();
+    function getRoot(node) {
+        if (!node)
+            return NULL_NODE;
+        var root = localRootMap.get(node);
+        if (root)
+            return root;
+        var parent = node.parentNode;
+        if (rootMap.has(parent)) { // ngIf inside @trigger
+            root = parent;
+        }
+        else if (nodeSet.has(parent)) { // ngIf inside ngIf
+            root = NULL_NODE;
+        }
+        else { // recurse upwards
+            root = getRoot(parent);
+        }
+        localRootMap.set(node, root);
+        return root;
+    }
+    nodes.forEach(function (node) {
+        var root = getRoot(node);
+        if (root !== NULL_NODE) {
+            rootMap.get(root).push(node);
+        }
+    });
+    return rootMap;
+}
+var CLASSES_CACHE_KEY = '$$classes';
+function addClass(element, className) {
+    if (element.classList) {
+        element.classList.add(className);
+    }
+    else {
+        var classes = element[CLASSES_CACHE_KEY];
+        if (!classes) {
+            classes = element[CLASSES_CACHE_KEY] = {};
+        }
+        classes[className] = true;
+    }
+}
+function removeClass(element, className) {
+    if (element.classList) {
+        element.classList.remove(className);
+    }
+    else {
+        var classes = element[CLASSES_CACHE_KEY];
+        if (classes) {
+            delete classes[className];
+        }
+    }
+}
+function removeNodesAfterAnimationDone(engine, element, players) {
+    optimizeGroupPlayer(players).onDone(function () { return engine.processLeaveNode(element); });
+}
+function flattenGroupPlayers(players) {
+    var finalPlayers = [];
+    _flattenGroupPlayersRecur(players, finalPlayers);
+    return finalPlayers;
+}
+function _flattenGroupPlayersRecur(players, finalPlayers) {
+    for (var i = 0; i < players.length; i++) {
+        var player = players[i];
+        if (player instanceof _angular_animations__WEBPACK_IMPORTED_MODULE_1__["ɵAnimationGroupPlayer"]) {
+            _flattenGroupPlayersRecur(player.players, finalPlayers);
+        }
+        else {
+            finalPlayers.push(player);
+        }
+    }
+}
+function objEquals(a, b) {
+    var k1 = Object.keys(a);
+    var k2 = Object.keys(b);
+    if (k1.length != k2.length)
+        return false;
+    for (var i = 0; i < k1.length; i++) {
+        var prop = k1[i];
+        if (!b.hasOwnProperty(prop) || a[prop] !== b[prop])
+            return false;
+    }
+    return true;
+}
+function replacePostStylesAsPre(element, allPreStyleElements, allPostStyleElements) {
+    var postEntry = allPostStyleElements.get(element);
+    if (!postEntry)
+        return false;
+    var preEntry = allPreStyleElements.get(element);
+    if (preEntry) {
+        postEntry.forEach(function (data) { return preEntry.add(data); });
+    }
+    else {
+        allPreStyleElements.set(element, postEntry);
+    }
+    allPostStyleElements.delete(element);
+    return true;
+}
+
+var AnimationEngine = /** @class */ (function () {
+    function AnimationEngine(bodyNode, _driver, normalizer) {
+        var _this = this;
+        this.bodyNode = bodyNode;
+        this._driver = _driver;
+        this._triggerCache = {};
+        // this method is designed to be overridden by the code that uses this engine
+        this.onRemovalComplete = function (element, context) { };
+        this._transitionEngine = new TransitionAnimationEngine(bodyNode, _driver, normalizer);
+        this._timelineEngine = new TimelineAnimationEngine(bodyNode, _driver, normalizer);
+        this._transitionEngine.onRemovalComplete = function (element, context) {
+            return _this.onRemovalComplete(element, context);
+        };
+    }
+    AnimationEngine.prototype.registerTrigger = function (componentId, namespaceId, hostElement, name, metadata) {
+        var cacheKey = componentId + '-' + name;
+        var trigger = this._triggerCache[cacheKey];
+        if (!trigger) {
+            var errors = [];
+            var ast = buildAnimationAst(this._driver, metadata, errors);
+            if (errors.length) {
+                throw new Error("The animation trigger \"" + name + "\" has failed to build due to the following errors:\n - " + errors.join("\n - "));
+            }
+            trigger = buildTrigger(name, ast);
+            this._triggerCache[cacheKey] = trigger;
+        }
+        this._transitionEngine.registerTrigger(namespaceId, name, trigger);
+    };
+    AnimationEngine.prototype.register = function (namespaceId, hostElement) {
+        this._transitionEngine.register(namespaceId, hostElement);
+    };
+    AnimationEngine.prototype.destroy = function (namespaceId, context) {
+        this._transitionEngine.destroy(namespaceId, context);
+    };
+    AnimationEngine.prototype.onInsert = function (namespaceId, element, parent, insertBefore) {
+        this._transitionEngine.insertNode(namespaceId, element, parent, insertBefore);
+    };
+    AnimationEngine.prototype.onRemove = function (namespaceId, element, context) {
+        this._transitionEngine.removeNode(namespaceId, element, context);
+    };
+    AnimationEngine.prototype.disableAnimations = function (element, disable) {
+        this._transitionEngine.markElementAsDisabled(element, disable);
+    };
+    AnimationEngine.prototype.process = function (namespaceId, element, property, value) {
+        if (property.charAt(0) == '@') {
+            var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(parseTimelineCommand(property), 2), id = _a[0], action = _a[1];
+            var args = value;
+            this._timelineEngine.command(id, element, action, args);
+        }
+        else {
+            this._transitionEngine.trigger(namespaceId, element, property, value);
+        }
+    };
+    AnimationEngine.prototype.listen = function (namespaceId, element, eventName, eventPhase, callback) {
+        // @@listen
+        if (eventName.charAt(0) == '@') {
+            var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(parseTimelineCommand(eventName), 2), id = _a[0], action = _a[1];
+            return this._timelineEngine.listen(id, element, action, callback);
+        }
+        return this._transitionEngine.listen(namespaceId, element, eventName, eventPhase, callback);
+    };
+    AnimationEngine.prototype.flush = function (microtaskId) {
+        if (microtaskId === void 0) { microtaskId = -1; }
+        this._transitionEngine.flush(microtaskId);
+    };
+    Object.defineProperty(AnimationEngine.prototype, "players", {
+        get: function () {
+            return this._transitionEngine.players
+                .concat(this._timelineEngine.players);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AnimationEngine.prototype.whenRenderingDone = function () { return this._transitionEngine.whenRenderingDone(); };
+    return AnimationEngine;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ELAPSED_TIME_MAX_DECIMAL_PLACES = 3;
+var ANIMATION_PROP = 'animation';
+var ANIMATIONEND_EVENT = 'animationend';
+var ONE_SECOND$1 = 1000;
+var ElementAnimationStyleHandler = /** @class */ (function () {
+    function ElementAnimationStyleHandler(_element, _name, _duration, _delay, _easing, _fillMode, _onDoneFn) {
+        var _this = this;
+        this._element = _element;
+        this._name = _name;
+        this._duration = _duration;
+        this._delay = _delay;
+        this._easing = _easing;
+        this._fillMode = _fillMode;
+        this._onDoneFn = _onDoneFn;
+        this._finished = false;
+        this._destroyed = false;
+        this._startTime = 0;
+        this._position = 0;
+        this._eventFn = function (e) { return _this._handleCallback(e); };
+    }
+    ElementAnimationStyleHandler.prototype.apply = function () {
+        applyKeyframeAnimation(this._element, this._duration + "ms " + this._easing + " " + this._delay + "ms 1 normal " + this._fillMode + " " + this._name);
+        addRemoveAnimationEvent(this._element, this._eventFn, false);
+        this._startTime = Date.now();
+    };
+    ElementAnimationStyleHandler.prototype.pause = function () { playPauseAnimation(this._element, this._name, 'paused'); };
+    ElementAnimationStyleHandler.prototype.resume = function () { playPauseAnimation(this._element, this._name, 'running'); };
+    ElementAnimationStyleHandler.prototype.setPosition = function (position) {
+        var index = findIndexForAnimation(this._element, this._name);
+        this._position = position * this._duration;
+        setAnimationStyle(this._element, 'Delay', "-" + this._position + "ms", index);
+    };
+    ElementAnimationStyleHandler.prototype.getPosition = function () { return this._position; };
+    ElementAnimationStyleHandler.prototype._handleCallback = function (event) {
+        var timestamp = event._ngTestManualTimestamp || Date.now();
+        var elapsedTime = parseFloat(event.elapsedTime.toFixed(ELAPSED_TIME_MAX_DECIMAL_PLACES)) * ONE_SECOND$1;
+        if (event.animationName == this._name &&
+            Math.max(timestamp - this._startTime, 0) >= this._delay && elapsedTime >= this._duration) {
+            this.finish();
+        }
+    };
+    ElementAnimationStyleHandler.prototype.finish = function () {
+        if (this._finished)
+            return;
+        this._finished = true;
+        this._onDoneFn();
+        addRemoveAnimationEvent(this._element, this._eventFn, true);
+    };
+    ElementAnimationStyleHandler.prototype.destroy = function () {
+        if (this._destroyed)
+            return;
+        this._destroyed = true;
+        this.finish();
+        removeKeyframeAnimation(this._element, this._name);
+    };
+    return ElementAnimationStyleHandler;
+}());
+function playPauseAnimation(element, name, status) {
+    var index = findIndexForAnimation(element, name);
+    setAnimationStyle(element, 'PlayState', status, index);
+}
+function applyKeyframeAnimation(element, value) {
+    var anim = getAnimationStyle(element, '').trim();
+    var index = 0;
+    if (anim.length) {
+        index = countChars(anim, ',') + 1;
+        value = anim + ", " + value;
+    }
+    setAnimationStyle(element, '', value);
+    return index;
+}
+function removeKeyframeAnimation(element, name) {
+    var anim = getAnimationStyle(element, '');
+    var tokens = anim.split(',');
+    var index = findMatchingTokenIndex(tokens, name);
+    if (index >= 0) {
+        tokens.splice(index, 1);
+        var newValue = tokens.join(',');
+        setAnimationStyle(element, '', newValue);
+    }
+}
+function findIndexForAnimation(element, value) {
+    var anim = getAnimationStyle(element, '');
+    if (anim.indexOf(',') > 0) {
+        var tokens = anim.split(',');
+        return findMatchingTokenIndex(tokens, value);
+    }
+    return findMatchingTokenIndex([anim], value);
+}
+function findMatchingTokenIndex(tokens, searchToken) {
+    for (var i = 0; i < tokens.length; i++) {
+        if (tokens[i].indexOf(searchToken) >= 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+function addRemoveAnimationEvent(element, fn, doRemove) {
+    doRemove ? element.removeEventListener(ANIMATIONEND_EVENT, fn) :
+        element.addEventListener(ANIMATIONEND_EVENT, fn);
+}
+function setAnimationStyle(element, name, value, index) {
+    var prop = ANIMATION_PROP + name;
+    if (index != null) {
+        var oldValue = element.style[prop];
+        if (oldValue.length) {
+            var tokens = oldValue.split(',');
+            tokens[index] = value;
+            value = tokens.join(',');
+        }
+    }
+    element.style[prop] = value;
+}
+function getAnimationStyle(element, name) {
+    return element.style[ANIMATION_PROP + name];
+}
+function countChars(value, char) {
+    var count = 0;
+    for (var i = 0; i < value.length; i++) {
+        var c = value.charAt(i);
+        if (c === char)
+            count++;
+    }
+    return count;
+}
+
+var DEFAULT_FILL_MODE = 'forwards';
+var DEFAULT_EASING = 'linear';
+var CssKeyframesPlayer = /** @class */ (function () {
+    function CssKeyframesPlayer(element, keyframes, animationName, _duration, _delay, easing, _finalStyles) {
+        this.element = element;
+        this.keyframes = keyframes;
+        this.animationName = animationName;
+        this._duration = _duration;
+        this._delay = _delay;
+        this._finalStyles = _finalStyles;
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._onDestroyFns = [];
+        this._started = false;
+        this.currentSnapshot = {};
+        this._state = 0;
+        this.easing = easing || DEFAULT_EASING;
+        this.totalTime = _duration + _delay;
+        this._buildStyler();
+    }
+    CssKeyframesPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    CssKeyframesPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    CssKeyframesPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    CssKeyframesPlayer.prototype.destroy = function () {
+        this.init();
+        if (this._state >= 4 /* DESTROYED */)
+            return;
+        this._state = 4 /* DESTROYED */;
+        this._styler.destroy();
+        this._flushStartFns();
+        this._flushDoneFns();
+        this._onDestroyFns.forEach(function (fn) { return fn(); });
+        this._onDestroyFns = [];
+    };
+    CssKeyframesPlayer.prototype._flushDoneFns = function () {
+        this._onDoneFns.forEach(function (fn) { return fn(); });
+        this._onDoneFns = [];
+    };
+    CssKeyframesPlayer.prototype._flushStartFns = function () {
+        this._onStartFns.forEach(function (fn) { return fn(); });
+        this._onStartFns = [];
+    };
+    CssKeyframesPlayer.prototype.finish = function () {
+        this.init();
+        if (this._state >= 3 /* FINISHED */)
+            return;
+        this._state = 3 /* FINISHED */;
+        this._styler.finish();
+        this._flushStartFns();
+        this._flushDoneFns();
+    };
+    CssKeyframesPlayer.prototype.setPosition = function (value) { this._styler.setPosition(value); };
+    CssKeyframesPlayer.prototype.getPosition = function () { return this._styler.getPosition(); };
+    CssKeyframesPlayer.prototype.hasStarted = function () { return this._state >= 2 /* STARTED */; };
+    CssKeyframesPlayer.prototype.init = function () {
+        if (this._state >= 1 /* INITIALIZED */)
+            return;
+        this._state = 1 /* INITIALIZED */;
+        var elm = this.element;
+        this._styler.apply();
+        if (this._delay) {
+            this._styler.pause();
+        }
+    };
+    CssKeyframesPlayer.prototype.play = function () {
+        this.init();
+        if (!this.hasStarted()) {
+            this._flushStartFns();
+            this._state = 2 /* STARTED */;
+        }
+        this._styler.resume();
+    };
+    CssKeyframesPlayer.prototype.pause = function () {
+        this.init();
+        this._styler.pause();
+    };
+    CssKeyframesPlayer.prototype.restart = function () {
+        this.reset();
+        this.play();
+    };
+    CssKeyframesPlayer.prototype.reset = function () {
+        this._styler.destroy();
+        this._buildStyler();
+        this._styler.apply();
+    };
+    CssKeyframesPlayer.prototype._buildStyler = function () {
+        var _this = this;
+        this._styler = new ElementAnimationStyleHandler(this.element, this.animationName, this._duration, this._delay, this.easing, DEFAULT_FILL_MODE, function () { return _this.finish(); });
+    };
+    /** @internal */
+    CssKeyframesPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    CssKeyframesPlayer.prototype.beforeDestroy = function () {
+        var _this = this;
+        this.init();
+        var styles = {};
+        if (this.hasStarted()) {
+            var finished_1 = this._state >= 3 /* FINISHED */;
+            Object.keys(this._finalStyles).forEach(function (prop) {
+                if (prop != 'offset') {
+                    styles[prop] = finished_1 ? _this._finalStyles[prop] : computeStyle(_this.element, prop);
+                }
+            });
+        }
+        this.currentSnapshot = styles;
+    };
+    return CssKeyframesPlayer;
+}());
+
+var DirectStylePlayer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(DirectStylePlayer, _super);
+    function DirectStylePlayer(element, styles) {
+        var _this = _super.call(this) || this;
+        _this.element = element;
+        _this._startingStyles = {};
+        _this.__initialized = false;
+        _this._styles = hypenatePropsObject(styles);
+        return _this;
+    }
+    DirectStylePlayer.prototype.init = function () {
+        var _this = this;
+        if (this.__initialized || !this._startingStyles)
+            return;
+        this.__initialized = true;
+        Object.keys(this._styles).forEach(function (prop) {
+            _this._startingStyles[prop] = _this.element.style[prop];
+        });
+        _super.prototype.init.call(this);
+    };
+    DirectStylePlayer.prototype.play = function () {
+        var _this = this;
+        if (!this._startingStyles)
+            return;
+        this.init();
+        Object.keys(this._styles)
+            .forEach(function (prop) { return _this.element.style.setProperty(prop, _this._styles[prop]); });
+        _super.prototype.play.call(this);
+    };
+    DirectStylePlayer.prototype.destroy = function () {
+        var _this = this;
+        if (!this._startingStyles)
+            return;
+        Object.keys(this._startingStyles).forEach(function (prop) {
+            var value = _this._startingStyles[prop];
+            if (value) {
+                _this.element.style.setProperty(prop, value);
+            }
+            else {
+                _this.element.style.removeProperty(prop);
+            }
+        });
+        this._startingStyles = null;
+        _super.prototype.destroy.call(this);
+    };
+    return DirectStylePlayer;
+}(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["NoopAnimationPlayer"]));
+
+var KEYFRAMES_NAME_PREFIX = 'gen_css_kf_';
+var TAB_SPACE = ' ';
+var CssKeyframesDriver = /** @class */ (function () {
+    function CssKeyframesDriver() {
+        this._count = 0;
+        this._head = document.querySelector('head');
+        this._warningIssued = false;
+    }
+    CssKeyframesDriver.prototype.validateStyleProperty = function (prop) { return validateStyleProperty(prop); };
+    CssKeyframesDriver.prototype.matchesElement = function (element, selector) {
+        return matchesElement(element, selector);
+    };
+    CssKeyframesDriver.prototype.containsElement = function (elm1, elm2) { return containsElement(elm1, elm2); };
+    CssKeyframesDriver.prototype.query = function (element, selector, multi) {
+        return invokeQuery(element, selector, multi);
+    };
+    CssKeyframesDriver.prototype.computeStyle = function (element, prop, defaultValue) {
+        return window.getComputedStyle(element)[prop];
+    };
+    CssKeyframesDriver.prototype.buildKeyframeElement = function (element, name, keyframes) {
+        keyframes = keyframes.map(function (kf) { return hypenatePropsObject(kf); });
+        var keyframeStr = "@keyframes " + name + " {\n";
+        var tab = '';
+        keyframes.forEach(function (kf) {
+            tab = TAB_SPACE;
+            var offset = parseFloat(kf.offset);
+            keyframeStr += "" + tab + offset * 100 + "% {\n";
+            tab += TAB_SPACE;
+            Object.keys(kf).forEach(function (prop) {
+                var value = kf[prop];
+                switch (prop) {
+                    case 'offset':
+                        return;
+                    case 'easing':
+                        if (value) {
+                            keyframeStr += tab + "animation-timing-function: " + value + ";\n";
+                        }
+                        return;
+                    default:
+                        keyframeStr += "" + tab + prop + ": " + value + ";\n";
+                        return;
+                }
+            });
+            keyframeStr += tab + "}\n";
+        });
+        keyframeStr += "}\n";
+        var kfElm = document.createElement('style');
+        kfElm.innerHTML = keyframeStr;
+        return kfElm;
+    };
+    CssKeyframesDriver.prototype.animate = function (element, keyframes, duration, delay, easing, previousPlayers, scrubberAccessRequested) {
+        if (previousPlayers === void 0) { previousPlayers = []; }
+        if (scrubberAccessRequested) {
+            this._notifyFaultyScrubber();
+        }
+        var previousCssKeyframePlayers = previousPlayers.filter(function (player) { return player instanceof CssKeyframesPlayer; });
+        var previousStyles = {};
+        if (allowPreviousPlayerStylesMerge(duration, delay)) {
+            previousCssKeyframePlayers.forEach(function (player) {
+                var styles = player.currentSnapshot;
+                Object.keys(styles).forEach(function (prop) { return previousStyles[prop] = styles[prop]; });
+            });
+        }
+        keyframes = balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles);
+        var finalStyles = flattenKeyframesIntoStyles(keyframes);
+        // if there is no animation then there is no point in applying
+        // styles and waiting for an event to get fired. This causes lag.
+        // It's better to just directly apply the styles to the element
+        // via the direct styling animation player.
+        if (duration == 0) {
+            return new DirectStylePlayer(element, finalStyles);
+        }
+        var animationName = "" + KEYFRAMES_NAME_PREFIX + this._count++;
+        var kfElm = this.buildKeyframeElement(element, animationName, keyframes);
+        document.querySelector('head').appendChild(kfElm);
+        var player = new CssKeyframesPlayer(element, keyframes, animationName, duration, delay, easing, finalStyles);
+        player.onDestroy(function () { return removeElement(kfElm); });
+        return player;
+    };
+    CssKeyframesDriver.prototype._notifyFaultyScrubber = function () {
+        if (!this._warningIssued) {
+            console.warn('@angular/animations: please load the web-animations.js polyfill to allow programmatic access...\n', '  visit http://bit.ly/IWukam to learn more about using the web-animation-js polyfill.');
+            this._warningIssued = true;
+        }
+    };
+    return CssKeyframesDriver;
+}());
+function flattenKeyframesIntoStyles(keyframes) {
+    var flatKeyframes = {};
+    if (keyframes) {
+        var kfs = Array.isArray(keyframes) ? keyframes : [keyframes];
+        kfs.forEach(function (kf) {
+            Object.keys(kf).forEach(function (prop) {
+                if (prop == 'offset' || prop == 'easing')
+                    return;
+                flatKeyframes[prop] = kf[prop];
+            });
+        });
+    }
+    return flatKeyframes;
+}
+function removeElement(node) {
+    node.parentNode.removeChild(node);
+}
+
+var WebAnimationsPlayer = /** @class */ (function () {
+    function WebAnimationsPlayer(element, keyframes, options) {
+        this.element = element;
+        this.keyframes = keyframes;
+        this.options = options;
+        this._onDoneFns = [];
+        this._onStartFns = [];
+        this._onDestroyFns = [];
+        this._initialized = false;
+        this._finished = false;
+        this._started = false;
+        this._destroyed = false;
+        this.time = 0;
+        this.parentPlayer = null;
+        this.currentSnapshot = {};
+        this._duration = options['duration'];
+        this._delay = options['delay'] || 0;
+        this.time = this._duration + this._delay;
+    }
+    WebAnimationsPlayer.prototype._onFinish = function () {
+        if (!this._finished) {
+            this._finished = true;
+            this._onDoneFns.forEach(function (fn) { return fn(); });
+            this._onDoneFns = [];
+        }
+    };
+    WebAnimationsPlayer.prototype.init = function () {
+        this._buildPlayer();
+        this._preparePlayerBeforeStart();
+    };
+    WebAnimationsPlayer.prototype._buildPlayer = function () {
+        var _this = this;
+        if (this._initialized)
+            return;
+        this._initialized = true;
+        var keyframes = this.keyframes;
+        this.domPlayer =
+            this._triggerWebAnimation(this.element, keyframes, this.options);
+        this._finalKeyframe = keyframes.length ? keyframes[keyframes.length - 1] : {};
+        this.domPlayer.addEventListener('finish', function () { return _this._onFinish(); });
+    };
+    WebAnimationsPlayer.prototype._preparePlayerBeforeStart = function () {
+        // this is required so that the player doesn't start to animate right away
+        if (this._delay) {
+            this._resetDomPlayerState();
+        }
+        else {
+            this.domPlayer.pause();
+        }
+    };
+    /** @internal */
+    WebAnimationsPlayer.prototype._triggerWebAnimation = function (element, keyframes, options) {
+        // jscompiler doesn't seem to know animate is a native property because it's not fully
+        // supported yet across common browsers (we polyfill it for Edge/Safari) [CL #143630929]
+        return element['animate'](keyframes, options);
+    };
+    WebAnimationsPlayer.prototype.onStart = function (fn) { this._onStartFns.push(fn); };
+    WebAnimationsPlayer.prototype.onDone = function (fn) { this._onDoneFns.push(fn); };
+    WebAnimationsPlayer.prototype.onDestroy = function (fn) { this._onDestroyFns.push(fn); };
+    WebAnimationsPlayer.prototype.play = function () {
+        this._buildPlayer();
+        if (!this.hasStarted()) {
+            this._onStartFns.forEach(function (fn) { return fn(); });
+            this._onStartFns = [];
+            this._started = true;
+        }
+        this.domPlayer.play();
+    };
+    WebAnimationsPlayer.prototype.pause = function () {
+        this.init();
+        this.domPlayer.pause();
+    };
+    WebAnimationsPlayer.prototype.finish = function () {
+        this.init();
+        this._onFinish();
+        this.domPlayer.finish();
+    };
+    WebAnimationsPlayer.prototype.reset = function () {
+        this._resetDomPlayerState();
+        this._destroyed = false;
+        this._finished = false;
+        this._started = false;
+    };
+    WebAnimationsPlayer.prototype._resetDomPlayerState = function () {
+        if (this.domPlayer) {
+            this.domPlayer.cancel();
+        }
+    };
+    WebAnimationsPlayer.prototype.restart = function () {
+        this.reset();
+        this.play();
+    };
+    WebAnimationsPlayer.prototype.hasStarted = function () { return this._started; };
+    WebAnimationsPlayer.prototype.destroy = function () {
+        if (!this._destroyed) {
+            this._destroyed = true;
+            this._resetDomPlayerState();
+            this._onFinish();
+            this._onDestroyFns.forEach(function (fn) { return fn(); });
+            this._onDestroyFns = [];
+        }
+    };
+    WebAnimationsPlayer.prototype.setPosition = function (p) { this.domPlayer.currentTime = p * this.time; };
+    WebAnimationsPlayer.prototype.getPosition = function () { return this.domPlayer.currentTime / this.time; };
+    Object.defineProperty(WebAnimationsPlayer.prototype, "totalTime", {
+        get: function () { return this._delay + this._duration; },
+        enumerable: true,
+        configurable: true
+    });
+    WebAnimationsPlayer.prototype.beforeDestroy = function () {
+        var _this = this;
+        var styles = {};
+        if (this.hasStarted()) {
+            Object.keys(this._finalKeyframe).forEach(function (prop) {
+                if (prop != 'offset') {
+                    styles[prop] =
+                        _this._finished ? _this._finalKeyframe[prop] : computeStyle(_this.element, prop);
+                }
+            });
+        }
+        this.currentSnapshot = styles;
+    };
+    /** @internal */
+    WebAnimationsPlayer.prototype.triggerCallback = function (phaseName) {
+        var methods = phaseName == 'start' ? this._onStartFns : this._onDoneFns;
+        methods.forEach(function (fn) { return fn(); });
+        methods.length = 0;
+    };
+    return WebAnimationsPlayer;
+}());
+
+var WebAnimationsDriver = /** @class */ (function () {
+    function WebAnimationsDriver() {
+        this._isNativeImpl = /\{\s*\[native\s+code\]\s*\}/.test(getElementAnimateFn().toString());
+        this._cssKeyframesDriver = new CssKeyframesDriver();
+    }
+    WebAnimationsDriver.prototype.validateStyleProperty = function (prop) { return validateStyleProperty(prop); };
+    WebAnimationsDriver.prototype.matchesElement = function (element, selector) {
+        return matchesElement(element, selector);
+    };
+    WebAnimationsDriver.prototype.containsElement = function (elm1, elm2) { return containsElement(elm1, elm2); };
+    WebAnimationsDriver.prototype.query = function (element, selector, multi) {
+        return invokeQuery(element, selector, multi);
+    };
+    WebAnimationsDriver.prototype.computeStyle = function (element, prop, defaultValue) {
+        return window.getComputedStyle(element)[prop];
+    };
+    WebAnimationsDriver.prototype.overrideWebAnimationsSupport = function (supported) { this._isNativeImpl = supported; };
+    WebAnimationsDriver.prototype.animate = function (element, keyframes, duration, delay, easing, previousPlayers, scrubberAccessRequested) {
+        if (previousPlayers === void 0) { previousPlayers = []; }
+        var useKeyframes = !scrubberAccessRequested && !this._isNativeImpl;
+        if (useKeyframes) {
+            return this._cssKeyframesDriver.animate(element, keyframes, duration, delay, easing, previousPlayers);
+        }
+        var fill = delay == 0 ? 'both' : 'forwards';
+        var playerOptions = { duration: duration, delay: delay, fill: fill };
+        // we check for this to avoid having a null|undefined value be present
+        // for the easing (which results in an error for certain browsers #9752)
+        if (easing) {
+            playerOptions['easing'] = easing;
+        }
+        var previousStyles = {};
+        var previousWebAnimationPlayers = previousPlayers.filter(function (player) { return player instanceof WebAnimationsPlayer; });
+        if (allowPreviousPlayerStylesMerge(duration, delay)) {
+            previousWebAnimationPlayers.forEach(function (player) {
+                var styles = player.currentSnapshot;
+                Object.keys(styles).forEach(function (prop) { return previousStyles[prop] = styles[prop]; });
+            });
+        }
+        keyframes = keyframes.map(function (styles) { return copyStyles(styles, false); });
+        keyframes = balancePreviousStylesIntoKeyframes(element, keyframes, previousStyles);
+        return new WebAnimationsPlayer(element, keyframes, playerOptions);
+    };
+    return WebAnimationsDriver;
+}());
+function supportsWebAnimations() {
+    return typeof getElementAnimateFn() === 'function';
+}
+function getElementAnimateFn() {
+    return (isBrowser() && Element.prototype['animate']) || {};
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=browser.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/a11y.es5.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/a11y.es5.js ***!
+  \****************************************************/
+/*! exports provided: MESSAGES_CONTAINER_ID, CDK_DESCRIBEDBY_ID_PREFIX, CDK_DESCRIBEDBY_HOST_ATTRIBUTE, AriaDescriber, ARIA_DESCRIBER_PROVIDER_FACTORY, ARIA_DESCRIBER_PROVIDER, ActiveDescendantKeyManager, FocusKeyManager, ListKeyManager, FocusTrap, FocusTrapFactory, CdkTrapFocus, InteractivityChecker, LiveAnnouncer, CdkAriaLive, LIVE_ANNOUNCER_PROVIDER_FACTORY, LIVE_ANNOUNCER_PROVIDER, LIVE_ANNOUNCER_ELEMENT_TOKEN, LIVE_ANNOUNCER_ELEMENT_TOKEN_FACTORY, TOUCH_BUFFER_MS, FocusMonitor, CdkMonitorFocus, FOCUS_MONITOR_PROVIDER_FACTORY, FOCUS_MONITOR_PROVIDER, isFakeMousedownFromScreenReader, A11yModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MESSAGES_CONTAINER_ID", function() { return MESSAGES_CONTAINER_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CDK_DESCRIBEDBY_ID_PREFIX", function() { return CDK_DESCRIBEDBY_ID_PREFIX; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CDK_DESCRIBEDBY_HOST_ATTRIBUTE", function() { return CDK_DESCRIBEDBY_HOST_ATTRIBUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AriaDescriber", function() { return AriaDescriber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ARIA_DESCRIBER_PROVIDER_FACTORY", function() { return ARIA_DESCRIBER_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ARIA_DESCRIBER_PROVIDER", function() { return ARIA_DESCRIBER_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActiveDescendantKeyManager", function() { return ActiveDescendantKeyManager; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FocusKeyManager", function() { return FocusKeyManager; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListKeyManager", function() { return ListKeyManager; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FocusTrap", function() { return FocusTrap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FocusTrapFactory", function() { return FocusTrapFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkTrapFocus", function() { return CdkTrapFocus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InteractivityChecker", function() { return InteractivityChecker; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LiveAnnouncer", function() { return LiveAnnouncer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkAriaLive", function() { return CdkAriaLive; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LIVE_ANNOUNCER_PROVIDER_FACTORY", function() { return LIVE_ANNOUNCER_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LIVE_ANNOUNCER_PROVIDER", function() { return LIVE_ANNOUNCER_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LIVE_ANNOUNCER_ELEMENT_TOKEN", function() { return LIVE_ANNOUNCER_ELEMENT_TOKEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LIVE_ANNOUNCER_ELEMENT_TOKEN_FACTORY", function() { return LIVE_ANNOUNCER_ELEMENT_TOKEN_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOUCH_BUFFER_MS", function() { return TOUCH_BUFFER_MS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FocusMonitor", function() { return FocusMonitor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkMonitorFocus", function() { return CdkMonitorFocus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FOCUS_MONITOR_PROVIDER_FACTORY", function() { return FOCUS_MONITOR_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FOCUS_MONITOR_PROVIDER", function() { return FOCUS_MONITOR_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isFakeMousedownFromScreenReader", function() { return isFakeMousedownFromScreenReader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "A11yModule", function() { return A11yModule; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/keycodes */ "./node_modules/@angular/cdk/esm5/keycodes.es5.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/cdk/platform */ "./node_modules/@angular/cdk/esm5/platform.es5.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+/* harmony import */ var _angular_cdk_observers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/cdk/observers */ "./node_modules/@angular/cdk/esm5/observers.es5.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * IDs are deliminated by an empty space, as per the spec.
+ */
+var /** @type {?} */ ID_DELIMINATOR = ' ';
+/**
+ * Adds the given ID to the specified ARIA attribute on an element.
+ * Used for attributes such as aria-labelledby, aria-owns, etc.
+ * @param {?} el
+ * @param {?} attr
+ * @param {?} id
+ * @return {?}
+ */
+function addAriaReferencedId(el, attr, id) {
+    var /** @type {?} */ ids = getAriaReferenceIds(el, attr);
+    if (ids.some(function (existingId) { return existingId.trim() == id.trim(); })) {
+        return;
+    }
+    ids.push(id.trim());
+    el.setAttribute(attr, ids.join(ID_DELIMINATOR));
+}
+/**
+ * Removes the given ID from the specified ARIA attribute on an element.
+ * Used for attributes such as aria-labelledby, aria-owns, etc.
+ * @param {?} el
+ * @param {?} attr
+ * @param {?} id
+ * @return {?}
+ */
+function removeAriaReferencedId(el, attr, id) {
+    var /** @type {?} */ ids = getAriaReferenceIds(el, attr);
+    var /** @type {?} */ filteredIds = ids.filter(function (val) { return val != id.trim(); });
+    el.setAttribute(attr, filteredIds.join(ID_DELIMINATOR));
+}
+/**
+ * Gets the list of IDs referenced by the given ARIA attribute on an element.
+ * Used for attributes such as aria-labelledby, aria-owns, etc.
+ * @param {?} el
+ * @param {?} attr
+ * @return {?}
+ */
+function getAriaReferenceIds(el, attr) {
+    // Get string array of all individual ids (whitespace deliminated) in the attribute value
+    return (el.getAttribute(attr) || '').match(/\S+/g) || [];
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * ID used for the body container where all messages are appended.
+ */
+var /** @type {?} */ MESSAGES_CONTAINER_ID = 'cdk-describedby-message-container';
+/**
+ * ID prefix used for each created message element.
+ */
+var /** @type {?} */ CDK_DESCRIBEDBY_ID_PREFIX = 'cdk-describedby-message';
+/**
+ * Attribute given to each host element that is described by a message element.
+ */
+var /** @type {?} */ CDK_DESCRIBEDBY_HOST_ATTRIBUTE = 'cdk-describedby-host';
+/**
+ * Global incremental identifier for each registered message element.
+ */
+var /** @type {?} */ nextId = 0;
+/**
+ * Global map of all registered message elements that have been placed into the document.
+ */
+var /** @type {?} */ messageRegistry = new Map();
+/**
+ * Container for all registered messages.
+ */
+var /** @type {?} */ messagesContainer = null;
+/**
+ * Utility that creates visually hidden elements with a message content. Useful for elements that
+ * want to use aria-describedby to further describe themselves without adding additional visual
+ * content.
+ * \@docs-private
+ */
+var AriaDescriber = /** @class */ (function () {
+    function AriaDescriber(_document) {
+        this._document = _document;
+    }
+    /**
+     * Adds to the host element an aria-describedby reference to a hidden element that contains
+     * the message. If the same message has already been registered, then it will reuse the created
+     * message element.
+     */
+    /**
+     * Adds to the host element an aria-describedby reference to a hidden element that contains
+     * the message. If the same message has already been registered, then it will reuse the created
+     * message element.
+     * @param {?} hostElement
+     * @param {?} message
+     * @return {?}
+     */
+    AriaDescriber.prototype.describe = /**
+     * Adds to the host element an aria-describedby reference to a hidden element that contains
+     * the message. If the same message has already been registered, then it will reuse the created
+     * message element.
+     * @param {?} hostElement
+     * @param {?} message
+     * @return {?}
+     */
+    function (hostElement, message) {
+        if (!this._canBeDescribed(hostElement, message)) {
+            return;
+        }
+        if (!messageRegistry.has(message)) {
+            this._createMessageElement(message);
+        }
+        if (!this._isElementDescribedByMessage(hostElement, message)) {
+            this._addMessageReference(hostElement, message);
+        }
+    };
+    /** Removes the host element's aria-describedby reference to the message element. */
+    /**
+     * Removes the host element's aria-describedby reference to the message element.
+     * @param {?} hostElement
+     * @param {?} message
+     * @return {?}
+     */
+    AriaDescriber.prototype.removeDescription = /**
+     * Removes the host element's aria-describedby reference to the message element.
+     * @param {?} hostElement
+     * @param {?} message
+     * @return {?}
+     */
+    function (hostElement, message) {
+        if (!this._canBeDescribed(hostElement, message)) {
+            return;
+        }
+        if (this._isElementDescribedByMessage(hostElement, message)) {
+            this._removeMessageReference(hostElement, message);
+        }
+        var /** @type {?} */ registeredMessage = messageRegistry.get(message);
+        if (registeredMessage && registeredMessage.referenceCount === 0) {
+            this._deleteMessageElement(message);
+        }
+        if (messagesContainer && messagesContainer.childNodes.length === 0) {
+            this._deleteMessagesContainer();
+        }
+    };
+    /** Unregisters all created message elements and removes the message container. */
+    /**
+     * Unregisters all created message elements and removes the message container.
+     * @return {?}
+     */
+    AriaDescriber.prototype.ngOnDestroy = /**
+     * Unregisters all created message elements and removes the message container.
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ describedElements = this._document.querySelectorAll("[" + CDK_DESCRIBEDBY_HOST_ATTRIBUTE + "]");
+        for (var /** @type {?} */ i = 0; i < describedElements.length; i++) {
+            this._removeCdkDescribedByReferenceIds(describedElements[i]);
+            describedElements[i].removeAttribute(CDK_DESCRIBEDBY_HOST_ATTRIBUTE);
+        }
+        if (messagesContainer) {
+            this._deleteMessagesContainer();
+        }
+        messageRegistry.clear();
+    };
+    /**
+     * Creates a new element in the visually hidden message container element with the message
+     * as its content and adds it to the message registry.
+     * @param {?} message
+     * @return {?}
+     */
+    AriaDescriber.prototype._createMessageElement = /**
+     * Creates a new element in the visually hidden message container element with the message
+     * as its content and adds it to the message registry.
+     * @param {?} message
+     * @return {?}
+     */
+    function (message) {
+        var /** @type {?} */ messageElement = this._document.createElement('div');
+        messageElement.setAttribute('id', CDK_DESCRIBEDBY_ID_PREFIX + "-" + nextId++);
+        messageElement.appendChild(/** @type {?} */ ((this._document.createTextNode(message))));
+        this._createMessagesContainer(); /** @type {?} */
+        ((messagesContainer)).appendChild(messageElement);
+        messageRegistry.set(message, { messageElement: messageElement, referenceCount: 0 });
+    };
+    /**
+     * Deletes the message element from the global messages container.
+     * @param {?} message
+     * @return {?}
+     */
+    AriaDescriber.prototype._deleteMessageElement = /**
+     * Deletes the message element from the global messages container.
+     * @param {?} message
+     * @return {?}
+     */
+    function (message) {
+        var /** @type {?} */ registeredMessage = messageRegistry.get(message);
+        var /** @type {?} */ messageElement = registeredMessage && registeredMessage.messageElement;
+        if (messagesContainer && messageElement) {
+            messagesContainer.removeChild(messageElement);
+        }
+        messageRegistry.delete(message);
+    };
+    /**
+     * Creates the global container for all aria-describedby messages.
+     * @return {?}
+     */
+    AriaDescriber.prototype._createMessagesContainer = /**
+     * Creates the global container for all aria-describedby messages.
+     * @return {?}
+     */
+    function () {
+        if (!messagesContainer) {
+            var /** @type {?} */ preExistingContainer = this._document.getElementById(MESSAGES_CONTAINER_ID);
+            // When going from the server to the client, we may end up in a situation where there's
+            // already a container on the page, but we don't have a reference to it. Clear the
+            // old container so we don't get duplicates. Doing this, instead of emptying the previous
+            // container, should be slightly faster.
+            if (preExistingContainer) {
+                /** @type {?} */ ((preExistingContainer.parentNode)).removeChild(preExistingContainer);
+            }
+            messagesContainer = this._document.createElement('div');
+            messagesContainer.id = MESSAGES_CONTAINER_ID;
+            messagesContainer.setAttribute('aria-hidden', 'true');
+            messagesContainer.style.display = 'none';
+            this._document.body.appendChild(messagesContainer);
+        }
+    };
+    /**
+     * Deletes the global messages container.
+     * @return {?}
+     */
+    AriaDescriber.prototype._deleteMessagesContainer = /**
+     * Deletes the global messages container.
+     * @return {?}
+     */
+    function () {
+        if (messagesContainer && messagesContainer.parentNode) {
+            messagesContainer.parentNode.removeChild(messagesContainer);
+            messagesContainer = null;
+        }
+    };
+    /**
+     * Removes all cdk-describedby messages that are hosted through the element.
+     * @param {?} element
+     * @return {?}
+     */
+    AriaDescriber.prototype._removeCdkDescribedByReferenceIds = /**
+     * Removes all cdk-describedby messages that are hosted through the element.
+     * @param {?} element
+     * @return {?}
+     */
+    function (element) {
+        // Remove all aria-describedby reference IDs that are prefixed by CDK_DESCRIBEDBY_ID_PREFIX
+        var /** @type {?} */ originalReferenceIds = getAriaReferenceIds(element, 'aria-describedby')
+            .filter(function (id) { return id.indexOf(CDK_DESCRIBEDBY_ID_PREFIX) != 0; });
+        element.setAttribute('aria-describedby', originalReferenceIds.join(' '));
+    };
+    /**
+     * Adds a message reference to the element using aria-describedby and increments the registered
+     * message's reference count.
+     * @param {?} element
+     * @param {?} message
+     * @return {?}
+     */
+    AriaDescriber.prototype._addMessageReference = /**
+     * Adds a message reference to the element using aria-describedby and increments the registered
+     * message's reference count.
+     * @param {?} element
+     * @param {?} message
+     * @return {?}
+     */
+    function (element, message) {
+        var /** @type {?} */ registeredMessage = /** @type {?} */ ((messageRegistry.get(message)));
+        // Add the aria-describedby reference and set the
+        // describedby_host attribute to mark the element.
+        addAriaReferencedId(element, 'aria-describedby', registeredMessage.messageElement.id);
+        element.setAttribute(CDK_DESCRIBEDBY_HOST_ATTRIBUTE, '');
+        registeredMessage.referenceCount++;
+    };
+    /**
+     * Removes a message reference from the element using aria-describedby
+     * and decrements the registered message's reference count.
+     * @param {?} element
+     * @param {?} message
+     * @return {?}
+     */
+    AriaDescriber.prototype._removeMessageReference = /**
+     * Removes a message reference from the element using aria-describedby
+     * and decrements the registered message's reference count.
+     * @param {?} element
+     * @param {?} message
+     * @return {?}
+     */
+    function (element, message) {
+        var /** @type {?} */ registeredMessage = /** @type {?} */ ((messageRegistry.get(message)));
+        registeredMessage.referenceCount--;
+        removeAriaReferencedId(element, 'aria-describedby', registeredMessage.messageElement.id);
+        element.removeAttribute(CDK_DESCRIBEDBY_HOST_ATTRIBUTE);
+    };
+    /**
+     * Returns true if the element has been described by the provided message ID.
+     * @param {?} element
+     * @param {?} message
+     * @return {?}
+     */
+    AriaDescriber.prototype._isElementDescribedByMessage = /**
+     * Returns true if the element has been described by the provided message ID.
+     * @param {?} element
+     * @param {?} message
+     * @return {?}
+     */
+    function (element, message) {
+        var /** @type {?} */ referenceIds = getAriaReferenceIds(element, 'aria-describedby');
+        var /** @type {?} */ registeredMessage = messageRegistry.get(message);
+        var /** @type {?} */ messageId = registeredMessage && registeredMessage.messageElement.id;
+        return !!messageId && referenceIds.indexOf(messageId) != -1;
+    };
+    /**
+     * Determines whether a message can be described on a particular element.
+     * @param {?} element
+     * @param {?} message
+     * @return {?}
+     */
+    AriaDescriber.prototype._canBeDescribed = /**
+     * Determines whether a message can be described on a particular element.
+     * @param {?} element
+     * @param {?} message
+     * @return {?}
+     */
+    function (element, message) {
+        return element.nodeType === this._document.ELEMENT_NODE && message != null &&
+            !!("" + message).trim();
+    };
+    AriaDescriber.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    AriaDescriber.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"],] },] },
+    ]; };
+    /** @nocollapse */ AriaDescriber.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function AriaDescriber_Factory() { return new AriaDescriber(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"])); }, token: AriaDescriber, providedIn: "root" });
+    return AriaDescriber;
+}());
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ * @param {?} parentDispatcher
+ * @param {?} _document
+ * @return {?}
+ */
+function ARIA_DESCRIBER_PROVIDER_FACTORY(parentDispatcher, _document) {
+    return parentDispatcher || new AriaDescriber(_document);
+}
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ */
+var /** @type {?} */ ARIA_DESCRIBER_PROVIDER = {
+    // If there is already an AriaDescriber available, use that. Otherwise, provide a new one.
+    provide: AriaDescriber,
+    deps: [
+        [new _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_1__["SkipSelf"](), AriaDescriber],
+        /** @type {?} */ (_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"])
+    ],
+    useFactory: ARIA_DESCRIBER_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+// unsupported: template constraints.
+/**
+ * This class manages keyboard events for selectable lists. If you pass it a query list
+ * of items, it will set the active item correctly when arrow events occur.
+ * @template T
+ */
+var  
+// unsupported: template constraints.
+/**
+ * This class manages keyboard events for selectable lists. If you pass it a query list
+ * of items, it will set the active item correctly when arrow events occur.
+ * @template T
+ */
+ListKeyManager = /** @class */ (function () {
+    function ListKeyManager(_items) {
+        var _this = this;
+        this._items = _items;
+        this._activeItemIndex = -1;
+        this._wrap = false;
+        this._letterKeyStream = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this._typeaheadSubscription = rxjs__WEBPACK_IMPORTED_MODULE_2__["Subscription"].EMPTY;
+        this._vertical = true;
+        /**
+         * Predicate function that can be used to check whether an item should be skipped
+         * by the key manager. By default, disabled items are skipped.
+         */
+        this._skipPredicateFn = function (item) { return item.disabled; };
+        this._pressedLetters = [];
+        /**
+         * Stream that emits any time the TAB key is pressed, so components can react
+         * when focus is shifted off of the list.
+         */
+        this.tabOut = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Stream that emits whenever the active item of the list manager changes.
+         */
+        this.change = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        // We allow for the items to be an array because, in some cases, the consumer may
+        // not have access to a QueryList of the items they want to manage (e.g. when the
+        // items aren't being collected via `ViewChildren` or `ContentChildren`).
+        if (_items instanceof _angular_core__WEBPACK_IMPORTED_MODULE_1__["QueryList"]) {
+            _items.changes.subscribe(function (newItems) {
+                if (_this._activeItem) {
+                    var /** @type {?} */ itemArray = newItems.toArray();
+                    var /** @type {?} */ newIndex = itemArray.indexOf(_this._activeItem);
+                    if (newIndex > -1 && newIndex !== _this._activeItemIndex) {
+                        _this._activeItemIndex = newIndex;
+                    }
+                }
+            });
+        }
+    }
+    /**
+     * Sets the predicate function that determines which items should be skipped by the
+     * list key manager.
+     * @param predicate Function that determines whether the given item should be skipped.
+     */
+    /**
+     * Sets the predicate function that determines which items should be skipped by the
+     * list key manager.
+     * @param {?} predicate Function that determines whether the given item should be skipped.
+     * @return {?}
+     */
+    ListKeyManager.prototype.skipPredicate = /**
+     * Sets the predicate function that determines which items should be skipped by the
+     * list key manager.
+     * @param {?} predicate Function that determines whether the given item should be skipped.
+     * @return {?}
+     */
+    function (predicate) {
+        this._skipPredicateFn = predicate;
+        return this;
+    };
+    /**
+     * Configures wrapping mode, which determines whether the active item will wrap to
+     * the other end of list when there are no more items in the given direction.
+     * @param shouldWrap Whether the list should wrap when reaching the end.
+     */
+    /**
+     * Configures wrapping mode, which determines whether the active item will wrap to
+     * the other end of list when there are no more items in the given direction.
+     * @param {?=} shouldWrap Whether the list should wrap when reaching the end.
+     * @return {?}
+     */
+    ListKeyManager.prototype.withWrap = /**
+     * Configures wrapping mode, which determines whether the active item will wrap to
+     * the other end of list when there are no more items in the given direction.
+     * @param {?=} shouldWrap Whether the list should wrap when reaching the end.
+     * @return {?}
+     */
+    function (shouldWrap) {
+        if (shouldWrap === void 0) { shouldWrap = true; }
+        this._wrap = shouldWrap;
+        return this;
+    };
+    /**
+     * Configures whether the key manager should be able to move the selection vertically.
+     * @param enabled Whether vertical selection should be enabled.
+     */
+    /**
+     * Configures whether the key manager should be able to move the selection vertically.
+     * @param {?=} enabled Whether vertical selection should be enabled.
+     * @return {?}
+     */
+    ListKeyManager.prototype.withVerticalOrientation = /**
+     * Configures whether the key manager should be able to move the selection vertically.
+     * @param {?=} enabled Whether vertical selection should be enabled.
+     * @return {?}
+     */
+    function (enabled) {
+        if (enabled === void 0) { enabled = true; }
+        this._vertical = enabled;
+        return this;
+    };
+    /**
+     * Configures the key manager to move the selection horizontally.
+     * Passing in `null` will disable horizontal movement.
+     * @param direction Direction in which the selection can be moved.
+     */
+    /**
+     * Configures the key manager to move the selection horizontally.
+     * Passing in `null` will disable horizontal movement.
+     * @param {?} direction Direction in which the selection can be moved.
+     * @return {?}
+     */
+    ListKeyManager.prototype.withHorizontalOrientation = /**
+     * Configures the key manager to move the selection horizontally.
+     * Passing in `null` will disable horizontal movement.
+     * @param {?} direction Direction in which the selection can be moved.
+     * @return {?}
+     */
+    function (direction) {
+        this._horizontal = direction;
+        return this;
+    };
+    /**
+     * Turns on typeahead mode which allows users to set the active item by typing.
+     * @param debounceInterval Time to wait after the last keystroke before setting the active item.
+     */
+    /**
+     * Turns on typeahead mode which allows users to set the active item by typing.
+     * @param {?=} debounceInterval Time to wait after the last keystroke before setting the active item.
+     * @return {?}
+     */
+    ListKeyManager.prototype.withTypeAhead = /**
+     * Turns on typeahead mode which allows users to set the active item by typing.
+     * @param {?=} debounceInterval Time to wait after the last keystroke before setting the active item.
+     * @return {?}
+     */
+    function (debounceInterval) {
+        var _this = this;
+        if (debounceInterval === void 0) { debounceInterval = 200; }
+        if (this._items.length && this._items.some(function (item) { return typeof item.getLabel !== 'function'; })) {
+            throw Error('ListKeyManager items in typeahead mode must implement the `getLabel` method.');
+        }
+        this._typeaheadSubscription.unsubscribe();
+        // Debounce the presses of non-navigational keys, collect the ones that correspond to letters
+        // and convert those letters back into a string. Afterwards find the first item that starts
+        // with that string and select it.
+        this._typeaheadSubscription = this._letterKeyStream.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["tap"])(function (keyCode) { return _this._pressedLetters.push(keyCode); }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["debounceTime"])(debounceInterval), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["filter"])(function () { return _this._pressedLetters.length > 0; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(function () { return _this._pressedLetters.join(''); })).subscribe(function (inputString) {
+            var /** @type {?} */ items = _this._getItemsArray();
+            // Start at 1 because we want to start searching at the item immediately
+            // following the current active item.
+            for (var /** @type {?} */ i = 1; i < items.length + 1; i++) {
+                var /** @type {?} */ index = (_this._activeItemIndex + i) % items.length;
+                var /** @type {?} */ item = items[index];
+                if (!_this._skipPredicateFn(item) && /** @type {?} */ ((item.getLabel))().toUpperCase().trim().indexOf(inputString) === 0) {
+                    _this.setActiveItem(index);
+                    break;
+                }
+            }
+            _this._pressedLetters = [];
+        });
+        return this;
+    };
+    /**
+     * @param {?} item
+     * @return {?}
+     */
+    ListKeyManager.prototype.setActiveItem = /**
+     * @param {?} item
+     * @return {?}
+     */
+    function (item) {
+        var /** @type {?} */ previousIndex = this._activeItemIndex;
+        this.updateActiveItem(item);
+        if (this._activeItemIndex !== previousIndex) {
+            this.change.next(this._activeItemIndex);
+        }
+    };
+    /**
+     * Sets the active item depending on the key event passed in.
+     * @param event Keyboard event to be used for determining which element should be active.
+     */
+    /**
+     * Sets the active item depending on the key event passed in.
+     * @param {?} event Keyboard event to be used for determining which element should be active.
+     * @return {?}
+     */
+    ListKeyManager.prototype.onKeydown = /**
+     * Sets the active item depending on the key event passed in.
+     * @param {?} event Keyboard event to be used for determining which element should be active.
+     * @return {?}
+     */
+    function (event) {
+        var /** @type {?} */ keyCode = event.keyCode;
+        switch (keyCode) {
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["TAB"]:
+                this.tabOut.next();
+                return;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["DOWN_ARROW"]:
+                if (this._vertical) {
+                    this.setNextItemActive();
+                    break;
+                }
+                else {
+                    return;
+                }
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["UP_ARROW"]:
+                if (this._vertical) {
+                    this.setPreviousItemActive();
+                    break;
+                }
+                else {
+                    return;
+                }
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["RIGHT_ARROW"]:
+                if (this._horizontal === 'ltr') {
+                    this.setNextItemActive();
+                    break;
+                }
+                else if (this._horizontal === 'rtl') {
+                    this.setPreviousItemActive();
+                    break;
+                }
+                else {
+                    return;
+                }
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["LEFT_ARROW"]:
+                if (this._horizontal === 'ltr') {
+                    this.setPreviousItemActive();
+                    break;
+                }
+                else if (this._horizontal === 'rtl') {
+                    this.setNextItemActive();
+                    break;
+                }
+                else {
+                    return;
+                }
+            default:
+                // Attempt to use the `event.key` which also maps it to the user's keyboard language,
+                // otherwise fall back to resolving alphanumeric characters via the keyCode.
+                if (event.key && event.key.length === 1) {
+                    this._letterKeyStream.next(event.key.toLocaleUpperCase());
+                }
+                else if ((keyCode >= _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["A"] && keyCode <= _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["Z"]) || (keyCode >= _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["ZERO"] && keyCode <= _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["NINE"])) {
+                    this._letterKeyStream.next(String.fromCharCode(keyCode));
+                }
+                // Note that we return here, in order to avoid preventing
+                // the default action of non-navigational keys.
+                return;
+        }
+        this._pressedLetters = [];
+        event.preventDefault();
+    };
+    Object.defineProperty(ListKeyManager.prototype, "activeItemIndex", {
+        /** Index of the currently active item. */
+        get: /**
+         * Index of the currently active item.
+         * @return {?}
+         */
+        function () {
+            return this._activeItemIndex;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ListKeyManager.prototype, "activeItem", {
+        /** The active item. */
+        get: /**
+         * The active item.
+         * @return {?}
+         */
+        function () {
+            return this._activeItem;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** Sets the active item to the first enabled item in the list. */
+    /**
+     * Sets the active item to the first enabled item in the list.
+     * @return {?}
+     */
+    ListKeyManager.prototype.setFirstItemActive = /**
+     * Sets the active item to the first enabled item in the list.
+     * @return {?}
+     */
+    function () {
+        this._setActiveItemByIndex(0, 1);
+    };
+    /** Sets the active item to the last enabled item in the list. */
+    /**
+     * Sets the active item to the last enabled item in the list.
+     * @return {?}
+     */
+    ListKeyManager.prototype.setLastItemActive = /**
+     * Sets the active item to the last enabled item in the list.
+     * @return {?}
+     */
+    function () {
+        this._setActiveItemByIndex(this._items.length - 1, -1);
+    };
+    /** Sets the active item to the next enabled item in the list. */
+    /**
+     * Sets the active item to the next enabled item in the list.
+     * @return {?}
+     */
+    ListKeyManager.prototype.setNextItemActive = /**
+     * Sets the active item to the next enabled item in the list.
+     * @return {?}
+     */
+    function () {
+        this._activeItemIndex < 0 ? this.setFirstItemActive() : this._setActiveItemByDelta(1);
+    };
+    /** Sets the active item to a previous enabled item in the list. */
+    /**
+     * Sets the active item to a previous enabled item in the list.
+     * @return {?}
+     */
+    ListKeyManager.prototype.setPreviousItemActive = /**
+     * Sets the active item to a previous enabled item in the list.
+     * @return {?}
+     */
+    function () {
+        this._activeItemIndex < 0 && this._wrap ? this.setLastItemActive()
+            : this._setActiveItemByDelta(-1);
+    };
+    /**
+     * @param {?} item
+     * @return {?}
+     */
+    ListKeyManager.prototype.updateActiveItem = /**
+     * @param {?} item
+     * @return {?}
+     */
+    function (item) {
+        var /** @type {?} */ itemArray = this._getItemsArray();
+        var /** @type {?} */ index = typeof item === 'number' ? item : itemArray.indexOf(item);
+        this._activeItemIndex = index;
+        this._activeItem = itemArray[index];
+    };
+    /**
+     * Allows setting of the activeItemIndex without any other effects.
+     * @param index The new activeItemIndex.
+     * @deprecated Use `updateActiveItem` instead.
+     * @breaking-change 7.0.0
+     */
+    /**
+     * Allows setting of the activeItemIndex without any other effects.
+     * @deprecated Use `updateActiveItem` instead.
+     * \@breaking-change 7.0.0
+     * @param {?} index The new activeItemIndex.
+     * @return {?}
+     */
+    ListKeyManager.prototype.updateActiveItemIndex = /**
+     * Allows setting of the activeItemIndex without any other effects.
+     * @deprecated Use `updateActiveItem` instead.
+     * \@breaking-change 7.0.0
+     * @param {?} index The new activeItemIndex.
+     * @return {?}
+     */
+    function (index) {
+        this.updateActiveItem(index);
+    };
+    /**
+     * This method sets the active item, given a list of items and the delta between the
+     * currently active item and the new active item. It will calculate differently
+     * depending on whether wrap mode is turned on.
+     * @param {?} delta
+     * @return {?}
+     */
+    ListKeyManager.prototype._setActiveItemByDelta = /**
+     * This method sets the active item, given a list of items and the delta between the
+     * currently active item and the new active item. It will calculate differently
+     * depending on whether wrap mode is turned on.
+     * @param {?} delta
+     * @return {?}
+     */
+    function (delta) {
+        this._wrap ? this._setActiveInWrapMode(delta) : this._setActiveInDefaultMode(delta);
+    };
+    /**
+     * Sets the active item properly given "wrap" mode. In other words, it will continue to move
+     * down the list until it finds an item that is not disabled, and it will wrap if it
+     * encounters either end of the list.
+     * @param {?} delta
+     * @return {?}
+     */
+    ListKeyManager.prototype._setActiveInWrapMode = /**
+     * Sets the active item properly given "wrap" mode. In other words, it will continue to move
+     * down the list until it finds an item that is not disabled, and it will wrap if it
+     * encounters either end of the list.
+     * @param {?} delta
+     * @return {?}
+     */
+    function (delta) {
+        var /** @type {?} */ items = this._getItemsArray();
+        for (var /** @type {?} */ i = 1; i <= items.length; i++) {
+            var /** @type {?} */ index = (this._activeItemIndex + (delta * i) + items.length) % items.length;
+            var /** @type {?} */ item = items[index];
+            if (!this._skipPredicateFn(item)) {
+                this.setActiveItem(index);
+                return;
+            }
+        }
+    };
+    /**
+     * Sets the active item properly given the default mode. In other words, it will
+     * continue to move down the list until it finds an item that is not disabled. If
+     * it encounters either end of the list, it will stop and not wrap.
+     * @param {?} delta
+     * @return {?}
+     */
+    ListKeyManager.prototype._setActiveInDefaultMode = /**
+     * Sets the active item properly given the default mode. In other words, it will
+     * continue to move down the list until it finds an item that is not disabled. If
+     * it encounters either end of the list, it will stop and not wrap.
+     * @param {?} delta
+     * @return {?}
+     */
+    function (delta) {
+        this._setActiveItemByIndex(this._activeItemIndex + delta, delta);
+    };
+    /**
+     * Sets the active item to the first enabled item starting at the index specified. If the
+     * item is disabled, it will move in the fallbackDelta direction until it either
+     * finds an enabled item or encounters the end of the list.
+     * @param {?} index
+     * @param {?} fallbackDelta
+     * @return {?}
+     */
+    ListKeyManager.prototype._setActiveItemByIndex = /**
+     * Sets the active item to the first enabled item starting at the index specified. If the
+     * item is disabled, it will move in the fallbackDelta direction until it either
+     * finds an enabled item or encounters the end of the list.
+     * @param {?} index
+     * @param {?} fallbackDelta
+     * @return {?}
+     */
+    function (index, fallbackDelta) {
+        var /** @type {?} */ items = this._getItemsArray();
+        if (!items[index]) {
+            return;
+        }
+        while (this._skipPredicateFn(items[index])) {
+            index += fallbackDelta;
+            if (!items[index]) {
+                return;
+            }
+        }
+        this.setActiveItem(index);
+    };
+    /**
+     * Returns the items as an array.
+     * @return {?}
+     */
+    ListKeyManager.prototype._getItemsArray = /**
+     * Returns the items as an array.
+     * @return {?}
+     */
+    function () {
+        return this._items instanceof _angular_core__WEBPACK_IMPORTED_MODULE_1__["QueryList"] ? this._items.toArray() : this._items;
+    };
+    return ListKeyManager;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @template T
+ */
+var  /**
+ * @template T
+ */
+ActiveDescendantKeyManager = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_5__["__extends"])(ActiveDescendantKeyManager, _super);
+    function ActiveDescendantKeyManager() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * @param {?} index
+     * @return {?}
+     */
+    ActiveDescendantKeyManager.prototype.setActiveItem = /**
+     * @param {?} index
+     * @return {?}
+     */
+    function (index) {
+        if (this.activeItem) {
+            this.activeItem.setInactiveStyles();
+        }
+        _super.prototype.setActiveItem.call(this, index);
+        if (this.activeItem) {
+            this.activeItem.setActiveStyles();
+        }
+    };
+    return ActiveDescendantKeyManager;
+}(ListKeyManager));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @template T
+ */
+var  /**
+ * @template T
+ */
+FocusKeyManager = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_5__["__extends"])(FocusKeyManager, _super);
+    function FocusKeyManager() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._origin = 'program';
+        return _this;
+    }
+    /**
+     * Sets the focus origin that will be passed in to the items for any subsequent `focus` calls.
+     * @param origin Focus origin to be used when focusing items.
+     */
+    /**
+     * Sets the focus origin that will be passed in to the items for any subsequent `focus` calls.
+     * @param {?} origin Focus origin to be used when focusing items.
+     * @return {?}
+     */
+    FocusKeyManager.prototype.setFocusOrigin = /**
+     * Sets the focus origin that will be passed in to the items for any subsequent `focus` calls.
+     * @param {?} origin Focus origin to be used when focusing items.
+     * @return {?}
+     */
+    function (origin) {
+        this._origin = origin;
+        return this;
+    };
+    /**
+     * @param {?} item
+     * @return {?}
+     */
+    FocusKeyManager.prototype.setActiveItem = /**
+     * @param {?} item
+     * @return {?}
+     */
+    function (item) {
+        _super.prototype.setActiveItem.call(this, item);
+        if (this.activeItem) {
+            this.activeItem.focus(this._origin);
+        }
+    };
+    return FocusKeyManager;
+}(ListKeyManager));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Utility for checking the interactivity of an element, such as whether is is focusable or
+ * tabbable.
+ */
+var InteractivityChecker = /** @class */ (function () {
+    function InteractivityChecker(_platform) {
+        this._platform = _platform;
+    }
+    /**
+     * Gets whether an element is disabled.
+     *
+     * @param element Element to be checked.
+     * @returns Whether the element is disabled.
+     */
+    /**
+     * Gets whether an element is disabled.
+     *
+     * @param {?} element Element to be checked.
+     * @return {?} Whether the element is disabled.
+     */
+    InteractivityChecker.prototype.isDisabled = /**
+     * Gets whether an element is disabled.
+     *
+     * @param {?} element Element to be checked.
+     * @return {?} Whether the element is disabled.
+     */
+    function (element) {
+        // This does not capture some cases, such as a non-form control with a disabled attribute or
+        // a form control inside of a disabled form, but should capture the most common cases.
+        return element.hasAttribute('disabled');
+    };
+    /**
+     * Gets whether an element is visible for the purposes of interactivity.
+     *
+     * This will capture states like `display: none` and `visibility: hidden`, but not things like
+     * being clipped by an `overflow: hidden` parent or being outside the viewport.
+     *
+     * @returns Whether the element is visible.
+     */
+    /**
+     * Gets whether an element is visible for the purposes of interactivity.
+     *
+     * This will capture states like `display: none` and `visibility: hidden`, but not things like
+     * being clipped by an `overflow: hidden` parent or being outside the viewport.
+     *
+     * @param {?} element
+     * @return {?} Whether the element is visible.
+     */
+    InteractivityChecker.prototype.isVisible = /**
+     * Gets whether an element is visible for the purposes of interactivity.
+     *
+     * This will capture states like `display: none` and `visibility: hidden`, but not things like
+     * being clipped by an `overflow: hidden` parent or being outside the viewport.
+     *
+     * @param {?} element
+     * @return {?} Whether the element is visible.
+     */
+    function (element) {
+        return hasGeometry(element) && getComputedStyle(element).visibility === 'visible';
+    };
+    /**
+     * Gets whether an element can be reached via Tab key.
+     * Assumes that the element has already been checked with isFocusable.
+     *
+     * @param element Element to be checked.
+     * @returns Whether the element is tabbable.
+     */
+    /**
+     * Gets whether an element can be reached via Tab key.
+     * Assumes that the element has already been checked with isFocusable.
+     *
+     * @param {?} element Element to be checked.
+     * @return {?} Whether the element is tabbable.
+     */
+    InteractivityChecker.prototype.isTabbable = /**
+     * Gets whether an element can be reached via Tab key.
+     * Assumes that the element has already been checked with isFocusable.
+     *
+     * @param {?} element Element to be checked.
+     * @return {?} Whether the element is tabbable.
+     */
+    function (element) {
+        // Nothing is tabbable on the the server 😎
+        if (!this._platform.isBrowser) {
+            return false;
+        }
+        var /** @type {?} */ frameElement = getFrameElement(getWindow(element));
+        if (frameElement) {
+            var /** @type {?} */ frameType = frameElement && frameElement.nodeName.toLowerCase();
+            // Frame elements inherit their tabindex onto all child elements.
+            if (getTabIndexValue(frameElement) === -1) {
+                return false;
+            }
+            // Webkit and Blink consider anything inside of an <object> element as non-tabbable.
+            if ((this._platform.BLINK || this._platform.WEBKIT) && frameType === 'object') {
+                return false;
+            }
+            // Webkit and Blink disable tabbing to an element inside of an invisible frame.
+            if ((this._platform.BLINK || this._platform.WEBKIT) && !this.isVisible(frameElement)) {
+                return false;
+            }
+        }
+        var /** @type {?} */ nodeName = element.nodeName.toLowerCase();
+        var /** @type {?} */ tabIndexValue = getTabIndexValue(element);
+        if (element.hasAttribute('contenteditable')) {
+            return tabIndexValue !== -1;
+        }
+        if (nodeName === 'iframe') {
+            // The frames may be tabbable depending on content, but it's not possibly to reliably
+            // investigate the content of the frames.
+            return false;
+        }
+        if (nodeName === 'audio') {
+            if (!element.hasAttribute('controls')) {
+                // By default an <audio> element without the controls enabled is not tabbable.
+                return false;
+            }
+            else if (this._platform.BLINK) {
+                // In Blink <audio controls> elements are always tabbable.
+                return true;
+            }
+        }
+        if (nodeName === 'video') {
+            if (!element.hasAttribute('controls') && this._platform.TRIDENT) {
+                // In Trident a <video> element without the controls enabled is not tabbable.
+                return false;
+            }
+            else if (this._platform.BLINK || this._platform.FIREFOX) {
+                // In Chrome and Firefox <video controls> elements are always tabbable.
+                return true;
+            }
+        }
+        if (nodeName === 'object' && (this._platform.BLINK || this._platform.WEBKIT)) {
+            // In all Blink and WebKit based browsers <object> elements are never tabbable.
+            return false;
+        }
+        // In iOS the browser only considers some specific elements as tabbable.
+        if (this._platform.WEBKIT && this._platform.IOS && !isPotentiallyTabbableIOS(element)) {
+            return false;
+        }
+        return element.tabIndex >= 0;
+    };
+    /**
+     * Gets whether an element can be focused by the user.
+     *
+     * @param element Element to be checked.
+     * @returns Whether the element is focusable.
+     */
+    /**
+     * Gets whether an element can be focused by the user.
+     *
+     * @param {?} element Element to be checked.
+     * @return {?} Whether the element is focusable.
+     */
+    InteractivityChecker.prototype.isFocusable = /**
+     * Gets whether an element can be focused by the user.
+     *
+     * @param {?} element Element to be checked.
+     * @return {?} Whether the element is focusable.
+     */
+    function (element) {
+        // Perform checks in order of left to most expensive.
+        // Again, naive approach that does not capture many edge cases and browser quirks.
+        return isPotentiallyFocusable(element) && !this.isDisabled(element) && this.isVisible(element);
+    };
+    InteractivityChecker.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    InteractivityChecker.ctorParameters = function () { return [
+        { type: _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_6__["Platform"], },
+    ]; };
+    /** @nocollapse */ InteractivityChecker.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function InteractivityChecker_Factory() { return new InteractivityChecker(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_6__["Platform"])); }, token: InteractivityChecker, providedIn: "root" });
+    return InteractivityChecker;
+}());
+/**
+ * Returns the frame element from a window object. Since browsers like MS Edge throw errors if
+ * the frameElement property is being accessed from a different host address, this property
+ * should be accessed carefully.
+ * @param {?} window
+ * @return {?}
+ */
+function getFrameElement(window) {
+    try {
+        return /** @type {?} */ (window.frameElement);
+    }
+    catch (/** @type {?} */ e) {
+        return null;
+    }
+}
+/**
+ * Checks whether the specified element has any geometry / rectangles.
+ * @param {?} element
+ * @return {?}
+ */
+function hasGeometry(element) {
+    // Use logic from jQuery to check for an invisible element.
+    // See https://github.com/jquery/jquery/blob/master/src/css/hiddenVisibleSelectors.js#L12
+    return !!(element.offsetWidth || element.offsetHeight ||
+        (typeof element.getClientRects === 'function' && element.getClientRects().length));
+}
+/**
+ * Gets whether an element's
+ * @param {?} element
+ * @return {?}
+ */
+function isNativeFormElement(element) {
+    var /** @type {?} */ nodeName = element.nodeName.toLowerCase();
+    return nodeName === 'input' ||
+        nodeName === 'select' ||
+        nodeName === 'button' ||
+        nodeName === 'textarea';
+}
+/**
+ * Gets whether an element is an `<input type="hidden">`.
+ * @param {?} element
+ * @return {?}
+ */
+function isHiddenInput(element) {
+    return isInputElement(element) && element.type == 'hidden';
+}
+/**
+ * Gets whether an element is an anchor that has an href attribute.
+ * @param {?} element
+ * @return {?}
+ */
+function isAnchorWithHref(element) {
+    return isAnchorElement(element) && element.hasAttribute('href');
+}
+/**
+ * Gets whether an element is an input element.
+ * @param {?} element
+ * @return {?}
+ */
+function isInputElement(element) {
+    return element.nodeName.toLowerCase() == 'input';
+}
+/**
+ * Gets whether an element is an anchor element.
+ * @param {?} element
+ * @return {?}
+ */
+function isAnchorElement(element) {
+    return element.nodeName.toLowerCase() == 'a';
+}
+/**
+ * Gets whether an element has a valid tabindex.
+ * @param {?} element
+ * @return {?}
+ */
+function hasValidTabIndex(element) {
+    if (!element.hasAttribute('tabindex') || element.tabIndex === undefined) {
+        return false;
+    }
+    var /** @type {?} */ tabIndex = element.getAttribute('tabindex');
+    // IE11 parses tabindex="" as the value "-32768"
+    if (tabIndex == '-32768') {
+        return false;
+    }
+    return !!(tabIndex && !isNaN(parseInt(tabIndex, 10)));
+}
+/**
+ * Returns the parsed tabindex from the element attributes instead of returning the
+ * evaluated tabindex from the browsers defaults.
+ * @param {?} element
+ * @return {?}
+ */
+function getTabIndexValue(element) {
+    if (!hasValidTabIndex(element)) {
+        return null;
+    }
+    // See browser issue in Gecko https://bugzilla.mozilla.org/show_bug.cgi?id=1128054
+    var /** @type {?} */ tabIndex = parseInt(element.getAttribute('tabindex') || '', 10);
+    return isNaN(tabIndex) ? -1 : tabIndex;
+}
+/**
+ * Checks whether the specified element is potentially tabbable on iOS
+ * @param {?} element
+ * @return {?}
+ */
+function isPotentiallyTabbableIOS(element) {
+    var /** @type {?} */ nodeName = element.nodeName.toLowerCase();
+    var /** @type {?} */ inputType = nodeName === 'input' && (/** @type {?} */ (element)).type;
+    return inputType === 'text'
+        || inputType === 'password'
+        || nodeName === 'select'
+        || nodeName === 'textarea';
+}
+/**
+ * Gets whether an element is potentially focusable without taking current visible/disabled state
+ * into account.
+ * @param {?} element
+ * @return {?}
+ */
+function isPotentiallyFocusable(element) {
+    // Inputs are potentially focusable *unless* they're type="hidden".
+    if (isHiddenInput(element)) {
+        return false;
+    }
+    return isNativeFormElement(element) ||
+        isAnchorWithHref(element) ||
+        element.hasAttribute('contenteditable') ||
+        hasValidTabIndex(element);
+}
+/**
+ * Gets the parent window of a DOM node with regards of being inside of an iframe.
+ * @param {?} node
+ * @return {?}
+ */
+function getWindow(node) {
+    return node.ownerDocument.defaultView || window;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Class that allows for trapping focus within a DOM element.
+ *
+ * This class currently uses a relatively simple approach to focus trapping.
+ * It assumes that the tab order is the same as DOM order, which is not necessarily true.
+ * Things like `tabIndex > 0`, flex `order`, and shadow roots can cause to two to misalign.
+ */
+var  /**
+ * Class that allows for trapping focus within a DOM element.
+ *
+ * This class currently uses a relatively simple approach to focus trapping.
+ * It assumes that the tab order is the same as DOM order, which is not necessarily true.
+ * Things like `tabIndex > 0`, flex `order`, and shadow roots can cause to two to misalign.
+ */
+FocusTrap = /** @class */ (function () {
+    function FocusTrap(_element, _checker, _ngZone, _document, deferAnchors) {
+        if (deferAnchors === void 0) { deferAnchors = false; }
+        this._element = _element;
+        this._checker = _checker;
+        this._ngZone = _ngZone;
+        this._document = _document;
+        this._hasAttached = false;
+        this._enabled = true;
+        if (!deferAnchors) {
+            this.attachAnchors();
+        }
+    }
+    Object.defineProperty(FocusTrap.prototype, "enabled", {
+        /** Whether the focus trap is active. */
+        get: /**
+         * Whether the focus trap is active.
+         * @return {?}
+         */
+        function () { return this._enabled; },
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) {
+            this._enabled = val;
+            if (this._startAnchor && this._endAnchor) {
+                this._startAnchor.tabIndex = this._endAnchor.tabIndex = this._enabled ? 0 : -1;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** Destroys the focus trap by cleaning up the anchors. */
+    /**
+     * Destroys the focus trap by cleaning up the anchors.
+     * @return {?}
+     */
+    FocusTrap.prototype.destroy = /**
+     * Destroys the focus trap by cleaning up the anchors.
+     * @return {?}
+     */
+    function () {
+        if (this._startAnchor && this._startAnchor.parentNode) {
+            this._startAnchor.parentNode.removeChild(this._startAnchor);
+        }
+        if (this._endAnchor && this._endAnchor.parentNode) {
+            this._endAnchor.parentNode.removeChild(this._endAnchor);
+        }
+        this._startAnchor = this._endAnchor = null;
+    };
+    /**
+     * Inserts the anchors into the DOM. This is usually done automatically
+     * in the constructor, but can be deferred for cases like directives with `*ngIf`.
+     * @returns Whether the focus trap managed to attach successfuly. This may not be the case
+     * if the target element isn't currently in the DOM.
+     */
+    /**
+     * Inserts the anchors into the DOM. This is usually done automatically
+     * in the constructor, but can be deferred for cases like directives with `*ngIf`.
+     * @return {?} Whether the focus trap managed to attach successfuly. This may not be the case
+     * if the target element isn't currently in the DOM.
+     */
+    FocusTrap.prototype.attachAnchors = /**
+     * Inserts the anchors into the DOM. This is usually done automatically
+     * in the constructor, but can be deferred for cases like directives with `*ngIf`.
+     * @return {?} Whether the focus trap managed to attach successfuly. This may not be the case
+     * if the target element isn't currently in the DOM.
+     */
+    function () {
+        var _this = this;
+        // If we're not on the browser, there can be no focus to trap.
+        if (this._hasAttached) {
+            return true;
+        }
+        this._ngZone.runOutsideAngular(function () {
+            if (!_this._startAnchor) {
+                _this._startAnchor = _this._createAnchor(); /** @type {?} */
+                ((_this._startAnchor)).addEventListener('focus', function () { return _this.focusLastTabbableElement(); });
+            }
+            if (!_this._endAnchor) {
+                _this._endAnchor = _this._createAnchor(); /** @type {?} */
+                ((_this._endAnchor)).addEventListener('focus', function () { return _this.focusFirstTabbableElement(); });
+            }
+        });
+        if (this._element.parentNode) {
+            this._element.parentNode.insertBefore(/** @type {?} */ ((this._startAnchor)), this._element);
+            this._element.parentNode.insertBefore(/** @type {?} */ ((this._endAnchor)), this._element.nextSibling);
+            this._hasAttached = true;
+        }
+        return this._hasAttached;
+    };
+    /**
+     * Waits for the zone to stabilize, then either focuses the first element that the
+     * user specified, or the first tabbable element.
+     * @returns Returns a promise that resolves with a boolean, depending
+     * on whether focus was moved successfuly.
+     */
+    /**
+     * Waits for the zone to stabilize, then either focuses the first element that the
+     * user specified, or the first tabbable element.
+     * @return {?} Returns a promise that resolves with a boolean, depending
+     * on whether focus was moved successfuly.
+     */
+    FocusTrap.prototype.focusInitialElementWhenReady = /**
+     * Waits for the zone to stabilize, then either focuses the first element that the
+     * user specified, or the first tabbable element.
+     * @return {?} Returns a promise that resolves with a boolean, depending
+     * on whether focus was moved successfuly.
+     */
+    function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this._executeOnStable(function () { return resolve(_this.focusInitialElement()); });
+        });
+    };
+    /**
+     * Waits for the zone to stabilize, then focuses
+     * the first tabbable element within the focus trap region.
+     * @returns Returns a promise that resolves with a boolean, depending
+     * on whether focus was moved successfuly.
+     */
+    /**
+     * Waits for the zone to stabilize, then focuses
+     * the first tabbable element within the focus trap region.
+     * @return {?} Returns a promise that resolves with a boolean, depending
+     * on whether focus was moved successfuly.
+     */
+    FocusTrap.prototype.focusFirstTabbableElementWhenReady = /**
+     * Waits for the zone to stabilize, then focuses
+     * the first tabbable element within the focus trap region.
+     * @return {?} Returns a promise that resolves with a boolean, depending
+     * on whether focus was moved successfuly.
+     */
+    function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this._executeOnStable(function () { return resolve(_this.focusFirstTabbableElement()); });
+        });
+    };
+    /**
+     * Waits for the zone to stabilize, then focuses
+     * the last tabbable element within the focus trap region.
+     * @returns Returns a promise that resolves with a boolean, depending
+     * on whether focus was moved successfuly.
+     */
+    /**
+     * Waits for the zone to stabilize, then focuses
+     * the last tabbable element within the focus trap region.
+     * @return {?} Returns a promise that resolves with a boolean, depending
+     * on whether focus was moved successfuly.
+     */
+    FocusTrap.prototype.focusLastTabbableElementWhenReady = /**
+     * Waits for the zone to stabilize, then focuses
+     * the last tabbable element within the focus trap region.
+     * @return {?} Returns a promise that resolves with a boolean, depending
+     * on whether focus was moved successfuly.
+     */
+    function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            _this._executeOnStable(function () { return resolve(_this.focusLastTabbableElement()); });
+        });
+    };
+    /**
+     * Get the specified boundary element of the trapped region.
+     * @param {?} bound The boundary to get (start or end of trapped region).
+     * @return {?} The boundary element.
+     */
+    FocusTrap.prototype._getRegionBoundary = /**
+     * Get the specified boundary element of the trapped region.
+     * @param {?} bound The boundary to get (start or end of trapped region).
+     * @return {?} The boundary element.
+     */
+    function (bound) {
+        // Contains the deprecated version of selector, for temporary backwards comparability.
+        var /** @type {?} */ markers = /** @type {?} */ (this._element.querySelectorAll("[cdk-focus-region-" + bound + "], " +
+            ("[cdkFocusRegion" + bound + "], ") +
+            ("[cdk-focus-" + bound + "]")));
+        for (var /** @type {?} */ i = 0; i < markers.length; i++) {
+            // @breaking-change 7.0.0
+            if (markers[i].hasAttribute("cdk-focus-" + bound)) {
+                console.warn("Found use of deprecated attribute 'cdk-focus-" + bound + "', " +
+                    ("use 'cdkFocusRegion" + bound + "' instead. The deprecated ") +
+                    "attribute will be removed in 7.0.0.", markers[i]);
+            }
+            else if (markers[i].hasAttribute("cdk-focus-region-" + bound)) {
+                console.warn("Found use of deprecated attribute 'cdk-focus-region-" + bound + "', " +
+                    ("use 'cdkFocusRegion" + bound + "' instead. The deprecated attribute ") +
+                    "will be removed in 7.0.0.", markers[i]);
+            }
+        }
+        if (bound == 'start') {
+            return markers.length ? markers[0] : this._getFirstTabbableElement(this._element);
+        }
+        return markers.length ?
+            markers[markers.length - 1] : this._getLastTabbableElement(this._element);
+    };
+    /**
+     * Focuses the element that should be focused when the focus trap is initialized.
+     * @returns Whether focus was moved successfuly.
+     */
+    /**
+     * Focuses the element that should be focused when the focus trap is initialized.
+     * @return {?} Whether focus was moved successfuly.
+     */
+    FocusTrap.prototype.focusInitialElement = /**
+     * Focuses the element that should be focused when the focus trap is initialized.
+     * @return {?} Whether focus was moved successfuly.
+     */
+    function () {
+        // Contains the deprecated version of selector, for temporary backwards comparability.
+        var /** @type {?} */ redirectToElement = /** @type {?} */ (this._element.querySelector("[cdk-focus-initial], " +
+            "[cdkFocusInitial]"));
+        if (redirectToElement) {
+            // @breaking-change 7.0.0
+            if (redirectToElement.hasAttribute("cdk-focus-initial")) {
+                console.warn("Found use of deprecated attribute 'cdk-focus-initial', " +
+                    "use 'cdkFocusInitial' instead. The deprecated attribute " +
+                    "will be removed in 7.0.0", redirectToElement);
+            }
+            redirectToElement.focus();
+            return true;
+        }
+        return this.focusFirstTabbableElement();
+    };
+    /**
+     * Focuses the first tabbable element within the focus trap region.
+     * @returns Whether focus was moved successfuly.
+     */
+    /**
+     * Focuses the first tabbable element within the focus trap region.
+     * @return {?} Whether focus was moved successfuly.
+     */
+    FocusTrap.prototype.focusFirstTabbableElement = /**
+     * Focuses the first tabbable element within the focus trap region.
+     * @return {?} Whether focus was moved successfuly.
+     */
+    function () {
+        var /** @type {?} */ redirectToElement = this._getRegionBoundary('start');
+        if (redirectToElement) {
+            redirectToElement.focus();
+        }
+        return !!redirectToElement;
+    };
+    /**
+     * Focuses the last tabbable element within the focus trap region.
+     * @returns Whether focus was moved successfuly.
+     */
+    /**
+     * Focuses the last tabbable element within the focus trap region.
+     * @return {?} Whether focus was moved successfuly.
+     */
+    FocusTrap.prototype.focusLastTabbableElement = /**
+     * Focuses the last tabbable element within the focus trap region.
+     * @return {?} Whether focus was moved successfuly.
+     */
+    function () {
+        var /** @type {?} */ redirectToElement = this._getRegionBoundary('end');
+        if (redirectToElement) {
+            redirectToElement.focus();
+        }
+        return !!redirectToElement;
+    };
+    /**
+     * Checks whether the focus trap has successfuly been attached.
+     */
+    /**
+     * Checks whether the focus trap has successfuly been attached.
+     * @return {?}
+     */
+    FocusTrap.prototype.hasAttached = /**
+     * Checks whether the focus trap has successfuly been attached.
+     * @return {?}
+     */
+    function () {
+        return this._hasAttached;
+    };
+    /**
+     * Get the first tabbable element from a DOM subtree (inclusive).
+     * @param {?} root
+     * @return {?}
+     */
+    FocusTrap.prototype._getFirstTabbableElement = /**
+     * Get the first tabbable element from a DOM subtree (inclusive).
+     * @param {?} root
+     * @return {?}
+     */
+    function (root) {
+        if (this._checker.isFocusable(root) && this._checker.isTabbable(root)) {
+            return root;
+        }
+        // Iterate in DOM order. Note that IE doesn't have `children` for SVG so we fall
+        // back to `childNodes` which includes text nodes, comments etc.
+        var /** @type {?} */ children = root.children || root.childNodes;
+        for (var /** @type {?} */ i = 0; i < children.length; i++) {
+            var /** @type {?} */ tabbableChild = children[i].nodeType === this._document.ELEMENT_NODE ?
+                this._getFirstTabbableElement(/** @type {?} */ (children[i])) :
+                null;
+            if (tabbableChild) {
+                return tabbableChild;
+            }
+        }
+        return null;
+    };
+    /**
+     * Get the last tabbable element from a DOM subtree (inclusive).
+     * @param {?} root
+     * @return {?}
+     */
+    FocusTrap.prototype._getLastTabbableElement = /**
+     * Get the last tabbable element from a DOM subtree (inclusive).
+     * @param {?} root
+     * @return {?}
+     */
+    function (root) {
+        if (this._checker.isFocusable(root) && this._checker.isTabbable(root)) {
+            return root;
+        }
+        // Iterate in reverse DOM order.
+        var /** @type {?} */ children = root.children || root.childNodes;
+        for (var /** @type {?} */ i = children.length - 1; i >= 0; i--) {
+            var /** @type {?} */ tabbableChild = children[i].nodeType === this._document.ELEMENT_NODE ?
+                this._getLastTabbableElement(/** @type {?} */ (children[i])) :
+                null;
+            if (tabbableChild) {
+                return tabbableChild;
+            }
+        }
+        return null;
+    };
+    /**
+     * Creates an anchor element.
+     * @return {?}
+     */
+    FocusTrap.prototype._createAnchor = /**
+     * Creates an anchor element.
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ anchor = this._document.createElement('div');
+        anchor.tabIndex = this._enabled ? 0 : -1;
+        anchor.classList.add('cdk-visually-hidden');
+        anchor.classList.add('cdk-focus-trap-anchor');
+        return anchor;
+    };
+    /**
+     * Executes a function when the zone is stable.
+     * @param {?} fn
+     * @return {?}
+     */
+    FocusTrap.prototype._executeOnStable = /**
+     * Executes a function when the zone is stable.
+     * @param {?} fn
+     * @return {?}
+     */
+    function (fn) {
+        if (this._ngZone.isStable) {
+            fn();
+        }
+        else {
+            this._ngZone.onStable.asObservable().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["take"])(1)).subscribe(fn);
+        }
+    };
+    return FocusTrap;
+}());
+/**
+ * Factory that allows easy instantiation of focus traps.
+ */
+var FocusTrapFactory = /** @class */ (function () {
+    function FocusTrapFactory(_checker, _ngZone, _document) {
+        this._checker = _checker;
+        this._ngZone = _ngZone;
+        this._document = _document;
+    }
+    /**
+     * Creates a focus-trapped region around the given element.
+     * @param element The element around which focus will be trapped.
+     * @param deferCaptureElements Defers the creation of focus-capturing elements to be done
+     *     manually by the user.
+     * @returns The created focus trap instance.
+     */
+    /**
+     * Creates a focus-trapped region around the given element.
+     * @param {?} element The element around which focus will be trapped.
+     * @param {?=} deferCaptureElements Defers the creation of focus-capturing elements to be done
+     *     manually by the user.
+     * @return {?} The created focus trap instance.
+     */
+    FocusTrapFactory.prototype.create = /**
+     * Creates a focus-trapped region around the given element.
+     * @param {?} element The element around which focus will be trapped.
+     * @param {?=} deferCaptureElements Defers the creation of focus-capturing elements to be done
+     *     manually by the user.
+     * @return {?} The created focus trap instance.
+     */
+    function (element, deferCaptureElements) {
+        if (deferCaptureElements === void 0) { deferCaptureElements = false; }
+        return new FocusTrap(element, this._checker, this._ngZone, this._document, deferCaptureElements);
+    };
+    FocusTrapFactory.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    FocusTrapFactory.ctorParameters = function () { return [
+        { type: InteractivityChecker, },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"],] },] },
+    ]; };
+    /** @nocollapse */ FocusTrapFactory.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function FocusTrapFactory_Factory() { return new FocusTrapFactory(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(InteractivityChecker), Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"])); }, token: FocusTrapFactory, providedIn: "root" });
+    return FocusTrapFactory;
+}());
+/**
+ * Directive for trapping focus within a region.
+ */
+var CdkTrapFocus = /** @class */ (function () {
+    function CdkTrapFocus(_elementRef, _focusTrapFactory, _document) {
+        this._elementRef = _elementRef;
+        this._focusTrapFactory = _focusTrapFactory;
+        /**
+         * Previously focused element to restore focus to upon destroy when using autoCapture.
+         */
+        this._previouslyFocusedElement = null;
+        this._document = _document;
+        this.focusTrap = this._focusTrapFactory.create(this._elementRef.nativeElement, true);
+    }
+    Object.defineProperty(CdkTrapFocus.prototype, "enabled", {
+        get: /**
+         * Whether the focus trap is active.
+         * @return {?}
+         */
+        function () { return this.focusTrap.enabled; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this.focusTrap.enabled = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_7__["coerceBooleanProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkTrapFocus.prototype, "autoCapture", {
+        get: /**
+         * Whether the directive should automatially move focus into the trapped region upon
+         * initialization and return focus to the previous activeElement upon destruction.
+         * @return {?}
+         */
+        function () { return this._autoCapture; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this._autoCapture = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_7__["coerceBooleanProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    CdkTrapFocus.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.focusTrap.destroy();
+        // If we stored a previously focused element when using autoCapture, return focus to that
+        // element now that the trapped region is being destroyed.
+        if (this._previouslyFocusedElement) {
+            this._previouslyFocusedElement.focus();
+            this._previouslyFocusedElement = null;
+        }
+    };
+    /**
+     * @return {?}
+     */
+    CdkTrapFocus.prototype.ngAfterContentInit = /**
+     * @return {?}
+     */
+    function () {
+        this.focusTrap.attachAnchors();
+        if (this.autoCapture) {
+            this._previouslyFocusedElement = /** @type {?} */ (this._document.activeElement);
+            this.focusTrap.focusInitialElementWhenReady();
+        }
+    };
+    /**
+     * @return {?}
+     */
+    CdkTrapFocus.prototype.ngDoCheck = /**
+     * @return {?}
+     */
+    function () {
+        if (!this.focusTrap.hasAttached()) {
+            this.focusTrap.attachAnchors();
+        }
+    };
+    CdkTrapFocus.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
+                    selector: '[cdkTrapFocus]',
+                    exportAs: 'cdkTrapFocus',
+                },] },
+    ];
+    /** @nocollapse */
+    CdkTrapFocus.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], },
+        { type: FocusTrapFactory, },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"],] },] },
+    ]; };
+    CdkTrapFocus.propDecorators = {
+        "enabled": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"], args: ['cdkTrapFocus',] },],
+        "autoCapture": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"], args: ['cdkTrapFocusAutoCapture',] },],
+    };
+    return CdkTrapFocus;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+// The token for the live announcer element is defined in a separate file from LiveAnnouncer
+// as a workaround for https://github.com/angular/angular/issues/22559
+var /** @type {?} */ LIVE_ANNOUNCER_ELEMENT_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["InjectionToken"]('liveAnnouncerElement', {
+    providedIn: 'root',
+    factory: LIVE_ANNOUNCER_ELEMENT_TOKEN_FACTORY,
+});
+/**
+ * \@docs-private
+ * @return {?}
+ */
+function LIVE_ANNOUNCER_ELEMENT_TOKEN_FACTORY() {
+    return null;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var LiveAnnouncer = /** @class */ (function () {
+    function LiveAnnouncer(elementToken, _document) {
+        // We inject the live element and document as `any` because the constructor signature cannot
+        // reference browser globals (HTMLElement, Document) on non-browser environments, since having
+        // a class decorator causes TypeScript to preserve the constructor signature types.
+        this._document = _document;
+        this._liveElement = elementToken || this._createLiveElement();
+    }
+    /**
+     * Announces a message to screenreaders.
+     * @param message Message to be announced to the screenreader
+     * @param politeness The politeness of the announcer element
+     * @returns Promise that will be resolved when the message is added to the DOM.
+     */
+    /**
+     * Announces a message to screenreaders.
+     * @param {?} message Message to be announced to the screenreader
+     * @param {?=} politeness The politeness of the announcer element
+     * @return {?} Promise that will be resolved when the message is added to the DOM.
+     */
+    LiveAnnouncer.prototype.announce = /**
+     * Announces a message to screenreaders.
+     * @param {?} message Message to be announced to the screenreader
+     * @param {?=} politeness The politeness of the announcer element
+     * @return {?} Promise that will be resolved when the message is added to the DOM.
+     */
+    function (message, politeness) {
+        var _this = this;
+        if (politeness === void 0) { politeness = 'polite'; }
+        this._liveElement.textContent = '';
+        // TODO: ensure changing the politeness works on all environments we support.
+        this._liveElement.setAttribute('aria-live', politeness);
+        // This 100ms timeout is necessary for some browser + screen-reader combinations:
+        // - Both JAWS and NVDA over IE11 will not announce anything without a non-zero timeout.
+        // - With Chrome and IE11 with NVDA or JAWS, a repeated (identical) message won't be read a
+        //   second time without clearing and then using a non-zero delay.
+        // (using JAWS 17 at time of this writing).
+        return new Promise(function (resolve) {
+            setTimeout(function () {
+                _this._liveElement.textContent = message;
+                resolve();
+            }, 100);
+        });
+    };
+    /**
+     * @return {?}
+     */
+    LiveAnnouncer.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        if (this._liveElement && this._liveElement.parentNode) {
+            this._liveElement.parentNode.removeChild(this._liveElement);
+        }
+    };
+    /**
+     * @return {?}
+     */
+    LiveAnnouncer.prototype._createLiveElement = /**
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ elementClass = 'cdk-live-announcer-element';
+        var /** @type {?} */ previousElements = this._document.getElementsByClassName(elementClass);
+        // Remove any old containers. This can happen when coming in from a server-side-rendered page.
+        for (var /** @type {?} */ i = 0; i < previousElements.length; i++) {
+            /** @type {?} */ ((previousElements[i].parentNode)).removeChild(previousElements[i]);
+        }
+        var /** @type {?} */ liveEl = this._document.createElement('div');
+        liveEl.classList.add(elementClass);
+        liveEl.classList.add('cdk-visually-hidden');
+        liveEl.setAttribute('aria-atomic', 'true');
+        liveEl.setAttribute('aria-live', 'polite');
+        this._document.body.appendChild(liveEl);
+        return liveEl;
+    };
+    LiveAnnouncer.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    LiveAnnouncer.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [LIVE_ANNOUNCER_ELEMENT_TOKEN,] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"],] },] },
+    ]; };
+    /** @nocollapse */ LiveAnnouncer.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function LiveAnnouncer_Factory() { return new LiveAnnouncer(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(LIVE_ANNOUNCER_ELEMENT_TOKEN, 8), Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"])); }, token: LiveAnnouncer, providedIn: "root" });
+    return LiveAnnouncer;
+}());
+/**
+ * A directive that works similarly to aria-live, but uses the LiveAnnouncer to ensure compatibility
+ * with a wider range of browsers and screen readers.
+ */
+var CdkAriaLive = /** @class */ (function () {
+    function CdkAriaLive(_elementRef, _liveAnnouncer, _contentObserver, _ngZone) {
+        this._elementRef = _elementRef;
+        this._liveAnnouncer = _liveAnnouncer;
+        this._contentObserver = _contentObserver;
+        this._ngZone = _ngZone;
+        this._politeness = 'off';
+    }
+    Object.defineProperty(CdkAriaLive.prototype, "politeness", {
+        get: /**
+         * The aria-live politeness level to use when announcing messages.
+         * @return {?}
+         */
+        function () { return this._politeness; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            var _this = this;
+            this._politeness = value === 'polite' || value === 'assertive' ? value : 'off';
+            if (this._politeness === 'off') {
+                if (this._subscription) {
+                    this._subscription.unsubscribe();
+                    this._subscription = null;
+                }
+            }
+            else if (!this._subscription) {
+                this._subscription = this._ngZone.runOutsideAngular(function () {
+                    return _this._contentObserver
+                        .observe(_this._elementRef)
+                        .subscribe(function () {
+                        // Note that we use textContent here, rather than innerText, in order to avoid a reflow.
+                        var /** @type {?} */ element = _this._elementRef.nativeElement;
+                        _this._liveAnnouncer.announce(element.textContent, _this._politeness);
+                    });
+                });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    CdkAriaLive.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        if (this._subscription) {
+            this._subscription.unsubscribe();
+        }
+    };
+    CdkAriaLive.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
+                    selector: '[cdkAriaLive]',
+                    exportAs: 'cdkAriaLive',
+                },] },
+    ];
+    /** @nocollapse */
+    CdkAriaLive.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], },
+        { type: LiveAnnouncer, },
+        { type: _angular_cdk_observers__WEBPACK_IMPORTED_MODULE_8__["ContentObserver"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], },
+    ]; };
+    CdkAriaLive.propDecorators = {
+        "politeness": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"], args: ['cdkAriaLive',] },],
+    };
+    return CdkAriaLive;
+}());
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ * @param {?} parentDispatcher
+ * @param {?} liveElement
+ * @param {?} _document
+ * @return {?}
+ */
+function LIVE_ANNOUNCER_PROVIDER_FACTORY(parentDispatcher, liveElement, _document) {
+    return parentDispatcher || new LiveAnnouncer(liveElement, _document);
+}
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ */
+var /** @type {?} */ LIVE_ANNOUNCER_PROVIDER = {
+    // If there is already a LiveAnnouncer available, use that. Otherwise, provide a new one.
+    provide: LiveAnnouncer,
+    deps: [
+        [new _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_1__["SkipSelf"](), LiveAnnouncer],
+        [new _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"](LIVE_ANNOUNCER_ELEMENT_TOKEN)],
+        _angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"],
+    ],
+    useFactory: LIVE_ANNOUNCER_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+// This is the value used by AngularJS Material. Through trial and error (on iPhone 6S) they found
+// that a value of around 650ms seems appropriate.
+var /** @type {?} */ TOUCH_BUFFER_MS = 650;
+/**
+ * Monitors mouse and keyboard events to determine the cause of focus events.
+ */
+var FocusMonitor = /** @class */ (function () {
+    function FocusMonitor(_ngZone, _platform) {
+        this._ngZone = _ngZone;
+        this._platform = _platform;
+        /**
+         * The focus origin that the next focus event is a result of.
+         */
+        this._origin = null;
+        /**
+         * Whether the window has just been focused.
+         */
+        this._windowFocused = false;
+        /**
+         * Map of elements being monitored to their info.
+         */
+        this._elementInfo = new Map();
+        /**
+         * A map of global objects to lists of current listeners.
+         */
+        this._unregisterGlobalListeners = function () { };
+        /**
+         * The number of elements currently being monitored.
+         */
+        this._monitoredElementCount = 0;
+    }
+    /**
+     * Monitors focus on an element and applies appropriate CSS classes.
+     * @param element The element to monitor
+     * @param checkChildren Whether to count the element as focused when its children are focused.
+     * @returns An observable that emits when the focus state of the element changes.
+     *     When the element is blurred, null will be emitted.
+     */
+    /**
+     * Monitors focus on an element and applies appropriate CSS classes.
+     * @param {?} element The element to monitor
+     * @param {?=} checkChildren Whether to count the element as focused when its children are focused.
+     * @return {?} An observable that emits when the focus state of the element changes.
+     *     When the element is blurred, null will be emitted.
+     */
+    FocusMonitor.prototype.monitor = /**
+     * Monitors focus on an element and applies appropriate CSS classes.
+     * @param {?} element The element to monitor
+     * @param {?=} checkChildren Whether to count the element as focused when its children are focused.
+     * @return {?} An observable that emits when the focus state of the element changes.
+     *     When the element is blurred, null will be emitted.
+     */
+    function (element, checkChildren) {
+        var _this = this;
+        if (checkChildren === void 0) { checkChildren = false; }
+        // Do nothing if we're not on the browser platform.
+        if (!this._platform.isBrowser) {
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])(null);
+        }
+        // Check if we're already monitoring this element.
+        if (this._elementInfo.has(element)) {
+            var /** @type {?} */ cachedInfo = this._elementInfo.get(element); /** @type {?} */
+            ((cachedInfo)).checkChildren = checkChildren;
+            return /** @type {?} */ ((cachedInfo)).subject.asObservable();
+        }
+        // Create monitored element info.
+        var /** @type {?} */ info = {
+            unlisten: function () { },
+            checkChildren: checkChildren,
+            subject: new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]()
+        };
+        this._elementInfo.set(element, info);
+        this._incrementMonitoredElementCount();
+        // Start listening. We need to listen in capture phase since focus events don't bubble.
+        var /** @type {?} */ focusListener = function (event) { return _this._onFocus(event, element); };
+        var /** @type {?} */ blurListener = function (event) { return _this._onBlur(event, element); };
+        this._ngZone.runOutsideAngular(function () {
+            element.addEventListener('focus', focusListener, true);
+            element.addEventListener('blur', blurListener, true);
+        });
+        // Create an unlisten function for later.
+        info.unlisten = function () {
+            element.removeEventListener('focus', focusListener, true);
+            element.removeEventListener('blur', blurListener, true);
+        };
+        return info.subject.asObservable();
+    };
+    /**
+     * Stops monitoring an element and removes all focus classes.
+     * @param element The element to stop monitoring.
+     */
+    /**
+     * Stops monitoring an element and removes all focus classes.
+     * @param {?} element The element to stop monitoring.
+     * @return {?}
+     */
+    FocusMonitor.prototype.stopMonitoring = /**
+     * Stops monitoring an element and removes all focus classes.
+     * @param {?} element The element to stop monitoring.
+     * @return {?}
+     */
+    function (element) {
+        var /** @type {?} */ elementInfo = this._elementInfo.get(element);
+        if (elementInfo) {
+            elementInfo.unlisten();
+            elementInfo.subject.complete();
+            this._setClasses(element);
+            this._elementInfo.delete(element);
+            this._decrementMonitoredElementCount();
+        }
+    };
+    /**
+     * Focuses the element via the specified focus origin.
+     * @param element Element to focus.
+     * @param origin Focus origin.
+     * @param options Options that can be used to configure the focus behavior.
+     */
+    /**
+     * Focuses the element via the specified focus origin.
+     * @param {?} element Element to focus.
+     * @param {?} origin Focus origin.
+     * @param {?=} options Options that can be used to configure the focus behavior.
+     * @return {?}
+     */
+    FocusMonitor.prototype.focusVia = /**
+     * Focuses the element via the specified focus origin.
+     * @param {?} element Element to focus.
+     * @param {?} origin Focus origin.
+     * @param {?=} options Options that can be used to configure the focus behavior.
+     * @return {?}
+     */
+    function (element, origin, options) {
+        this._setOriginForCurrentEventQueue(origin);
+        // `focus` isn't available on the server
+        if (typeof element.focus === 'function') {
+            // Cast the element to `any`, because the TS typings don't have the `options` parameter yet.
+            (/** @type {?} */ (element)).focus(options);
+        }
+    };
+    /**
+     * @return {?}
+     */
+    FocusMonitor.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._elementInfo.forEach(function (_info, element) { return _this.stopMonitoring(element); });
+    };
+    /**
+     * Register necessary event listeners on the document and window.
+     * @return {?}
+     */
+    FocusMonitor.prototype._registerGlobalListeners = /**
+     * Register necessary event listeners on the document and window.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        // Do nothing if we're not on the browser platform.
+        if (!this._platform.isBrowser) {
+            return;
+        }
+        // On keydown record the origin and clear any touch event that may be in progress.
+        var /** @type {?} */ documentKeydownListener = function () {
+            _this._lastTouchTarget = null;
+            _this._setOriginForCurrentEventQueue('keyboard');
+        };
+        // On mousedown record the origin only if there is not touch target, since a mousedown can
+        // happen as a result of a touch event.
+        var /** @type {?} */ documentMousedownListener = function () {
+            if (!_this._lastTouchTarget) {
+                _this._setOriginForCurrentEventQueue('mouse');
+            }
+        };
+        // When the touchstart event fires the focus event is not yet in the event queue. This means
+        // we can't rely on the trick used above (setting timeout of 1ms). Instead we wait 650ms to
+        // see if a focus happens.
+        var /** @type {?} */ documentTouchstartListener = function (event) {
+            if (_this._touchTimeoutId != null) {
+                clearTimeout(_this._touchTimeoutId);
+            }
+            _this._lastTouchTarget = event.target;
+            _this._touchTimeoutId = setTimeout(function () { return _this._lastTouchTarget = null; }, TOUCH_BUFFER_MS);
+        };
+        // Make a note of when the window regains focus, so we can restore the origin info for the
+        // focused element.
+        var /** @type {?} */ windowFocusListener = function () {
+            _this._windowFocused = true;
+            _this._windowFocusTimeoutId = setTimeout(function () { return _this._windowFocused = false; });
+        };
+        // Note: we listen to events in the capture phase so we can detect them even if the user stops
+        // propagation.
+        this._ngZone.runOutsideAngular(function () {
+            document.addEventListener('keydown', documentKeydownListener, true);
+            document.addEventListener('mousedown', documentMousedownListener, true);
+            document.addEventListener('touchstart', documentTouchstartListener, Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_6__["supportsPassiveEventListeners"])() ? (/** @type {?} */ ({ passive: true, capture: true })) : true);
+            window.addEventListener('focus', windowFocusListener);
+        });
+        this._unregisterGlobalListeners = function () {
+            document.removeEventListener('keydown', documentKeydownListener, true);
+            document.removeEventListener('mousedown', documentMousedownListener, true);
+            document.removeEventListener('touchstart', documentTouchstartListener, Object(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_6__["supportsPassiveEventListeners"])() ? (/** @type {?} */ ({ passive: true, capture: true })) : true);
+            window.removeEventListener('focus', windowFocusListener);
+            // Clear timeouts for all potentially pending timeouts to prevent the leaks.
+            clearTimeout(_this._windowFocusTimeoutId);
+            clearTimeout(_this._touchTimeoutId);
+            clearTimeout(_this._originTimeoutId);
+        };
+    };
+    /**
+     * @param {?} element
+     * @param {?} className
+     * @param {?} shouldSet
+     * @return {?}
+     */
+    FocusMonitor.prototype._toggleClass = /**
+     * @param {?} element
+     * @param {?} className
+     * @param {?} shouldSet
+     * @return {?}
+     */
+    function (element, className, shouldSet) {
+        if (shouldSet) {
+            element.classList.add(className);
+        }
+        else {
+            element.classList.remove(className);
+        }
+    };
+    /**
+     * Sets the focus classes on the element based on the given focus origin.
+     * @param {?} element The element to update the classes on.
+     * @param {?=} origin The focus origin.
+     * @return {?}
+     */
+    FocusMonitor.prototype._setClasses = /**
+     * Sets the focus classes on the element based on the given focus origin.
+     * @param {?} element The element to update the classes on.
+     * @param {?=} origin The focus origin.
+     * @return {?}
+     */
+    function (element, origin) {
+        var /** @type {?} */ elementInfo = this._elementInfo.get(element);
+        if (elementInfo) {
+            this._toggleClass(element, 'cdk-focused', !!origin);
+            this._toggleClass(element, 'cdk-touch-focused', origin === 'touch');
+            this._toggleClass(element, 'cdk-keyboard-focused', origin === 'keyboard');
+            this._toggleClass(element, 'cdk-mouse-focused', origin === 'mouse');
+            this._toggleClass(element, 'cdk-program-focused', origin === 'program');
+        }
+    };
+    /**
+     * Sets the origin and schedules an async function to clear it at the end of the event queue.
+     * @param {?} origin The origin to set.
+     * @return {?}
+     */
+    FocusMonitor.prototype._setOriginForCurrentEventQueue = /**
+     * Sets the origin and schedules an async function to clear it at the end of the event queue.
+     * @param {?} origin The origin to set.
+     * @return {?}
+     */
+    function (origin) {
+        var _this = this;
+        this._ngZone.runOutsideAngular(function () {
+            _this._origin = origin;
+            // Sometimes the focus origin won't be valid in Firefox because Firefox seems to focus *one*
+            // tick after the interaction event fired. To ensure the focus origin is always correct,
+            // the focus origin will be determined at the beginning of the next tick.
+            // Sometimes the focus origin won't be valid in Firefox because Firefox seems to focus *one*
+            // tick after the interaction event fired. To ensure the focus origin is always correct,
+            // the focus origin will be determined at the beginning of the next tick.
+            _this._originTimeoutId = setTimeout(function () { return _this._origin = null; }, 1);
+        });
+    };
+    /**
+     * Checks whether the given focus event was caused by a touchstart event.
+     * @param {?} event The focus event to check.
+     * @return {?} Whether the event was caused by a touch.
+     */
+    FocusMonitor.prototype._wasCausedByTouch = /**
+     * Checks whether the given focus event was caused by a touchstart event.
+     * @param {?} event The focus event to check.
+     * @return {?} Whether the event was caused by a touch.
+     */
+    function (event) {
+        // Note(mmalerba): This implementation is not quite perfect, there is a small edge case.
+        // Consider the following dom structure:
+        //
+        // <div #parent tabindex="0" cdkFocusClasses>
+        //   <div #child (click)="#parent.focus()"></div>
+        // </div>
+        //
+        // If the user touches the #child element and the #parent is programmatically focused as a
+        // result, this code will still consider it to have been caused by the touch event and will
+        // apply the cdk-touch-focused class rather than the cdk-program-focused class. This is a
+        // relatively small edge-case that can be worked around by using
+        // focusVia(parentEl, 'program') to focus the parent element.
+        //
+        // If we decide that we absolutely must handle this case correctly, we can do so by listening
+        // for the first focus event after the touchstart, and then the first blur event after that
+        // focus event. When that blur event fires we know that whatever follows is not a result of the
+        // touchstart.
+        var /** @type {?} */ focusTarget = event.target;
+        return this._lastTouchTarget instanceof Node && focusTarget instanceof Node &&
+            (focusTarget === this._lastTouchTarget || focusTarget.contains(this._lastTouchTarget));
+    };
+    /**
+     * Handles focus events on a registered element.
+     * @param {?} event The focus event.
+     * @param {?} element The monitored element.
+     * @return {?}
+     */
+    FocusMonitor.prototype._onFocus = /**
+     * Handles focus events on a registered element.
+     * @param {?} event The focus event.
+     * @param {?} element The monitored element.
+     * @return {?}
+     */
+    function (event, element) {
+        // NOTE(mmalerba): We currently set the classes based on the focus origin of the most recent
+        // focus event affecting the monitored element. If we want to use the origin of the first event
+        // instead we should check for the cdk-focused class here and return if the element already has
+        // it. (This only matters for elements that have includesChildren = true).
+        // If we are not counting child-element-focus as focused, make sure that the event target is the
+        // monitored element itself.
+        var /** @type {?} */ elementInfo = this._elementInfo.get(element);
+        if (!elementInfo || (!elementInfo.checkChildren && element !== event.target)) {
+            return;
+        }
+        // If we couldn't detect a cause for the focus event, it's due to one of three reasons:
+        // 1) The window has just regained focus, in which case we want to restore the focused state of
+        //    the element from before the window blurred.
+        // 2) It was caused by a touch event, in which case we mark the origin as 'touch'.
+        // 3) The element was programmatically focused, in which case we should mark the origin as
+        //    'program'.
+        var /** @type {?} */ origin = this._origin;
+        if (!origin) {
+            if (this._windowFocused && this._lastFocusOrigin) {
+                origin = this._lastFocusOrigin;
+            }
+            else if (this._wasCausedByTouch(event)) {
+                origin = 'touch';
+            }
+            else {
+                origin = 'program';
+            }
+        }
+        this._setClasses(element, origin);
+        this._emitOrigin(elementInfo.subject, origin);
+        this._lastFocusOrigin = origin;
+    };
+    /**
+     * Handles blur events on a registered element.
+     * @param event The blur event.
+     * @param element The monitored element.
+     */
+    /**
+     * Handles blur events on a registered element.
+     * @param {?} event The blur event.
+     * @param {?} element The monitored element.
+     * @return {?}
+     */
+    FocusMonitor.prototype._onBlur = /**
+     * Handles blur events on a registered element.
+     * @param {?} event The blur event.
+     * @param {?} element The monitored element.
+     * @return {?}
+     */
+    function (event, element) {
+        // If we are counting child-element-focus as focused, make sure that we aren't just blurring in
+        // order to focus another child of the monitored element.
+        var /** @type {?} */ elementInfo = this._elementInfo.get(element);
+        if (!elementInfo || (elementInfo.checkChildren && event.relatedTarget instanceof Node &&
+            element.contains(event.relatedTarget))) {
+            return;
+        }
+        this._setClasses(element);
+        this._emitOrigin(elementInfo.subject, null);
+    };
+    /**
+     * @param {?} subject
+     * @param {?} origin
+     * @return {?}
+     */
+    FocusMonitor.prototype._emitOrigin = /**
+     * @param {?} subject
+     * @param {?} origin
+     * @return {?}
+     */
+    function (subject, origin) {
+        this._ngZone.run(function () { return subject.next(origin); });
+    };
+    /**
+     * @return {?}
+     */
+    FocusMonitor.prototype._incrementMonitoredElementCount = /**
+     * @return {?}
+     */
+    function () {
+        // Register global listeners when first element is monitored.
+        if (++this._monitoredElementCount == 1) {
+            this._registerGlobalListeners();
+        }
+    };
+    /**
+     * @return {?}
+     */
+    FocusMonitor.prototype._decrementMonitoredElementCount = /**
+     * @return {?}
+     */
+    function () {
+        // Unregister global listeners when last element is unmonitored.
+        if (!--this._monitoredElementCount) {
+            this._unregisterGlobalListeners();
+            this._unregisterGlobalListeners = function () { };
+        }
+    };
+    FocusMonitor.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    FocusMonitor.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], },
+        { type: _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_6__["Platform"], },
+    ]; };
+    /** @nocollapse */ FocusMonitor.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function FocusMonitor_Factory() { return new FocusMonitor(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_6__["Platform"])); }, token: FocusMonitor, providedIn: "root" });
+    return FocusMonitor;
+}());
+/**
+ * Directive that determines how a particular element was focused (via keyboard, mouse, touch, or
+ * programmatically) and adds corresponding classes to the element.
+ *
+ * There are two variants of this directive:
+ * 1) cdkMonitorElementFocus: does not consider an element to be focused if one of its children is
+ *    focused.
+ * 2) cdkMonitorSubtreeFocus: considers an element focused if it or any of its children are focused.
+ */
+var CdkMonitorFocus = /** @class */ (function () {
+    function CdkMonitorFocus(_elementRef, _focusMonitor) {
+        var _this = this;
+        this._elementRef = _elementRef;
+        this._focusMonitor = _focusMonitor;
+        this.cdkFocusChange = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this._monitorSubscription = this._focusMonitor.monitor(this._elementRef.nativeElement, this._elementRef.nativeElement.hasAttribute('cdkMonitorSubtreeFocus'))
+            .subscribe(function (origin) { return _this.cdkFocusChange.emit(origin); });
+    }
+    /**
+     * @return {?}
+     */
+    CdkMonitorFocus.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._focusMonitor.stopMonitoring(this._elementRef.nativeElement);
+        this._monitorSubscription.unsubscribe();
+    };
+    CdkMonitorFocus.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
+                    selector: '[cdkMonitorElementFocus], [cdkMonitorSubtreeFocus]',
+                },] },
+    ];
+    /** @nocollapse */
+    CdkMonitorFocus.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], },
+        { type: FocusMonitor, },
+    ]; };
+    CdkMonitorFocus.propDecorators = {
+        "cdkFocusChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] },],
+    };
+    return CdkMonitorFocus;
+}());
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ * @param {?} parentDispatcher
+ * @param {?} ngZone
+ * @param {?} platform
+ * @return {?}
+ */
+function FOCUS_MONITOR_PROVIDER_FACTORY(parentDispatcher, ngZone, platform) {
+    return parentDispatcher || new FocusMonitor(ngZone, platform);
+}
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ */
+var /** @type {?} */ FOCUS_MONITOR_PROVIDER = {
+    // If there is already a FocusMonitor available, use that. Otherwise, provide a new one.
+    provide: FocusMonitor,
+    deps: [[new _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_1__["SkipSelf"](), FocusMonitor], _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_6__["Platform"]],
+    useFactory: FOCUS_MONITOR_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Screenreaders will often fire fake mousedown events when a focusable element
+ * is activated using the keyboard. We can typically distinguish between these faked
+ * mousedown events and real mousedown events using the "buttons" property. While
+ * real mousedowns will indicate the mouse button that was pressed (e.g. "1" for
+ * the left mouse button), faked mousedowns will usually set the property value to 0.
+ * @param {?} event
+ * @return {?}
+ */
+function isFakeMousedownFromScreenReader(event) {
+    return event.buttons === 0;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var A11yModule = /** @class */ (function () {
+    function A11yModule() {
+    }
+    A11yModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"], args: [{
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"], _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_6__["PlatformModule"], _angular_cdk_observers__WEBPACK_IMPORTED_MODULE_8__["ObserversModule"]],
+                    declarations: [CdkAriaLive, CdkTrapFocus, CdkMonitorFocus],
+                    exports: [CdkAriaLive, CdkTrapFocus, CdkMonitorFocus],
+                },] },
+    ];
+    return A11yModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+
+//# sourceMappingURL=a11y.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/bidi.es5.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/bidi.es5.js ***!
+  \****************************************************/
+/*! exports provided: Directionality, DIR_DOCUMENT, Dir, BidiModule, ɵa */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Directionality", function() { return Directionality; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DIR_DOCUMENT", function() { return DIR_DOCUMENT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Dir", function() { return Dir; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BidiModule", function() { return BidiModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return DIR_DOCUMENT_FACTORY; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Injection token used to inject the document into Directionality.
+ * This is used so that the value can be faked in tests.
+ *
+ * We can't use the real document in tests because changing the real `dir` causes geometry-based
+ * tests in Safari to fail.
+ *
+ * We also can't re-provide the DOCUMENT token from platform-brower because the unit tests
+ * themselves use things like `querySelector` in test code.
+ *
+ * This token is defined in a separate file from Directionality as a workaround for
+ * https://github.com/angular/angular/issues/22559
+ *
+ * \@docs-private
+ */
+var /** @type {?} */ DIR_DOCUMENT = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["InjectionToken"]('cdk-dir-doc', {
+    providedIn: 'root',
+    factory: DIR_DOCUMENT_FACTORY,
+});
+/**
+ * \@docs-private
+ * @return {?}
+ */
+function DIR_DOCUMENT_FACTORY() {
+    return Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_0__["DOCUMENT"]);
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * The directionality (LTR / RTL) context for the application (or a subtree of it).
+ * Exposes the current direction and a stream of direction changes.
+ */
+var Directionality = /** @class */ (function () {
+    function Directionality(_document) {
+        /**
+         * The current 'ltr' or 'rtl' value.
+         */
+        this.value = 'ltr';
+        /**
+         * Stream that emits whenever the 'ltr' / 'rtl' state changes.
+         */
+        this.change = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        if (_document) {
+            // TODO: handle 'auto' value -
+            // We still need to account for dir="auto".
+            // It looks like HTMLElemenet.dir is also "auto" when that's set to the attribute,
+            // but getComputedStyle return either "ltr" or "rtl". avoiding getComputedStyle for now
+            var /** @type {?} */ bodyDir = _document.body ? _document.body.dir : null;
+            var /** @type {?} */ htmlDir = _document.documentElement ? _document.documentElement.dir : null;
+            var /** @type {?} */ value = bodyDir || htmlDir;
+            this.value = (value === 'ltr' || value === 'rtl') ? value : 'ltr';
+        }
+    }
+    /**
+     * @return {?}
+     */
+    Directionality.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.change.complete();
+    };
+    Directionality.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    Directionality.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [DIR_DOCUMENT,] },] },
+    ]; };
+    /** @nocollapse */ Directionality.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function Directionality_Factory() { return new Directionality(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(DIR_DOCUMENT, 8)); }, token: Directionality, providedIn: "root" });
+    return Directionality;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Directive to listen for changes of direction of part of the DOM.
+ *
+ * Provides itself as Directionality such that descendant directives only need to ever inject
+ * Directionality to get the closest direction.
+ */
+var Dir = /** @class */ (function () {
+    function Dir() {
+        this._dir = 'ltr';
+        /**
+         * Whether the `value` has been set to its initial value.
+         */
+        this._isInitialized = false;
+        /**
+         * Event emitted when the direction changes.
+         */
+        this.change = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+    }
+    Object.defineProperty(Dir.prototype, "dir", {
+        get: /**
+         * \@docs-private
+         * @return {?}
+         */
+        function () { return this._dir; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            var /** @type {?} */ old = this._dir;
+            this._dir = (value === 'ltr' || value === 'rtl') ? value : 'ltr';
+            if (old !== this._dir && this._isInitialized) {
+                this.change.emit(this._dir);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Dir.prototype, "value", {
+        /** Current layout direction of the element. */
+        get: /**
+         * Current layout direction of the element.
+         * @return {?}
+         */
+        function () { return this.dir; },
+        enumerable: true,
+        configurable: true
+    });
+    /** Initialize once default value has been set. */
+    /**
+     * Initialize once default value has been set.
+     * @return {?}
+     */
+    Dir.prototype.ngAfterContentInit = /**
+     * Initialize once default value has been set.
+     * @return {?}
+     */
+    function () {
+        this._isInitialized = true;
+    };
+    /**
+     * @return {?}
+     */
+    Dir.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.change.complete();
+    };
+    Dir.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
+                    selector: '[dir]',
+                    providers: [{ provide: Directionality, useExisting: Dir }],
+                    host: { '[dir]': 'dir' },
+                    exportAs: 'dir',
+                },] },
+    ];
+    /** @nocollapse */
+    Dir.propDecorators = {
+        "change": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"], args: ['dirChange',] },],
+        "dir": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+    };
+    return Dir;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var BidiModule = /** @class */ (function () {
+    function BidiModule() {
+    }
+    BidiModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"], args: [{
+                    exports: [Dir],
+                    declarations: [Dir],
+                },] },
+    ];
+    return BidiModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+
+//# sourceMappingURL=bidi.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/coercion.es5.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/coercion.es5.js ***!
+  \********************************************************/
+/*! exports provided: coerceBooleanProperty, coerceNumberProperty, _isNumberValue, coerceArray, coerceCssPixelValue */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coerceBooleanProperty", function() { return coerceBooleanProperty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coerceNumberProperty", function() { return coerceNumberProperty; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_isNumberValue", function() { return _isNumberValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coerceArray", function() { return coerceArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "coerceCssPixelValue", function() { return coerceCssPixelValue; });
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Coerces a data-bound value (typically a string) to a boolean.
+ * @param {?} value
+ * @return {?}
+ */
+function coerceBooleanProperty(value) {
+    return value != null && "" + value !== 'false';
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @param {?} value
+ * @param {?=} fallbackValue
+ * @return {?}
+ */
+function coerceNumberProperty(value, fallbackValue) {
+    if (fallbackValue === void 0) { fallbackValue = 0; }
+    return _isNumberValue(value) ? Number(value) : fallbackValue;
+}
+/**
+ * Whether the provided value is considered a number.
+ * \@docs-private
+ * @param {?} value
+ * @return {?}
+ */
+function _isNumberValue(value) {
+    // parseFloat(value) handles most of the cases we're interested in (it treats null, empty string,
+    // and other non-number values as NaN, where Number just uses 0) but it considers the string
+    // '123hello' to be a valid number. Therefore we also check if Number(value) is NaN.
+    return !isNaN(parseFloat(/** @type {?} */ (value))) && !isNaN(Number(value));
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Wraps the provided value in an array, unless the provided value is an array.
+ * @template T
+ * @param {?} value
+ * @return {?}
+ */
+function coerceArray(value) {
+    return Array.isArray(value) ? value : [value];
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Coerces a value to a CSS pixel value.
+ * @param {?} value
+ * @return {?}
+ */
+function coerceCssPixelValue(value) {
+    if (value == null) {
+        return '';
+    }
+    return typeof value === 'string' ? value : value + "px";
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+
+//# sourceMappingURL=coercion.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/keycodes.es5.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/keycodes.es5.js ***!
+  \********************************************************/
+/*! exports provided: MAC_ENTER, BACKSPACE, TAB, NUM_CENTER, ENTER, SHIFT, CONTROL, ALT, PAUSE, CAPS_LOCK, ESCAPE, SPACE, PAGE_UP, PAGE_DOWN, END, HOME, LEFT_ARROW, UP_ARROW, RIGHT_ARROW, DOWN_ARROW, PLUS_SIGN, PRINT_SCREEN, INSERT, DELETE, ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, FF_SEMICOLON, FF_EQUALS, QUESTION_MARK, AT_SIGN, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, META, MAC_WK_CMD_LEFT, MAC_WK_CMD_RIGHT, CONTEXT_MENU, NUMPAD_ZERO, NUMPAD_ONE, NUMPAD_TWO, NUMPAD_THREE, NUMPAD_FOUR, NUMPAD_FIVE, NUMPAD_SIX, NUMPAD_SEVEN, NUMPAD_EIGHT, NUMPAD_NINE, NUMPAD_MULTIPLY, NUMPAD_PLUS, NUMPAD_MINUS, NUMPAD_PERIOD, NUMPAD_DIVIDE, F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, NUM_LOCK, SCROLL_LOCK, FIRST_MEDIA, FF_MINUS, MUTE, VOLUME_DOWN, VOLUME_UP, FF_MUTE, FF_VOLUME_DOWN, LAST_MEDIA, FF_VOLUME_UP, SEMICOLON, EQUALS, COMMA, DASH, SLASH, APOSTROPHE, TILDE, OPEN_SQUARE_BRACKET, BACKSLASH, CLOSE_SQUARE_BRACKET, SINGLE_QUOTE, MAC_META */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAC_ENTER", function() { return MAC_ENTER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BACKSPACE", function() { return BACKSPACE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TAB", function() { return TAB; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUM_CENTER", function() { return NUM_CENTER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ENTER", function() { return ENTER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHIFT", function() { return SHIFT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CONTROL", function() { return CONTROL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ALT", function() { return ALT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PAUSE", function() { return PAUSE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CAPS_LOCK", function() { return CAPS_LOCK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ESCAPE", function() { return ESCAPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SPACE", function() { return SPACE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PAGE_UP", function() { return PAGE_UP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PAGE_DOWN", function() { return PAGE_DOWN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "END", function() { return END; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HOME", function() { return HOME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LEFT_ARROW", function() { return LEFT_ARROW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UP_ARROW", function() { return UP_ARROW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RIGHT_ARROW", function() { return RIGHT_ARROW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DOWN_ARROW", function() { return DOWN_ARROW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PLUS_SIGN", function() { return PLUS_SIGN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PRINT_SCREEN", function() { return PRINT_SCREEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INSERT", function() { return INSERT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE", function() { return DELETE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZERO", function() { return ZERO; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ONE", function() { return ONE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TWO", function() { return TWO; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "THREE", function() { return THREE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FOUR", function() { return FOUR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FIVE", function() { return FIVE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIX", function() { return SIX; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEVEN", function() { return SEVEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EIGHT", function() { return EIGHT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NINE", function() { return NINE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FF_SEMICOLON", function() { return FF_SEMICOLON; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FF_EQUALS", function() { return FF_EQUALS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QUESTION_MARK", function() { return QUESTION_MARK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AT_SIGN", function() { return AT_SIGN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return A; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return B; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return C; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return D; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return E; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return F; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return G; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "H", function() { return H; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "I", function() { return I; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "J", function() { return J; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "K", function() { return K; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "L", function() { return L; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "M", function() { return M; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "N", function() { return N; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "O", function() { return O; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "P", function() { return P; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Q", function() { return Q; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "R", function() { return R; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "S", function() { return S; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "T", function() { return T; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "U", function() { return U; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "V", function() { return V; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "W", function() { return W; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "X", function() { return X; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Y", function() { return Y; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Z", function() { return Z; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "META", function() { return META; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAC_WK_CMD_LEFT", function() { return MAC_WK_CMD_LEFT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAC_WK_CMD_RIGHT", function() { return MAC_WK_CMD_RIGHT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CONTEXT_MENU", function() { return CONTEXT_MENU; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_ZERO", function() { return NUMPAD_ZERO; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_ONE", function() { return NUMPAD_ONE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_TWO", function() { return NUMPAD_TWO; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_THREE", function() { return NUMPAD_THREE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_FOUR", function() { return NUMPAD_FOUR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_FIVE", function() { return NUMPAD_FIVE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_SIX", function() { return NUMPAD_SIX; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_SEVEN", function() { return NUMPAD_SEVEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_EIGHT", function() { return NUMPAD_EIGHT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_NINE", function() { return NUMPAD_NINE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_MULTIPLY", function() { return NUMPAD_MULTIPLY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_PLUS", function() { return NUMPAD_PLUS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_MINUS", function() { return NUMPAD_MINUS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_PERIOD", function() { return NUMPAD_PERIOD; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUMPAD_DIVIDE", function() { return NUMPAD_DIVIDE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F1", function() { return F1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F2", function() { return F2; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F3", function() { return F3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F4", function() { return F4; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F5", function() { return F5; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F6", function() { return F6; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F7", function() { return F7; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F8", function() { return F8; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F9", function() { return F9; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F10", function() { return F10; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F11", function() { return F11; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F12", function() { return F12; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NUM_LOCK", function() { return NUM_LOCK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SCROLL_LOCK", function() { return SCROLL_LOCK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FIRST_MEDIA", function() { return FIRST_MEDIA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FF_MINUS", function() { return FF_MINUS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MUTE", function() { return MUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VOLUME_DOWN", function() { return VOLUME_DOWN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VOLUME_UP", function() { return VOLUME_UP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FF_MUTE", function() { return FF_MUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FF_VOLUME_DOWN", function() { return FF_VOLUME_DOWN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LAST_MEDIA", function() { return LAST_MEDIA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FF_VOLUME_UP", function() { return FF_VOLUME_UP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEMICOLON", function() { return SEMICOLON; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EQUALS", function() { return EQUALS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "COMMA", function() { return COMMA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DASH", function() { return DASH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SLASH", function() { return SLASH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "APOSTROPHE", function() { return APOSTROPHE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TILDE", function() { return TILDE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OPEN_SQUARE_BRACKET", function() { return OPEN_SQUARE_BRACKET; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BACKSLASH", function() { return BACKSLASH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_SQUARE_BRACKET", function() { return CLOSE_SQUARE_BRACKET; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SINGLE_QUOTE", function() { return SINGLE_QUOTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAC_META", function() { return MAC_META; });
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+var /** @type {?} */ MAC_ENTER = 3;
+var /** @type {?} */ BACKSPACE = 8;
+var /** @type {?} */ TAB = 9;
+var /** @type {?} */ NUM_CENTER = 12;
+var /** @type {?} */ ENTER = 13;
+var /** @type {?} */ SHIFT = 16;
+var /** @type {?} */ CONTROL = 17;
+var /** @type {?} */ ALT = 18;
+var /** @type {?} */ PAUSE = 19;
+var /** @type {?} */ CAPS_LOCK = 20;
+var /** @type {?} */ ESCAPE = 27;
+var /** @type {?} */ SPACE = 32;
+var /** @type {?} */ PAGE_UP = 33;
+var /** @type {?} */ PAGE_DOWN = 34;
+var /** @type {?} */ END = 35;
+var /** @type {?} */ HOME = 36;
+var /** @type {?} */ LEFT_ARROW = 37;
+var /** @type {?} */ UP_ARROW = 38;
+var /** @type {?} */ RIGHT_ARROW = 39;
+var /** @type {?} */ DOWN_ARROW = 40;
+var /** @type {?} */ PLUS_SIGN = 43;
+var /** @type {?} */ PRINT_SCREEN = 44;
+var /** @type {?} */ INSERT = 45;
+var /** @type {?} */ DELETE = 46;
+var /** @type {?} */ ZERO = 48;
+var /** @type {?} */ ONE = 49;
+var /** @type {?} */ TWO = 50;
+var /** @type {?} */ THREE = 51;
+var /** @type {?} */ FOUR = 52;
+var /** @type {?} */ FIVE = 53;
+var /** @type {?} */ SIX = 54;
+var /** @type {?} */ SEVEN = 55;
+var /** @type {?} */ EIGHT = 56;
+var /** @type {?} */ NINE = 57;
+var /** @type {?} */ FF_SEMICOLON = 59; // Firefox (Gecko) fires this for semicolon instead of 186
+var /** @type {?} */ FF_EQUALS = 61; // Firefox (Gecko) fires this for equals instead of 187
+var /** @type {?} */ QUESTION_MARK = 63;
+var /** @type {?} */ AT_SIGN = 64;
+var /** @type {?} */ A = 65;
+var /** @type {?} */ B = 66;
+var /** @type {?} */ C = 67;
+var /** @type {?} */ D = 68;
+var /** @type {?} */ E = 69;
+var /** @type {?} */ F = 70;
+var /** @type {?} */ G = 71;
+var /** @type {?} */ H = 72;
+var /** @type {?} */ I = 73;
+var /** @type {?} */ J = 74;
+var /** @type {?} */ K = 75;
+var /** @type {?} */ L = 76;
+var /** @type {?} */ M = 77;
+var /** @type {?} */ N = 78;
+var /** @type {?} */ O = 79;
+var /** @type {?} */ P = 80;
+var /** @type {?} */ Q = 81;
+var /** @type {?} */ R = 82;
+var /** @type {?} */ S = 83;
+var /** @type {?} */ T = 84;
+var /** @type {?} */ U = 85;
+var /** @type {?} */ V = 86;
+var /** @type {?} */ W = 87;
+var /** @type {?} */ X = 88;
+var /** @type {?} */ Y = 89;
+var /** @type {?} */ Z = 90;
+var /** @type {?} */ META = 91; // WIN_KEY_LEFT
+var /** @type {?} */ MAC_WK_CMD_LEFT = 91;
+var /** @type {?} */ MAC_WK_CMD_RIGHT = 93;
+var /** @type {?} */ CONTEXT_MENU = 93;
+var /** @type {?} */ NUMPAD_ZERO = 96;
+var /** @type {?} */ NUMPAD_ONE = 97;
+var /** @type {?} */ NUMPAD_TWO = 98;
+var /** @type {?} */ NUMPAD_THREE = 99;
+var /** @type {?} */ NUMPAD_FOUR = 100;
+var /** @type {?} */ NUMPAD_FIVE = 101;
+var /** @type {?} */ NUMPAD_SIX = 102;
+var /** @type {?} */ NUMPAD_SEVEN = 103;
+var /** @type {?} */ NUMPAD_EIGHT = 104;
+var /** @type {?} */ NUMPAD_NINE = 105;
+var /** @type {?} */ NUMPAD_MULTIPLY = 106;
+var /** @type {?} */ NUMPAD_PLUS = 107;
+var /** @type {?} */ NUMPAD_MINUS = 109;
+var /** @type {?} */ NUMPAD_PERIOD = 110;
+var /** @type {?} */ NUMPAD_DIVIDE = 111;
+var /** @type {?} */ F1 = 112;
+var /** @type {?} */ F2 = 113;
+var /** @type {?} */ F3 = 114;
+var /** @type {?} */ F4 = 115;
+var /** @type {?} */ F5 = 116;
+var /** @type {?} */ F6 = 117;
+var /** @type {?} */ F7 = 118;
+var /** @type {?} */ F8 = 119;
+var /** @type {?} */ F9 = 120;
+var /** @type {?} */ F10 = 121;
+var /** @type {?} */ F11 = 122;
+var /** @type {?} */ F12 = 123;
+var /** @type {?} */ NUM_LOCK = 144;
+var /** @type {?} */ SCROLL_LOCK = 145;
+var /** @type {?} */ FIRST_MEDIA = 166;
+var /** @type {?} */ FF_MINUS = 173;
+var /** @type {?} */ MUTE = 173; // Firefox (Gecko) fires 181 for MUTE
+var /** @type {?} */ VOLUME_DOWN = 174; // Firefox (Gecko) fires 182 for VOLUME_DOWN
+var /** @type {?} */ VOLUME_UP = 175; // Firefox (Gecko) fires 183 for VOLUME_UP
+var /** @type {?} */ FF_MUTE = 181;
+var /** @type {?} */ FF_VOLUME_DOWN = 182;
+var /** @type {?} */ LAST_MEDIA = 183;
+var /** @type {?} */ FF_VOLUME_UP = 183;
+var /** @type {?} */ SEMICOLON = 186; // Firefox (Gecko) fires 59 for SEMICOLON
+var /** @type {?} */ EQUALS = 187; // Firefox (Gecko) fires 61 for EQUALS
+var /** @type {?} */ COMMA = 188;
+var /** @type {?} */ DASH = 189; // Firefox (Gecko) fires 173 for DASH/MINUS
+var /** @type {?} */ SLASH = 191;
+var /** @type {?} */ APOSTROPHE = 192;
+var /** @type {?} */ TILDE = 192;
+var /** @type {?} */ OPEN_SQUARE_BRACKET = 219;
+var /** @type {?} */ BACKSLASH = 220;
+var /** @type {?} */ CLOSE_SQUARE_BRACKET = 221;
+var /** @type {?} */ SINGLE_QUOTE = 222;
+var /** @type {?} */ MAC_META = 224;
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+
+//# sourceMappingURL=keycodes.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/observers.es5.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/observers.es5.js ***!
+  \*********************************************************/
+/*! exports provided: MutationObserverFactory, ContentObserver, CdkObserveContent, ObserversModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MutationObserverFactory", function() { return MutationObserverFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContentObserver", function() { return ContentObserver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkObserveContent", function() { return CdkObserveContent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ObserversModule", function() { return ObserversModule; });
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Factory that creates a new MutationObserver and allows us to stub it out in unit tests.
+ * \@docs-private
+ */
+var MutationObserverFactory = /** @class */ (function () {
+    function MutationObserverFactory() {
+    }
+    /**
+     * @param {?} callback
+     * @return {?}
+     */
+    MutationObserverFactory.prototype.create = /**
+     * @param {?} callback
+     * @return {?}
+     */
+    function (callback) {
+        return typeof MutationObserver === 'undefined' ? null : new MutationObserver(callback);
+    };
+    MutationObserverFactory.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */ MutationObserverFactory.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function MutationObserverFactory_Factory() { return new MutationObserverFactory(); }, token: MutationObserverFactory, providedIn: "root" });
+    return MutationObserverFactory;
+}());
+/**
+ * An injectable service that allows watching elements for changes to their content.
+ */
+var ContentObserver = /** @class */ (function () {
+    function ContentObserver(_mutationObserverFactory) {
+        this._mutationObserverFactory = _mutationObserverFactory;
+        /**
+         * Keeps track of the existing MutationObservers so they can be reused.
+         */
+        this._observedElements = new Map();
+    }
+    /**
+     * @return {?}
+     */
+    ContentObserver.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._observedElements.forEach(function (_, element) { return _this._cleanupObserver(element); });
+    };
+    /**
+     * @param {?} elementOrRef
+     * @return {?}
+     */
+    ContentObserver.prototype.observe = /**
+     * @param {?} elementOrRef
+     * @return {?}
+     */
+    function (elementOrRef) {
+        var _this = this;
+        var /** @type {?} */ element = elementOrRef instanceof _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"] ? elementOrRef.nativeElement : elementOrRef;
+        return rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].create(function (observer) {
+            var /** @type {?} */ stream = _this._observeElement(element);
+            var /** @type {?} */ subscription = stream.subscribe(observer);
+            return function () {
+                subscription.unsubscribe();
+                _this._unobserveElement(element);
+            };
+        });
+    };
+    /**
+     * Observes the given element by using the existing MutationObserver if available, or creating a
+     * new one if not.
+     * @param {?} element
+     * @return {?}
+     */
+    ContentObserver.prototype._observeElement = /**
+     * Observes the given element by using the existing MutationObserver if available, or creating a
+     * new one if not.
+     * @param {?} element
+     * @return {?}
+     */
+    function (element) {
+        if (!this._observedElements.has(element)) {
+            var /** @type {?} */ stream_1 = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+            var /** @type {?} */ observer = this._mutationObserverFactory.create(function (mutations) { return stream_1.next(mutations); });
+            if (observer) {
+                observer.observe(element, {
+                    characterData: true,
+                    childList: true,
+                    subtree: true
+                });
+            }
+            this._observedElements.set(element, { observer: observer, stream: stream_1, count: 1 });
+        }
+        else {
+            /** @type {?} */ ((this._observedElements.get(element))).count++;
+        }
+        return /** @type {?} */ ((this._observedElements.get(element))).stream;
+    };
+    /**
+     * Un-observes the given element and cleans up the underlying MutationObserver if nobody else is
+     * observing this element.
+     * @param {?} element
+     * @return {?}
+     */
+    ContentObserver.prototype._unobserveElement = /**
+     * Un-observes the given element and cleans up the underlying MutationObserver if nobody else is
+     * observing this element.
+     * @param {?} element
+     * @return {?}
+     */
+    function (element) {
+        if (this._observedElements.has(element)) {
+            /** @type {?} */ ((this._observedElements.get(element))).count--;
+            if (!/** @type {?} */ ((this._observedElements.get(element))).count) {
+                this._cleanupObserver(element);
+            }
+        }
+    };
+    /**
+     * Clean up the underlying MutationObserver for the specified element.
+     * @param {?} element
+     * @return {?}
+     */
+    ContentObserver.prototype._cleanupObserver = /**
+     * Clean up the underlying MutationObserver for the specified element.
+     * @param {?} element
+     * @return {?}
+     */
+    function (element) {
+        if (this._observedElements.has(element)) {
+            var _a = /** @type {?} */ ((this._observedElements.get(element))), observer = _a.observer, stream = _a.stream;
+            if (observer) {
+                observer.disconnect();
+            }
+            stream.complete();
+            this._observedElements.delete(element);
+        }
+    };
+    ContentObserver.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    ContentObserver.ctorParameters = function () { return [
+        { type: MutationObserverFactory, },
+    ]; };
+    /** @nocollapse */ ContentObserver.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function ContentObserver_Factory() { return new ContentObserver(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(MutationObserverFactory)); }, token: ContentObserver, providedIn: "root" });
+    return ContentObserver;
+}());
+/**
+ * Directive that triggers a callback whenever the content of
+ * its associated element has changed.
+ */
+var CdkObserveContent = /** @class */ (function () {
+    function CdkObserveContent(_contentObserver, _elementRef, _ngZone) {
+        this._contentObserver = _contentObserver;
+        this._elementRef = _elementRef;
+        this._ngZone = _ngZone;
+        /**
+         * Event emitted for each change in the element's content.
+         */
+        this.event = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this._disabled = false;
+        this._currentSubscription = null;
+    }
+    Object.defineProperty(CdkObserveContent.prototype, "disabled", {
+        get: /**
+         * Whether observing content is disabled. This option can be used
+         * to disconnect the underlying MutationObserver until it is needed.
+         * @return {?}
+         */
+        function () { return this._disabled; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._disabled = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_0__["coerceBooleanProperty"])(value);
+            if (this._disabled) {
+                this._unsubscribe();
+            }
+            else {
+                this._subscribe();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkObserveContent.prototype, "debounce", {
+        get: /**
+         * Debounce interval for emitting the changes.
+         * @return {?}
+         */
+        function () { return this._debounce; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this._debounce = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_0__["coerceNumberProperty"])(value);
+            this._subscribe();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    CdkObserveContent.prototype.ngAfterContentInit = /**
+     * @return {?}
+     */
+    function () {
+        if (!this._currentSubscription && !this.disabled) {
+            this._subscribe();
+        }
+    };
+    /**
+     * @return {?}
+     */
+    CdkObserveContent.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._unsubscribe();
+    };
+    /**
+     * @return {?}
+     */
+    CdkObserveContent.prototype._subscribe = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._unsubscribe();
+        var /** @type {?} */ stream = this._contentObserver.observe(this._elementRef);
+        // TODO(mmalerba): We shouldn't be emitting on this @Output() outside the zone.
+        // Consider brining it back inside the zone next time we're making breaking changes.
+        // Bringing it back inside can cause things like infinite change detection loops and changed
+        // after checked errors if people's code isn't handling it properly.
+        this._ngZone.runOutsideAngular(function () {
+            _this._currentSubscription =
+                (_this.debounce ? stream.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["debounceTime"])(_this.debounce)) : stream).subscribe(_this.event);
+        });
+    };
+    /**
+     * @return {?}
+     */
+    CdkObserveContent.prototype._unsubscribe = /**
+     * @return {?}
+     */
+    function () {
+        if (this._currentSubscription) {
+            this._currentSubscription.unsubscribe();
+        }
+    };
+    CdkObserveContent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
+                    selector: '[cdkObserveContent]',
+                    exportAs: 'cdkObserveContent',
+                },] },
+    ];
+    /** @nocollapse */
+    CdkObserveContent.ctorParameters = function () { return [
+        { type: ContentObserver, },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], },
+    ]; };
+    CdkObserveContent.propDecorators = {
+        "event": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"], args: ['cdkObserveContent',] },],
+        "disabled": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"], args: ['cdkObserveContentDisabled',] },],
+        "debounce": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"] },],
+    };
+    return CdkObserveContent;
+}());
+var ObserversModule = /** @class */ (function () {
+    function ObserversModule() {
+    }
+    ObserversModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"], args: [{
+                    exports: [CdkObserveContent],
+                    declarations: [CdkObserveContent],
+                    providers: [MutationObserverFactory]
+                },] },
+    ];
+    return ObserversModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+
+//# sourceMappingURL=observers.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/overlay.es5.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/overlay.es5.js ***!
+  \*******************************************************/
+/*! exports provided: ViewportRuler, VIEWPORT_RULER_PROVIDER, CdkScrollable, ScrollDispatcher, Overlay, OverlayContainer, CdkOverlayOrigin, CdkConnectedOverlay, FullscreenOverlayContainer, OverlayRef, OverlayKeyboardDispatcher, OverlayPositionBuilder, GlobalPositionStrategy, ConnectedPositionStrategy, FlexibleConnectedPositionStrategy, OverlayConfig, ConnectionPositionPair, ScrollingVisibility, ConnectedOverlayPositionChange, validateVerticalPosition, validateHorizontalPosition, ScrollStrategyOptions, RepositionScrollStrategy, CloseScrollStrategy, NoopScrollStrategy, BlockScrollStrategy, OverlayModule, OVERLAY_PROVIDERS, ɵg, ɵf, ɵb, ɵa, ɵc, ɵe, ɵd */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Overlay", function() { return Overlay; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OverlayContainer", function() { return OverlayContainer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkOverlayOrigin", function() { return CdkOverlayOrigin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkConnectedOverlay", function() { return CdkConnectedOverlay; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FullscreenOverlayContainer", function() { return FullscreenOverlayContainer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OverlayRef", function() { return OverlayRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OverlayKeyboardDispatcher", function() { return OverlayKeyboardDispatcher; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OverlayPositionBuilder", function() { return OverlayPositionBuilder; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GlobalPositionStrategy", function() { return GlobalPositionStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConnectedPositionStrategy", function() { return ConnectedPositionStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FlexibleConnectedPositionStrategy", function() { return FlexibleConnectedPositionStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OverlayConfig", function() { return OverlayConfig; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConnectionPositionPair", function() { return ConnectionPositionPair; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollingVisibility", function() { return ScrollingVisibility; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConnectedOverlayPositionChange", function() { return ConnectedOverlayPositionChange; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateVerticalPosition", function() { return validateVerticalPosition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateHorizontalPosition", function() { return validateHorizontalPosition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollStrategyOptions", function() { return ScrollStrategyOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RepositionScrollStrategy", function() { return RepositionScrollStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CloseScrollStrategy", function() { return CloseScrollStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoopScrollStrategy", function() { return NoopScrollStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BlockScrollStrategy", function() { return BlockScrollStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OverlayModule", function() { return OverlayModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OVERLAY_PROVIDERS", function() { return OVERLAY_PROVIDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵg", function() { return OVERLAY_KEYBOARD_DISPATCHER_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵf", function() { return OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return OVERLAY_CONTAINER_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return OVERLAY_CONTAINER_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵc", function() { return CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵe", function() { return CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵd", function() { return CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER_FACTORY; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+/* harmony import */ var _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/cdk/scrolling */ "./node_modules/@angular/cdk/esm5/scrolling.es5.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ViewportRuler", function() { return _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ViewportRuler"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "VIEWPORT_RULER_PROVIDER", function() { return _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["VIEWPORT_RULER_PROVIDER"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CdkScrollable", function() { return _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["CdkScrollable"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ScrollDispatcher", function() { return _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ScrollDispatcher"]; });
+
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/cdk/platform */ "./node_modules/@angular/cdk/esm5/platform.es5.js");
+/* harmony import */ var _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/cdk/bidi */ "./node_modules/@angular/cdk/esm5/bidi.es5.js");
+/* harmony import */ var _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/cdk/portal */ "./node_modules/@angular/cdk/esm5/portal.es5.js");
+/* harmony import */ var _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/cdk/keycodes */ "./node_modules/@angular/cdk/esm5/keycodes.es5.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Scroll strategy that doesn't do anything.
+ */
+var  /**
+ * Scroll strategy that doesn't do anything.
+ */
+NoopScrollStrategy = /** @class */ (function () {
+    function NoopScrollStrategy() {
+    }
+    /** Does nothing, as this scroll strategy is a no-op. */
+    /**
+     * Does nothing, as this scroll strategy is a no-op.
+     * @return {?}
+     */
+    NoopScrollStrategy.prototype.enable = /**
+     * Does nothing, as this scroll strategy is a no-op.
+     * @return {?}
+     */
+    function () { };
+    /** Does nothing, as this scroll strategy is a no-op. */
+    /**
+     * Does nothing, as this scroll strategy is a no-op.
+     * @return {?}
+     */
+    NoopScrollStrategy.prototype.disable = /**
+     * Does nothing, as this scroll strategy is a no-op.
+     * @return {?}
+     */
+    function () { };
+    /** Does nothing, as this scroll strategy is a no-op. */
+    /**
+     * Does nothing, as this scroll strategy is a no-op.
+     * @return {?}
+     */
+    NoopScrollStrategy.prototype.attach = /**
+     * Does nothing, as this scroll strategy is a no-op.
+     * @return {?}
+     */
+    function () { };
+    return NoopScrollStrategy;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Initial configuration used when creating an overlay.
+ */
+var  /**
+ * Initial configuration used when creating an overlay.
+ */
+OverlayConfig = /** @class */ (function () {
+    function OverlayConfig(config) {
+        var _this = this;
+        /**
+         * Strategy to be used when handling scroll events while the overlay is open.
+         */
+        this.scrollStrategy = new NoopScrollStrategy();
+        /**
+         * Custom class to add to the overlay pane.
+         */
+        this.panelClass = '';
+        /**
+         * Whether the overlay has a backdrop.
+         */
+        this.hasBackdrop = false;
+        /**
+         * Custom class to add to the backdrop
+         */
+        this.backdropClass = 'cdk-overlay-dark-backdrop';
+        if (config) {
+            Object.keys(config)
+                .filter(function (key) { return typeof config[key] !== 'undefined'; })
+                .forEach(function (key) { return _this[key] = config[key]; });
+        }
+    }
+    return OverlayConfig;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * The points of the origin element and the overlay element to connect.
+ */
+var  /**
+ * The points of the origin element and the overlay element to connect.
+ */
+ConnectionPositionPair = /** @class */ (function () {
+    function ConnectionPositionPair(origin, overlay, offsetX, offsetY) {
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        this.originX = origin.originX;
+        this.originY = origin.originY;
+        this.overlayX = overlay.overlayX;
+        this.overlayY = overlay.overlayY;
+    }
+    return ConnectionPositionPair;
+}());
+/**
+ * Set of properties regarding the position of the origin and overlay relative to the viewport
+ * with respect to the containing Scrollable elements.
+ *
+ * The overlay and origin are clipped if any part of their bounding client rectangle exceeds the
+ * bounds of any one of the strategy's Scrollable's bounding client rectangle.
+ *
+ * The overlay and origin are outside view if there is no overlap between their bounding client
+ * rectangle and any one of the strategy's Scrollable's bounding client rectangle.
+ *
+ *       -----------                    -----------
+ *       | outside |                    | clipped |
+ *       |  view   |              --------------------------
+ *       |         |              |     |         |        |
+ *       ----------               |     -----------        |
+ *  --------------------------    |                        |
+ *  |                        |    |      Scrollable        |
+ *  |                        |    |                        |
+ *  |                        |     --------------------------
+ *  |      Scrollable        |
+ *  |                        |
+ *  --------------------------
+ *
+ *  \@docs-private
+ */
+var  /**
+ * Set of properties regarding the position of the origin and overlay relative to the viewport
+ * with respect to the containing Scrollable elements.
+ *
+ * The overlay and origin are clipped if any part of their bounding client rectangle exceeds the
+ * bounds of any one of the strategy's Scrollable's bounding client rectangle.
+ *
+ * The overlay and origin are outside view if there is no overlap between their bounding client
+ * rectangle and any one of the strategy's Scrollable's bounding client rectangle.
+ *
+ *       -----------                    -----------
+ *       | outside |                    | clipped |
+ *       |  view   |              --------------------------
+ *       |         |              |     |         |        |
+ *       ----------               |     -----------        |
+ *  --------------------------    |                        |
+ *  |                        |    |      Scrollable        |
+ *  |                        |    |                        |
+ *  |                        |     --------------------------
+ *  |      Scrollable        |
+ *  |                        |
+ *  --------------------------
+ *
+ *  \@docs-private
+ */
+ScrollingVisibility = /** @class */ (function () {
+    function ScrollingVisibility() {
+    }
+    return ScrollingVisibility;
+}());
+/**
+ * The change event emitted by the strategy when a fallback position is used.
+ */
+var ConnectedOverlayPositionChange = /** @class */ (function () {
+    function ConnectedOverlayPositionChange(connectionPair, /** @docs-private */
+    scrollableViewProperties) {
+        this.connectionPair = connectionPair;
+        this.scrollableViewProperties = scrollableViewProperties;
+    }
+    /** @nocollapse */
+    ConnectedOverlayPositionChange.ctorParameters = function () { return [
+        { type: ConnectionPositionPair, },
+        { type: ScrollingVisibility, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+    ]; };
+    return ConnectedOverlayPositionChange;
+}());
+/**
+ * Validates whether a vertical position property matches the expected values.
+ * \@docs-private
+ * @param {?} property Name of the property being validated.
+ * @param {?} value Value of the property being validated.
+ * @return {?}
+ */
+function validateVerticalPosition(property, value) {
+    if (value !== 'top' && value !== 'bottom' && value !== 'center') {
+        throw Error("ConnectedPosition: Invalid " + property + " \"" + value + "\". " +
+            "Expected \"top\", \"bottom\" or \"center\".");
+    }
+}
+/**
+ * Validates whether a horizontal position property matches the expected values.
+ * \@docs-private
+ * @param {?} property Name of the property being validated.
+ * @param {?} value Value of the property being validated.
+ * @return {?}
+ */
+function validateHorizontalPosition(property, value) {
+    if (value !== 'start' && value !== 'end' && value !== 'center') {
+        throw Error("ConnectedPosition: Invalid " + property + " \"" + value + "\". " +
+            "Expected \"start\", \"end\" or \"center\".");
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Strategy that will prevent the user from scrolling while the overlay is visible.
+ */
+var  /**
+ * Strategy that will prevent the user from scrolling while the overlay is visible.
+ */
+BlockScrollStrategy = /** @class */ (function () {
+    function BlockScrollStrategy(_viewportRuler, document) {
+        this._viewportRuler = _viewportRuler;
+        this._previousHTMLStyles = { top: '', left: '' };
+        this._isEnabled = false;
+        this._document = document;
+    }
+    /** Attaches this scroll strategy to an overlay. */
+    /**
+     * Attaches this scroll strategy to an overlay.
+     * @return {?}
+     */
+    BlockScrollStrategy.prototype.attach = /**
+     * Attaches this scroll strategy to an overlay.
+     * @return {?}
+     */
+    function () { };
+    /** Blocks page-level scroll while the attached overlay is open. */
+    /**
+     * Blocks page-level scroll while the attached overlay is open.
+     * @return {?}
+     */
+    BlockScrollStrategy.prototype.enable = /**
+     * Blocks page-level scroll while the attached overlay is open.
+     * @return {?}
+     */
+    function () {
+        if (this._canBeEnabled()) {
+            var /** @type {?} */ root = this._document.documentElement;
+            this._previousScrollPosition = this._viewportRuler.getViewportScrollPosition();
+            // Cache the previous inline styles in case the user had set them.
+            this._previousHTMLStyles.left = root.style.left || '';
+            this._previousHTMLStyles.top = root.style.top || '';
+            // Note: we're using the `html` node, instead of the `body`, because the `body` may
+            // have the user agent margin, whereas the `html` is guaranteed not to have one.
+            root.style.left = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(-this._previousScrollPosition.left);
+            root.style.top = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(-this._previousScrollPosition.top);
+            root.classList.add('cdk-global-scrollblock');
+            this._isEnabled = true;
+        }
+    };
+    /** Unblocks page-level scroll while the attached overlay is open. */
+    /**
+     * Unblocks page-level scroll while the attached overlay is open.
+     * @return {?}
+     */
+    BlockScrollStrategy.prototype.disable = /**
+     * Unblocks page-level scroll while the attached overlay is open.
+     * @return {?}
+     */
+    function () {
+        if (this._isEnabled) {
+            var /** @type {?} */ html = this._document.documentElement;
+            var /** @type {?} */ body = this._document.body;
+            var /** @type {?} */ previousHtmlScrollBehavior = html.style['scrollBehavior'] || '';
+            var /** @type {?} */ previousBodyScrollBehavior = body.style['scrollBehavior'] || '';
+            this._isEnabled = false;
+            html.style.left = this._previousHTMLStyles.left;
+            html.style.top = this._previousHTMLStyles.top;
+            html.classList.remove('cdk-global-scrollblock');
+            // Disable user-defined smooth scrolling temporarily while we restore the scroll position.
+            // See https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior
+            html.style['scrollBehavior'] = body.style['scrollBehavior'] = 'auto';
+            window.scroll(this._previousScrollPosition.left, this._previousScrollPosition.top);
+            html.style['scrollBehavior'] = previousHtmlScrollBehavior;
+            body.style['scrollBehavior'] = previousBodyScrollBehavior;
+        }
+    };
+    /**
+     * @return {?}
+     */
+    BlockScrollStrategy.prototype._canBeEnabled = /**
+     * @return {?}
+     */
+    function () {
+        // Since the scroll strategies can't be singletons, we have to use a global CSS class
+        // (`cdk-global-scrollblock`) to make sure that we don't try to disable global
+        // scrolling multiple times.
+        var /** @type {?} */ html = this._document.documentElement;
+        if (html.classList.contains('cdk-global-scrollblock') || this._isEnabled) {
+            return false;
+        }
+        var /** @type {?} */ body = this._document.body;
+        var /** @type {?} */ viewport = this._viewportRuler.getViewportSize();
+        return body.scrollHeight > viewport.height || body.scrollWidth > viewport.width;
+    };
+    return BlockScrollStrategy;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Returns an error to be thrown when attempting to attach an already-attached scroll strategy.
+ * @return {?}
+ */
+function getMatScrollStrategyAlreadyAttachedError() {
+    return Error("Scroll strategy has already been attached.");
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Strategy that will close the overlay as soon as the user starts scrolling.
+ */
+var  /**
+ * Strategy that will close the overlay as soon as the user starts scrolling.
+ */
+CloseScrollStrategy = /** @class */ (function () {
+    function CloseScrollStrategy(_scrollDispatcher, _ngZone, _viewportRuler, _config) {
+        var _this = this;
+        this._scrollDispatcher = _scrollDispatcher;
+        this._ngZone = _ngZone;
+        this._viewportRuler = _viewportRuler;
+        this._config = _config;
+        this._scrollSubscription = null;
+        /**
+         * Detaches the overlay ref and disables the scroll strategy.
+         */
+        this._detach = function () {
+            _this.disable();
+            if (_this._overlayRef.hasAttached()) {
+                _this._ngZone.run(function () { return _this._overlayRef.detach(); });
+            }
+        };
+    }
+    /** Attaches this scroll strategy to an overlay. */
+    /**
+     * Attaches this scroll strategy to an overlay.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    CloseScrollStrategy.prototype.attach = /**
+     * Attaches this scroll strategy to an overlay.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    function (overlayRef) {
+        if (this._overlayRef) {
+            throw getMatScrollStrategyAlreadyAttachedError();
+        }
+        this._overlayRef = overlayRef;
+    };
+    /** Enables the closing of the attached overlay on scroll. */
+    /**
+     * Enables the closing of the attached overlay on scroll.
+     * @return {?}
+     */
+    CloseScrollStrategy.prototype.enable = /**
+     * Enables the closing of the attached overlay on scroll.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (this._scrollSubscription) {
+            return;
+        }
+        var /** @type {?} */ stream = this._scrollDispatcher.scrolled(0);
+        if (this._config && this._config.threshold && this._config.threshold > 1) {
+            this._initialScrollPosition = this._viewportRuler.getViewportScrollPosition().top;
+            this._scrollSubscription = stream.subscribe(function () {
+                var /** @type {?} */ scrollPosition = _this._viewportRuler.getViewportScrollPosition().top;
+                if (Math.abs(scrollPosition - _this._initialScrollPosition) > /** @type {?} */ ((/** @type {?} */ ((_this._config)).threshold))) {
+                    _this._detach();
+                }
+                else {
+                    _this._overlayRef.updatePosition();
+                }
+            });
+        }
+        else {
+            this._scrollSubscription = stream.subscribe(this._detach);
+        }
+    };
+    /** Disables the closing the attached overlay on scroll. */
+    /**
+     * Disables the closing the attached overlay on scroll.
+     * @return {?}
+     */
+    CloseScrollStrategy.prototype.disable = /**
+     * Disables the closing the attached overlay on scroll.
+     * @return {?}
+     */
+    function () {
+        if (this._scrollSubscription) {
+            this._scrollSubscription.unsubscribe();
+            this._scrollSubscription = null;
+        }
+    };
+    return CloseScrollStrategy;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+// TODO(jelbourn): move this to live with the rest of the scrolling code
+// TODO(jelbourn): someday replace this with IntersectionObservers
+/**
+ * Gets whether an element is scrolled outside of view by any of its parent scrolling containers.
+ * \@docs-private
+ * @param {?} element Dimensions of the element (from getBoundingClientRect)
+ * @param {?} scrollContainers Dimensions of element's scrolling containers (from getBoundingClientRect)
+ * @return {?} Whether the element is scrolled out of view
+ */
+function isElementScrolledOutsideView(element, scrollContainers) {
+    return scrollContainers.some(function (containerBounds) {
+        var /** @type {?} */ outsideAbove = element.bottom < containerBounds.top;
+        var /** @type {?} */ outsideBelow = element.top > containerBounds.bottom;
+        var /** @type {?} */ outsideLeft = element.right < containerBounds.left;
+        var /** @type {?} */ outsideRight = element.left > containerBounds.right;
+        return outsideAbove || outsideBelow || outsideLeft || outsideRight;
+    });
+}
+/**
+ * Gets whether an element is clipped by any of its scrolling containers.
+ * \@docs-private
+ * @param {?} element Dimensions of the element (from getBoundingClientRect)
+ * @param {?} scrollContainers Dimensions of element's scrolling containers (from getBoundingClientRect)
+ * @return {?} Whether the element is clipped
+ */
+function isElementClippedByScrolling(element, scrollContainers) {
+    return scrollContainers.some(function (scrollContainerRect) {
+        var /** @type {?} */ clippedAbove = element.top < scrollContainerRect.top;
+        var /** @type {?} */ clippedBelow = element.bottom > scrollContainerRect.bottom;
+        var /** @type {?} */ clippedLeft = element.left < scrollContainerRect.left;
+        var /** @type {?} */ clippedRight = element.right > scrollContainerRect.right;
+        return clippedAbove || clippedBelow || clippedLeft || clippedRight;
+    });
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Strategy that will update the element position as the user is scrolling.
+ */
+var  /**
+ * Strategy that will update the element position as the user is scrolling.
+ */
+RepositionScrollStrategy = /** @class */ (function () {
+    function RepositionScrollStrategy(_scrollDispatcher, _viewportRuler, _ngZone, _config) {
+        this._scrollDispatcher = _scrollDispatcher;
+        this._viewportRuler = _viewportRuler;
+        this._ngZone = _ngZone;
+        this._config = _config;
+        this._scrollSubscription = null;
+    }
+    /** Attaches this scroll strategy to an overlay. */
+    /**
+     * Attaches this scroll strategy to an overlay.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    RepositionScrollStrategy.prototype.attach = /**
+     * Attaches this scroll strategy to an overlay.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    function (overlayRef) {
+        if (this._overlayRef) {
+            throw getMatScrollStrategyAlreadyAttachedError();
+        }
+        this._overlayRef = overlayRef;
+    };
+    /** Enables repositioning of the attached overlay on scroll. */
+    /**
+     * Enables repositioning of the attached overlay on scroll.
+     * @return {?}
+     */
+    RepositionScrollStrategy.prototype.enable = /**
+     * Enables repositioning of the attached overlay on scroll.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (!this._scrollSubscription) {
+            var /** @type {?} */ throttle = this._config ? this._config.scrollThrottle : 0;
+            this._scrollSubscription = this._scrollDispatcher.scrolled(throttle).subscribe(function () {
+                _this._overlayRef.updatePosition();
+                // TODO(crisbeto): make `close` on by default once all components can handle it.
+                if (_this._config && _this._config.autoClose) {
+                    var /** @type {?} */ overlayRect = _this._overlayRef.overlayElement.getBoundingClientRect();
+                    var _a = _this._viewportRuler.getViewportSize(), width = _a.width, height = _a.height;
+                    // TODO(crisbeto): include all ancestor scroll containers here once
+                    // we have a way of exposing the trigger element to the scroll strategy.
+                    var /** @type {?} */ parentRects = [{ width: width, height: height, bottom: height, right: width, top: 0, left: 0 }];
+                    if (isElementScrolledOutsideView(overlayRect, parentRects)) {
+                        _this.disable();
+                        _this._ngZone.run(function () { return _this._overlayRef.detach(); });
+                    }
+                }
+            });
+        }
+    };
+    /** Disables repositioning of the attached overlay on scroll. */
+    /**
+     * Disables repositioning of the attached overlay on scroll.
+     * @return {?}
+     */
+    RepositionScrollStrategy.prototype.disable = /**
+     * Disables repositioning of the attached overlay on scroll.
+     * @return {?}
+     */
+    function () {
+        if (this._scrollSubscription) {
+            this._scrollSubscription.unsubscribe();
+            this._scrollSubscription = null;
+        }
+    };
+    return RepositionScrollStrategy;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Options for how an overlay will handle scrolling.
+ *
+ * Users can provide a custom value for `ScrollStrategyOptions` to replace the default
+ * behaviors. This class primarily acts as a factory for ScrollStrategy instances.
+ */
+var ScrollStrategyOptions = /** @class */ (function () {
+    function ScrollStrategyOptions(_scrollDispatcher, _viewportRuler, _ngZone, document) {
+        var _this = this;
+        this._scrollDispatcher = _scrollDispatcher;
+        this._viewportRuler = _viewportRuler;
+        this._ngZone = _ngZone;
+        /**
+         * Do nothing on scroll.
+         */
+        this.noop = function () { return new NoopScrollStrategy(); };
+        /**
+         * Close the overlay as soon as the user scrolls.
+         * @param config Configuration to be used inside the scroll strategy.
+         */
+        this.close = function (config) {
+            return new CloseScrollStrategy(_this._scrollDispatcher, _this._ngZone, _this._viewportRuler, config);
+        };
+        /**
+         * Block scrolling.
+         */
+        this.block = function () { return new BlockScrollStrategy(_this._viewportRuler, _this._document); };
+        /**
+         * Update the overlay's position on scroll.
+         * @param config Configuration to be used inside the scroll strategy.
+         * Allows debouncing the reposition calls.
+         */
+        this.reposition = function (config) {
+            return new RepositionScrollStrategy(_this._scrollDispatcher, _this._viewportRuler, _this._ngZone, config);
+        };
+        this._document = document;
+    }
+    ScrollStrategyOptions.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    ScrollStrategyOptions.ctorParameters = function () { return [
+        { type: _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ScrollDispatcher"], },
+        { type: _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ViewportRuler"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"],] },] },
+    ]; };
+    /** @nocollapse */ ScrollStrategyOptions.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"])({ factory: function ScrollStrategyOptions_Factory() { return new ScrollStrategyOptions(Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ScrollDispatcher"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ViewportRuler"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"])); }, token: ScrollStrategyOptions, providedIn: "root" });
+    return ScrollStrategyOptions;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Service for dispatching keyboard events that land on the body to appropriate overlay ref,
+ * if any. It maintains a list of attached overlays to determine best suited overlay based
+ * on event target and order of overlay opens.
+ */
+var OverlayKeyboardDispatcher = /** @class */ (function () {
+    function OverlayKeyboardDispatcher(document) {
+        var _this = this;
+        /**
+         * Currently attached overlays in the order they were attached.
+         */
+        this._attachedOverlays = [];
+        /**
+         * Keyboard event listener that will be attached to the body.
+         */
+        this._keydownListener = function (event) {
+            var /** @type {?} */ overlays = _this._attachedOverlays;
+            for (var /** @type {?} */ i = overlays.length - 1; i > -1; i--) {
+                // Dispatch the keydown event to the top overlay which has subscribers to its keydown events.
+                // We want to target the most recent overlay, rather than trying to match where the event came
+                // from, because some components might open an overlay, but keep focus on a trigger element
+                // (e.g. for select and autocomplete). We skip overlays without keydown event subscriptions,
+                // because we don't want overlays that don't handle keyboard events to block the ones below
+                // them that do.
+                if (overlays[i]._keydownEventSubscriptions > 0) {
+                    overlays[i]._keydownEvents.next(event);
+                    break;
+                }
+            }
+        };
+        this._document = document;
+    }
+    /**
+     * @return {?}
+     */
+    OverlayKeyboardDispatcher.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._detach();
+    };
+    /** Add a new overlay to the list of attached overlay refs. */
+    /**
+     * Add a new overlay to the list of attached overlay refs.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    OverlayKeyboardDispatcher.prototype.add = /**
+     * Add a new overlay to the list of attached overlay refs.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    function (overlayRef) {
+        // Ensure that we don't get the same overlay multiple times.
+        this.remove(overlayRef);
+        // Lazily start dispatcher once first overlay is added
+        if (!this._isAttached) {
+            this._document.body.addEventListener('keydown', this._keydownListener, true);
+            this._isAttached = true;
+        }
+        this._attachedOverlays.push(overlayRef);
+    };
+    /** Remove an overlay from the list of attached overlay refs. */
+    /**
+     * Remove an overlay from the list of attached overlay refs.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    OverlayKeyboardDispatcher.prototype.remove = /**
+     * Remove an overlay from the list of attached overlay refs.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    function (overlayRef) {
+        var /** @type {?} */ index = this._attachedOverlays.indexOf(overlayRef);
+        if (index > -1) {
+            this._attachedOverlays.splice(index, 1);
+        }
+        // Remove the global listener once there are no more overlays.
+        if (this._attachedOverlays.length === 0) {
+            this._detach();
+        }
+    };
+    /**
+     * Detaches the global keyboard event listener.
+     * @return {?}
+     */
+    OverlayKeyboardDispatcher.prototype._detach = /**
+     * Detaches the global keyboard event listener.
+     * @return {?}
+     */
+    function () {
+        if (this._isAttached) {
+            this._document.body.removeEventListener('keydown', this._keydownListener, true);
+            this._isAttached = false;
+        }
+    };
+    OverlayKeyboardDispatcher.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    OverlayKeyboardDispatcher.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"],] },] },
+    ]; };
+    /** @nocollapse */ OverlayKeyboardDispatcher.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"])({ factory: function OverlayKeyboardDispatcher_Factory() { return new OverlayKeyboardDispatcher(Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"])); }, token: OverlayKeyboardDispatcher, providedIn: "root" });
+    return OverlayKeyboardDispatcher;
+}());
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ * @param {?} dispatcher
+ * @param {?} _document
+ * @return {?}
+ */
+function OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY(dispatcher, _document) {
+    return dispatcher || new OverlayKeyboardDispatcher(_document);
+}
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ */
+var /** @type {?} */ OVERLAY_KEYBOARD_DISPATCHER_PROVIDER = {
+    // If there is already an OverlayKeyboardDispatcher available, use that.
+    // Otherwise, provide a new one.
+    provide: OverlayKeyboardDispatcher,
+    deps: [
+        [new _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_0__["SkipSelf"](), OverlayKeyboardDispatcher],
+        /** @type {?} */ (
+        // Coerce to `InjectionToken` so that the `deps` match the "shape"
+        // of the type expected by Angular
+        _angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"])
+    ],
+    useFactory: OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Container inside which all overlays will render.
+ */
+var OverlayContainer = /** @class */ (function () {
+    function OverlayContainer(_document) {
+        this._document = _document;
+    }
+    /**
+     * @return {?}
+     */
+    OverlayContainer.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        if (this._containerElement && this._containerElement.parentNode) {
+            this._containerElement.parentNode.removeChild(this._containerElement);
+        }
+    };
+    /**
+     * This method returns the overlay container element. It will lazily
+     * create the element the first time  it is called to facilitate using
+     * the container in non-browser environments.
+     * @returns the container element
+     */
+    /**
+     * This method returns the overlay container element. It will lazily
+     * create the element the first time  it is called to facilitate using
+     * the container in non-browser environments.
+     * @return {?} the container element
+     */
+    OverlayContainer.prototype.getContainerElement = /**
+     * This method returns the overlay container element. It will lazily
+     * create the element the first time  it is called to facilitate using
+     * the container in non-browser environments.
+     * @return {?} the container element
+     */
+    function () {
+        if (!this._containerElement) {
+            this._createContainer();
+        }
+        return this._containerElement;
+    };
+    /**
+     * Create the overlay container element, which is simply a div
+     * with the 'cdk-overlay-container' class on the document body.
+     */
+    /**
+     * Create the overlay container element, which is simply a div
+     * with the 'cdk-overlay-container' class on the document body.
+     * @return {?}
+     */
+    OverlayContainer.prototype._createContainer = /**
+     * Create the overlay container element, which is simply a div
+     * with the 'cdk-overlay-container' class on the document body.
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ container = this._document.createElement('div');
+        container.classList.add('cdk-overlay-container');
+        this._document.body.appendChild(container);
+        this._containerElement = container;
+    };
+    OverlayContainer.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    OverlayContainer.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"],] },] },
+    ]; };
+    /** @nocollapse */ OverlayContainer.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"])({ factory: function OverlayContainer_Factory() { return new OverlayContainer(Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"])); }, token: OverlayContainer, providedIn: "root" });
+    return OverlayContainer;
+}());
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ * @param {?} parentContainer
+ * @param {?} _document
+ * @return {?}
+ */
+function OVERLAY_CONTAINER_PROVIDER_FACTORY(parentContainer, _document) {
+    return parentContainer || new OverlayContainer(_document);
+}
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ */
+var /** @type {?} */ OVERLAY_CONTAINER_PROVIDER = {
+    // If there is already an OverlayContainer available, use that. Otherwise, provide a new one.
+    provide: OverlayContainer,
+    deps: [
+        [new _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_0__["SkipSelf"](), OverlayContainer],
+        /** @type {?} */ (_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"] // We need to use the InjectionToken somewhere to keep TS happy
+        ) // We need to use the InjectionToken somewhere to keep TS happy
+    ],
+    useFactory: OVERLAY_CONTAINER_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Reference to an overlay that has been created with the Overlay service.
+ * Used to manipulate or dispose of said overlay.
+ */
+var  /**
+ * Reference to an overlay that has been created with the Overlay service.
+ * Used to manipulate or dispose of said overlay.
+ */
+OverlayRef = /** @class */ (function () {
+    function OverlayRef(_portalOutlet, _host, _pane, _config, _ngZone, _keyboardDispatcher, _document) {
+        var _this = this;
+        this._portalOutlet = _portalOutlet;
+        this._host = _host;
+        this._pane = _pane;
+        this._config = _config;
+        this._ngZone = _ngZone;
+        this._keyboardDispatcher = _keyboardDispatcher;
+        this._document = _document;
+        this._backdropElement = null;
+        this._backdropClick = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
+        this._attachments = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
+        this._detachments = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
+        this._keydownEventsObservable = rxjs__WEBPACK_IMPORTED_MODULE_5__["Observable"].create(function (observer) {
+            var /** @type {?} */ subscription = _this._keydownEvents.subscribe(observer);
+            _this._keydownEventSubscriptions++;
+            return function () {
+                subscription.unsubscribe();
+                _this._keydownEventSubscriptions--;
+            };
+        });
+        /**
+         * Stream of keydown events dispatched to this overlay.
+         */
+        this._keydownEvents = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
+        /**
+         * Amount of subscriptions to the keydown events.
+         */
+        this._keydownEventSubscriptions = 0;
+        if (_config.scrollStrategy) {
+            _config.scrollStrategy.attach(this);
+        }
+    }
+    Object.defineProperty(OverlayRef.prototype, "overlayElement", {
+        /** The overlay's HTML element */
+        get: /**
+         * The overlay's HTML element
+         * @return {?}
+         */
+        function () {
+            return this._pane;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OverlayRef.prototype, "backdropElement", {
+        /** The overlay's backdrop HTML element. */
+        get: /**
+         * The overlay's backdrop HTML element.
+         * @return {?}
+         */
+        function () {
+            return this._backdropElement;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OverlayRef.prototype, "hostElement", {
+        /**
+         * Wrapper around the panel element. Can be used for advanced
+         * positioning where a wrapper with specific styling is
+         * required around the overlay pane.
+         */
+        get: /**
+         * Wrapper around the panel element. Can be used for advanced
+         * positioning where a wrapper with specific styling is
+         * required around the overlay pane.
+         * @return {?}
+         */
+        function () {
+            return this._host;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Attaches content, given via a Portal, to the overlay.
+     * If the overlay is configured to have a backdrop, it will be created.
+     *
+     * @param portal Portal instance to which to attach the overlay.
+     * @returns The portal attachment result.
+     */
+    /**
+     * Attaches content, given via a Portal, to the overlay.
+     * If the overlay is configured to have a backdrop, it will be created.
+     *
+     * @param {?} portal Portal instance to which to attach the overlay.
+     * @return {?} The portal attachment result.
+     */
+    OverlayRef.prototype.attach = /**
+     * Attaches content, given via a Portal, to the overlay.
+     * If the overlay is configured to have a backdrop, it will be created.
+     *
+     * @param {?} portal Portal instance to which to attach the overlay.
+     * @return {?} The portal attachment result.
+     */
+    function (portal) {
+        var _this = this;
+        var /** @type {?} */ attachResult = this._portalOutlet.attach(portal);
+        if (this._config.positionStrategy) {
+            this._config.positionStrategy.attach(this);
+        }
+        // Update the pane element with the given configuration.
+        if (!this._host.parentElement && this._previousHostParent) {
+            this._previousHostParent.appendChild(this._host);
+        }
+        this._updateStackingOrder();
+        this._updateElementSize();
+        this._updateElementDirection();
+        if (this._config.scrollStrategy) {
+            this._config.scrollStrategy.enable();
+        }
+        // Update the position once the zone is stable so that the overlay will be fully rendered
+        // before attempting to position it, as the position may depend on the size of the rendered
+        // content.
+        this._ngZone.onStable
+            .asObservable()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1))
+            .subscribe(function () {
+            // The overlay could've been detached before the zone has stabilized.
+            if (_this.hasAttached()) {
+                _this.updatePosition();
+            }
+        });
+        // Enable pointer events for the overlay pane element.
+        this._togglePointerEvents(true);
+        if (this._config.hasBackdrop) {
+            this._attachBackdrop();
+        }
+        if (this._config.panelClass) {
+            this._toggleClasses(this._pane, this._config.panelClass, true);
+        }
+        // Only emit the `attachments` event once all other setup is done.
+        this._attachments.next();
+        // Track this overlay by the keyboard dispatcher
+        this._keyboardDispatcher.add(this);
+        return attachResult;
+    };
+    /**
+     * Detaches an overlay from a portal.
+     * @returns The portal detachment result.
+     */
+    /**
+     * Detaches an overlay from a portal.
+     * @return {?} The portal detachment result.
+     */
+    OverlayRef.prototype.detach = /**
+     * Detaches an overlay from a portal.
+     * @return {?} The portal detachment result.
+     */
+    function () {
+        var _this = this;
+        if (!this.hasAttached()) {
+            return;
+        }
+        this.detachBackdrop();
+        // When the overlay is detached, the pane element should disable pointer events.
+        // This is necessary because otherwise the pane element will cover the page and disable
+        // pointer events therefore. Depends on the position strategy and the applied pane boundaries.
+        this._togglePointerEvents(false);
+        if (this._config.positionStrategy && this._config.positionStrategy.detach) {
+            this._config.positionStrategy.detach();
+        }
+        if (this._config.scrollStrategy) {
+            this._config.scrollStrategy.disable();
+        }
+        if (this._config.panelClass) {
+            this._toggleClasses(this._pane, this._config.panelClass, false);
+        }
+        var /** @type {?} */ detachmentResult = this._portalOutlet.detach();
+        // Only emit after everything is detached.
+        this._detachments.next();
+        // Remove this overlay from keyboard dispatcher tracking.
+        this._keyboardDispatcher.remove(this);
+        // Keeping the host element in DOM the can cause scroll jank, because it still gets rendered,
+        // even though it's transparent and unclickable. We can't remove the host here immediately,
+        // because the overlay pane's content might still be animating. This stream helps us avoid
+        // interrupting the animation by waiting for the pane to become empty.
+        var /** @type {?} */ subscription = this._ngZone.onStable
+            .asObservable()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["takeUntil"])(Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["merge"])(this._attachments, this._detachments)))
+            .subscribe(function () {
+            // Needs a couple of checks for the pane and host, because
+            // they may have been removed by the time the zone stabilizes.
+            if (!_this._pane || !_this._host || _this._pane.children.length === 0) {
+                if (_this._host && _this._host.parentElement) {
+                    _this._previousHostParent = _this._host.parentElement;
+                    _this._previousHostParent.removeChild(_this._host);
+                }
+                subscription.unsubscribe();
+            }
+        });
+        return detachmentResult;
+    };
+    /** Cleans up the overlay from the DOM. */
+    /**
+     * Cleans up the overlay from the DOM.
+     * @return {?}
+     */
+    OverlayRef.prototype.dispose = /**
+     * Cleans up the overlay from the DOM.
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ isAttached = this.hasAttached();
+        if (this._config.positionStrategy) {
+            this._config.positionStrategy.dispose();
+        }
+        if (this._config.scrollStrategy) {
+            this._config.scrollStrategy.disable();
+        }
+        this.detachBackdrop();
+        this._keyboardDispatcher.remove(this);
+        this._portalOutlet.dispose();
+        this._attachments.complete();
+        this._backdropClick.complete();
+        this._keydownEvents.complete();
+        if (this._host && this._host.parentNode) {
+            this._host.parentNode.removeChild(this._host);
+            this._host = /** @type {?} */ ((null));
+        }
+        this._previousHostParent = this._pane = /** @type {?} */ ((null));
+        if (isAttached) {
+            this._detachments.next();
+        }
+        this._detachments.complete();
+    };
+    /** Whether the overlay has attached content. */
+    /**
+     * Whether the overlay has attached content.
+     * @return {?}
+     */
+    OverlayRef.prototype.hasAttached = /**
+     * Whether the overlay has attached content.
+     * @return {?}
+     */
+    function () {
+        return this._portalOutlet.hasAttached();
+    };
+    /** Gets an observable that emits when the backdrop has been clicked. */
+    /**
+     * Gets an observable that emits when the backdrop has been clicked.
+     * @return {?}
+     */
+    OverlayRef.prototype.backdropClick = /**
+     * Gets an observable that emits when the backdrop has been clicked.
+     * @return {?}
+     */
+    function () {
+        return this._backdropClick.asObservable();
+    };
+    /** Gets an observable that emits when the overlay has been attached. */
+    /**
+     * Gets an observable that emits when the overlay has been attached.
+     * @return {?}
+     */
+    OverlayRef.prototype.attachments = /**
+     * Gets an observable that emits when the overlay has been attached.
+     * @return {?}
+     */
+    function () {
+        return this._attachments.asObservable();
+    };
+    /** Gets an observable that emits when the overlay has been detached. */
+    /**
+     * Gets an observable that emits when the overlay has been detached.
+     * @return {?}
+     */
+    OverlayRef.prototype.detachments = /**
+     * Gets an observable that emits when the overlay has been detached.
+     * @return {?}
+     */
+    function () {
+        return this._detachments.asObservable();
+    };
+    /** Gets an observable of keydown events targeted to this overlay. */
+    /**
+     * Gets an observable of keydown events targeted to this overlay.
+     * @return {?}
+     */
+    OverlayRef.prototype.keydownEvents = /**
+     * Gets an observable of keydown events targeted to this overlay.
+     * @return {?}
+     */
+    function () {
+        return this._keydownEventsObservable;
+    };
+    /** Gets the the current overlay configuration, which is immutable. */
+    /**
+     * Gets the the current overlay configuration, which is immutable.
+     * @return {?}
+     */
+    OverlayRef.prototype.getConfig = /**
+     * Gets the the current overlay configuration, which is immutable.
+     * @return {?}
+     */
+    function () {
+        return this._config;
+    };
+    /** Updates the position of the overlay based on the position strategy. */
+    /**
+     * Updates the position of the overlay based on the position strategy.
+     * @return {?}
+     */
+    OverlayRef.prototype.updatePosition = /**
+     * Updates the position of the overlay based on the position strategy.
+     * @return {?}
+     */
+    function () {
+        if (this._config.positionStrategy) {
+            this._config.positionStrategy.apply();
+        }
+    };
+    /** Update the size properties of the overlay. */
+    /**
+     * Update the size properties of the overlay.
+     * @param {?} sizeConfig
+     * @return {?}
+     */
+    OverlayRef.prototype.updateSize = /**
+     * Update the size properties of the overlay.
+     * @param {?} sizeConfig
+     * @return {?}
+     */
+    function (sizeConfig) {
+        this._config = Object(tslib__WEBPACK_IMPORTED_MODULE_4__["__assign"])({}, this._config, sizeConfig);
+        this._updateElementSize();
+    };
+    /** Sets the LTR/RTL direction for the overlay. */
+    /**
+     * Sets the LTR/RTL direction for the overlay.
+     * @param {?} dir
+     * @return {?}
+     */
+    OverlayRef.prototype.setDirection = /**
+     * Sets the LTR/RTL direction for the overlay.
+     * @param {?} dir
+     * @return {?}
+     */
+    function (dir) {
+        this._config = Object(tslib__WEBPACK_IMPORTED_MODULE_4__["__assign"])({}, this._config, { direction: dir });
+        this._updateElementDirection();
+    };
+    /**
+     * Returns the layout direction of the overlay panel.
+     */
+    /**
+     * Returns the layout direction of the overlay panel.
+     * @return {?}
+     */
+    OverlayRef.prototype.getDirection = /**
+     * Returns the layout direction of the overlay panel.
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ direction = this._config.direction;
+        if (!direction) {
+            return 'ltr';
+        }
+        return typeof direction === 'string' ? direction : direction.value;
+    };
+    /**
+     * Updates the text direction of the overlay panel.
+     * @return {?}
+     */
+    OverlayRef.prototype._updateElementDirection = /**
+     * Updates the text direction of the overlay panel.
+     * @return {?}
+     */
+    function () {
+        this._host.setAttribute('dir', this.getDirection());
+    };
+    /**
+     * Updates the size of the overlay element based on the overlay config.
+     * @return {?}
+     */
+    OverlayRef.prototype._updateElementSize = /**
+     * Updates the size of the overlay element based on the overlay config.
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ style = this._pane.style;
+        style.width = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(this._config.width);
+        style.height = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(this._config.height);
+        style.minWidth = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(this._config.minWidth);
+        style.minHeight = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(this._config.minHeight);
+        style.maxWidth = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(this._config.maxWidth);
+        style.maxHeight = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(this._config.maxHeight);
+    };
+    /**
+     * Toggles the pointer events for the overlay pane element.
+     * @param {?} enablePointer
+     * @return {?}
+     */
+    OverlayRef.prototype._togglePointerEvents = /**
+     * Toggles the pointer events for the overlay pane element.
+     * @param {?} enablePointer
+     * @return {?}
+     */
+    function (enablePointer) {
+        this._pane.style.pointerEvents = enablePointer ? 'auto' : 'none';
+    };
+    /**
+     * Attaches a backdrop for this overlay.
+     * @return {?}
+     */
+    OverlayRef.prototype._attachBackdrop = /**
+     * Attaches a backdrop for this overlay.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        var /** @type {?} */ showingClass = 'cdk-overlay-backdrop-showing';
+        this._backdropElement = this._document.createElement('div');
+        this._backdropElement.classList.add('cdk-overlay-backdrop');
+        if (this._config.backdropClass) {
+            this._toggleClasses(this._backdropElement, this._config.backdropClass, true);
+        } /** @type {?} */
+        ((
+        // Insert the backdrop before the pane in the DOM order,
+        // in order to handle stacked overlays properly.
+        this._host.parentElement)).insertBefore(this._backdropElement, this._host);
+        // Forward backdrop clicks such that the consumer of the overlay can perform whatever
+        // action desired when such a click occurs (usually closing the overlay).
+        this._backdropElement.addEventListener('click', function (event) { return _this._backdropClick.next(event); });
+        // Add class to fade-in the backdrop after one frame.
+        if (typeof requestAnimationFrame !== 'undefined') {
+            this._ngZone.runOutsideAngular(function () {
+                requestAnimationFrame(function () {
+                    if (_this._backdropElement) {
+                        _this._backdropElement.classList.add(showingClass);
+                    }
+                });
+            });
+        }
+        else {
+            this._backdropElement.classList.add(showingClass);
+        }
+    };
+    /**
+     * Updates the stacking order of the element, moving it to the top if necessary.
+     * This is required in cases where one overlay was detached, while another one,
+     * that should be behind it, was destroyed. The next time both of them are opened,
+     * the stacking will be wrong, because the detached element's pane will still be
+     * in its original DOM position.
+     * @return {?}
+     */
+    OverlayRef.prototype._updateStackingOrder = /**
+     * Updates the stacking order of the element, moving it to the top if necessary.
+     * This is required in cases where one overlay was detached, while another one,
+     * that should be behind it, was destroyed. The next time both of them are opened,
+     * the stacking will be wrong, because the detached element's pane will still be
+     * in its original DOM position.
+     * @return {?}
+     */
+    function () {
+        if (this._host.nextSibling) {
+            /** @type {?} */ ((this._host.parentNode)).appendChild(this._host);
+        }
+    };
+    /** Detaches the backdrop (if any) associated with the overlay. */
+    /**
+     * Detaches the backdrop (if any) associated with the overlay.
+     * @return {?}
+     */
+    OverlayRef.prototype.detachBackdrop = /**
+     * Detaches the backdrop (if any) associated with the overlay.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        var /** @type {?} */ backdropToDetach = this._backdropElement;
+        if (backdropToDetach) {
+            var /** @type {?} */ timeoutId_1;
+            var /** @type {?} */ finishDetach_1 = function () {
+                // It may not be attached to anything in certain cases (e.g. unit tests).
+                if (backdropToDetach && backdropToDetach.parentNode) {
+                    backdropToDetach.parentNode.removeChild(backdropToDetach);
+                }
+                // It is possible that a new portal has been attached to this overlay since we started
+                // removing the backdrop. If that is the case, only clear the backdrop reference if it
+                // is still the same instance that we started to remove.
+                if (_this._backdropElement == backdropToDetach) {
+                    _this._backdropElement = null;
+                }
+                clearTimeout(timeoutId_1);
+            };
+            backdropToDetach.classList.remove('cdk-overlay-backdrop-showing');
+            if (this._config.backdropClass) {
+                this._toggleClasses(backdropToDetach, this._config.backdropClass, false);
+            }
+            this._ngZone.runOutsideAngular(function () {
+                /** @type {?} */ ((backdropToDetach)).addEventListener('transitionend', finishDetach_1);
+            });
+            // If the backdrop doesn't have a transition, the `transitionend` event won't fire.
+            // In this case we make it unclickable and we try to remove it after a delay.
+            backdropToDetach.style.pointerEvents = 'none';
+            // Run this outside the Angular zone because there's nothing that Angular cares about.
+            // If it were to run inside the Angular zone, every test that used Overlay would have to be
+            // either async or fakeAsync.
+            // Run this outside the Angular zone because there's nothing that Angular cares about.
+            // If it were to run inside the Angular zone, every test that used Overlay would have to be
+            // either async or fakeAsync.
+            timeoutId_1 = this._ngZone.runOutsideAngular(function () { return setTimeout(finishDetach_1, 500); });
+        }
+    };
+    /**
+     * Toggles a single CSS class or an array of classes on an element.
+     * @param {?} element
+     * @param {?} cssClasses
+     * @param {?} isAdd
+     * @return {?}
+     */
+    OverlayRef.prototype._toggleClasses = /**
+     * Toggles a single CSS class or an array of classes on an element.
+     * @param {?} element
+     * @param {?} cssClasses
+     * @param {?} isAdd
+     * @return {?}
+     */
+    function (element, cssClasses, isAdd) {
+        var /** @type {?} */ classList = element.classList;
+        Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceArray"])(cssClasses).forEach(function (cssClass) {
+            // We can't do a spread here, because IE doesn't support setting multiple classes.
+            isAdd ? classList.add(cssClass) : classList.remove(cssClass);
+        });
+    };
+    return OverlayRef;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * A strategy for positioning overlays. Using this strategy, an overlay is given an
+ * implicit position relative some origin element. The relative position is defined in terms of
+ * a point on the origin element that is connected to a point on the overlay element. For example,
+ * a basic dropdown is connecting the bottom-left corner of the origin to the top-left corner
+ * of the overlay.
+ */
+var  /**
+ * A strategy for positioning overlays. Using this strategy, an overlay is given an
+ * implicit position relative some origin element. The relative position is defined in terms of
+ * a point on the origin element that is connected to a point on the overlay element. For example,
+ * a basic dropdown is connecting the bottom-left corner of the origin to the top-left corner
+ * of the overlay.
+ */
+FlexibleConnectedPositionStrategy = /** @class */ (function () {
+    function FlexibleConnectedPositionStrategy(connectedTo, _viewportRuler, _document, _platform, _overlayContainer) {
+        var _this = this;
+        this._viewportRuler = _viewportRuler;
+        this._document = _document;
+        this._platform = _platform;
+        this._overlayContainer = _overlayContainer;
+        /**
+         * Whether we're performing the very first positioning of the overlay.
+         */
+        this._isInitialRender = true;
+        /**
+         * Last size used for the bounding box. Used to avoid resizing the overlay after open.
+         */
+        this._lastBoundingBoxSize = { width: 0, height: 0 };
+        /**
+         * Whether the overlay was pushed in a previous positioning.
+         */
+        this._isPushed = false;
+        /**
+         * Whether the overlay can be pushed on-screen on the initial open.
+         */
+        this._canPush = true;
+        /**
+         * Whether the overlay can grow via flexible width/height after the initial open.
+         */
+        this._growAfterOpen = false;
+        /**
+         * Whether the overlay's width and height can be constrained to fit within the viewport.
+         */
+        this._hasFlexibleDimensions = true;
+        /**
+         * Whether the overlay position is locked.
+         */
+        this._positionLocked = false;
+        /**
+         * Amount of space that must be maintained between the overlay and the edge of the viewport.
+         */
+        this._viewportMargin = 0;
+        /**
+         * The Scrollable containers used to check scrollable view properties on position change.
+         */
+        this.scrollables = [];
+        /**
+         * Ordered list of preferred positions, from most to least desirable.
+         */
+        this._preferredPositions = [];
+        /**
+         * Subject that emits whenever the position changes.
+         */
+        this._positionChanges = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
+        /**
+         * Subscription to viewport size changes.
+         */
+        this._resizeSubscription = rxjs__WEBPACK_IMPORTED_MODULE_5__["Subscription"].EMPTY;
+        /**
+         * Default offset for the overlay along the x axis.
+         */
+        this._offsetX = 0;
+        /**
+         * Default offset for the overlay along the y axis.
+         */
+        this._offsetY = 0;
+        /**
+         * Amount of subscribers to the `positionChanges` stream.
+         */
+        this._positionChangeSubscriptions = 0;
+        /**
+         * Observable sequence of position changes.
+         */
+        this.positionChanges = rxjs__WEBPACK_IMPORTED_MODULE_5__["Observable"].create(function (observer) {
+            var /** @type {?} */ subscription = _this._positionChanges.subscribe(observer);
+            _this._positionChangeSubscriptions++;
+            return function () {
+                subscription.unsubscribe();
+                _this._positionChangeSubscriptions--;
+            };
+        });
+        this.setOrigin(connectedTo);
+    }
+    Object.defineProperty(FlexibleConnectedPositionStrategy.prototype, "positions", {
+        /** Ordered list of preferred positions, from most to least desirable. */
+        get: /**
+         * Ordered list of preferred positions, from most to least desirable.
+         * @return {?}
+         */
+        function () {
+            return this._preferredPositions;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** Attaches this position strategy to an overlay. */
+    /**
+     * Attaches this position strategy to an overlay.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.attach = /**
+     * Attaches this position strategy to an overlay.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    function (overlayRef) {
+        var _this = this;
+        if (this._overlayRef && overlayRef !== this._overlayRef) {
+            throw Error('This position strategy is already attached to an overlay');
+        }
+        this._validatePositions();
+        overlayRef.hostElement.classList.add('cdk-overlay-connected-position-bounding-box');
+        this._overlayRef = overlayRef;
+        this._boundingBox = overlayRef.hostElement;
+        this._pane = overlayRef.overlayElement;
+        this._resizeSubscription.unsubscribe();
+        this._resizeSubscription = this._viewportRuler.change().subscribe(function () { return _this.apply(); });
+    };
+    /**
+     * Updates the position of the overlay element, using whichever preferred position relative
+     * to the origin best fits on-screen.
+     *
+     * The selection of a position goes as follows:
+     *  - If any positions fit completely within the viewport as-is,
+     *      choose the first position that does so.
+     *  - If flexible dimensions are enabled and at least one satifies the given minimum width/height,
+     *      choose the position with the greatest available size modified by the positions' weight.
+     *  - If pushing is enabled, take the position that went off-screen the least and push it
+     *      on-screen.
+     *  - If none of the previous criteria were met, use the position that goes off-screen the least.
+     * @docs-private
+     */
+    /**
+     * Updates the position of the overlay element, using whichever preferred position relative
+     * to the origin best fits on-screen.
+     *
+     * The selection of a position goes as follows:
+     *  - If any positions fit completely within the viewport as-is,
+     *      choose the first position that does so.
+     *  - If flexible dimensions are enabled and at least one satifies the given minimum width/height,
+     *      choose the position with the greatest available size modified by the positions' weight.
+     *  - If pushing is enabled, take the position that went off-screen the least and push it
+     *      on-screen.
+     *  - If none of the previous criteria were met, use the position that goes off-screen the least.
+     * \@docs-private
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.apply = /**
+     * Updates the position of the overlay element, using whichever preferred position relative
+     * to the origin best fits on-screen.
+     *
+     * The selection of a position goes as follows:
+     *  - If any positions fit completely within the viewport as-is,
+     *      choose the first position that does so.
+     *  - If flexible dimensions are enabled and at least one satifies the given minimum width/height,
+     *      choose the position with the greatest available size modified by the positions' weight.
+     *  - If pushing is enabled, take the position that went off-screen the least and push it
+     *      on-screen.
+     *  - If none of the previous criteria were met, use the position that goes off-screen the least.
+     * \@docs-private
+     * @return {?}
+     */
+    function () {
+        // We shouldn't do anything if the strategy was disposed or we're on the server.
+        // @breaking-change 7.0.0 Remove `_platform` null check once it's guaranteed to be defined.
+        if (this._isDisposed || (this._platform && !this._platform.isBrowser)) {
+            return;
+        }
+        // If the position has been applied already (e.g. when the overlay was opened) and the
+        // consumer opted into locking in the position, re-use the old position, in order to
+        // prevent the overlay from jumping around.
+        if (!this._isInitialRender && this._positionLocked && this._lastPosition) {
+            this.reapplyLastPosition();
+            return;
+        }
+        this._resetOverlayElementStyles();
+        this._resetBoundingBoxStyles();
+        // We need the bounding rects for the origin and the overlay to determine how to position
+        // the overlay relative to the origin.
+        // We use the viewport rect to determine whether a position would go off-screen.
+        this._viewportRect = this._getNarrowedViewportRect();
+        this._originRect = this._origin.getBoundingClientRect();
+        this._overlayRect = this._pane.getBoundingClientRect();
+        var /** @type {?} */ originRect = this._originRect;
+        var /** @type {?} */ overlayRect = this._overlayRect;
+        var /** @type {?} */ viewportRect = this._viewportRect;
+        // Positions where the overlay will fit with flexible dimensions.
+        var /** @type {?} */ flexibleFits = [];
+        // Fallback if none of the preferred positions fit within the viewport.
+        var /** @type {?} */ fallback;
+        // Go through each of the preferred positions looking for a good fit.
+        // If a good fit is found, it will be applied immediately.
+        for (var _i = 0, _a = this._preferredPositions; _i < _a.length; _i++) {
+            var pos = _a[_i];
+            // Get the exact (x, y) coordinate for the point-of-origin on the origin element.
+            var /** @type {?} */ originPoint = this._getOriginPoint(originRect, pos);
+            // From that point-of-origin, get the exact (x, y) coordinate for the top-left corner of the
+            // overlay in this position. We use the top-left corner for calculations and later translate
+            // this into an appropriate (top, left, bottom, right) style.
+            var /** @type {?} */ overlayPoint = this._getOverlayPoint(originPoint, overlayRect, pos);
+            // Calculate how well the overlay would fit into the viewport with this point.
+            var /** @type {?} */ overlayFit = this._getOverlayFit(overlayPoint, overlayRect, viewportRect, pos);
+            // If the overlay, without any further work, fits into the viewport, use this position.
+            if (overlayFit.isCompletelyWithinViewport) {
+                this._isPushed = false;
+                this._applyPosition(pos, originPoint);
+                return;
+            }
+            // If the overlay has flexible dimensions, we can use this position
+            // so long as there's enough space for the minimum dimensions.
+            if (this._canFitWithFlexibleDimensions(overlayFit, overlayPoint, viewportRect)) {
+                // Save positions where the overlay will fit with flexible dimensions. We will use these
+                // if none of the positions fit *without* flexible dimensions.
+                flexibleFits.push({
+                    position: pos,
+                    origin: originPoint,
+                    overlayRect: overlayRect,
+                    boundingBoxRect: this._calculateBoundingBoxRect(originPoint, pos)
+                });
+                continue;
+            }
+            // If the current preferred position does not fit on the screen, remember the position
+            // if it has more visible area on-screen than we've seen and move onto the next preferred
+            // position.
+            if (!fallback || fallback.overlayFit.visibleArea < overlayFit.visibleArea) {
+                fallback = { overlayFit: overlayFit, overlayPoint: overlayPoint, originPoint: originPoint, position: pos, overlayRect: overlayRect };
+            }
+        }
+        // If there are any positions where the overlay would fit with flexible dimensions, choose the
+        // one that has the greatest area available modified by the position's weight
+        if (flexibleFits.length) {
+            var /** @type {?} */ bestFit = null;
+            var /** @type {?} */ bestScore = -1;
+            for (var _b = 0, flexibleFits_1 = flexibleFits; _b < flexibleFits_1.length; _b++) {
+                var fit_1 = flexibleFits_1[_b];
+                var /** @type {?} */ score = fit_1.boundingBoxRect.width * fit_1.boundingBoxRect.height * (fit_1.position.weight || 1);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestFit = fit_1;
+                }
+            }
+            this._isPushed = false;
+            this._applyPosition(/** @type {?} */ ((bestFit)).position, /** @type {?} */ ((bestFit)).origin);
+            return;
+        }
+        // When none of the preferred positions fit within the viewport, take the position
+        // that went off-screen the least and attempt to push it on-screen.
+        if (this._canPush) {
+            // TODO(jelbourn): after pushing, the opening "direction" of the overlay might not make sense.
+            this._isPushed = true;
+            this._applyPosition(/** @type {?} */ ((fallback)).position, /** @type {?} */ ((fallback)).originPoint);
+            return;
+        }
+        // All options for getting the overlay within the viewport have been exhausted, so go with the
+        // position that went off-screen the least.
+        this._applyPosition(/** @type {?} */ ((fallback)).position, /** @type {?} */ ((fallback)).originPoint);
+    };
+    /**
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.detach = /**
+     * @return {?}
+     */
+    function () {
+        this._resizeSubscription.unsubscribe();
+    };
+    /** Cleanup after the element gets destroyed. */
+    /**
+     * Cleanup after the element gets destroyed.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.dispose = /**
+     * Cleanup after the element gets destroyed.
+     * @return {?}
+     */
+    function () {
+        if (!this._isDisposed) {
+            this.detach();
+            this._boundingBox = null;
+            this._positionChanges.complete();
+            this._isDisposed = true;
+        }
+    };
+    /**
+     * This re-aligns the overlay element with the trigger in its last calculated position,
+     * even if a position higher in the "preferred positions" list would now fit. This
+     * allows one to re-align the panel without changing the orientation of the panel.
+     */
+    /**
+     * This re-aligns the overlay element with the trigger in its last calculated position,
+     * even if a position higher in the "preferred positions" list would now fit. This
+     * allows one to re-align the panel without changing the orientation of the panel.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.reapplyLastPosition = /**
+     * This re-aligns the overlay element with the trigger in its last calculated position,
+     * even if a position higher in the "preferred positions" list would now fit. This
+     * allows one to re-align the panel without changing the orientation of the panel.
+     * @return {?}
+     */
+    function () {
+        if (!this._isDisposed && (!this._platform || this._platform.isBrowser)) {
+            this._originRect = this._origin.getBoundingClientRect();
+            this._overlayRect = this._pane.getBoundingClientRect();
+            this._viewportRect = this._getNarrowedViewportRect();
+            var /** @type {?} */ lastPosition = this._lastPosition || this._preferredPositions[0];
+            var /** @type {?} */ originPoint = this._getOriginPoint(this._originRect, lastPosition);
+            this._applyPosition(lastPosition, originPoint);
+        }
+    };
+    /**
+     * Sets the list of Scrollable containers that host the origin element so that
+     * on reposition we can evaluate if it or the overlay has been clipped or outside view. Every
+     * Scrollable must be an ancestor element of the strategy's origin element.
+     */
+    /**
+     * Sets the list of Scrollable containers that host the origin element so that
+     * on reposition we can evaluate if it or the overlay has been clipped or outside view. Every
+     * Scrollable must be an ancestor element of the strategy's origin element.
+     * @param {?} scrollables
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withScrollableContainers = /**
+     * Sets the list of Scrollable containers that host the origin element so that
+     * on reposition we can evaluate if it or the overlay has been clipped or outside view. Every
+     * Scrollable must be an ancestor element of the strategy's origin element.
+     * @param {?} scrollables
+     * @return {?}
+     */
+    function (scrollables) {
+        this.scrollables = scrollables;
+    };
+    /**
+     * Adds new preferred positions.
+     * @param positions List of positions options for this overlay.
+     */
+    /**
+     * Adds new preferred positions.
+     * @param {?} positions List of positions options for this overlay.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withPositions = /**
+     * Adds new preferred positions.
+     * @param {?} positions List of positions options for this overlay.
+     * @return {?}
+     */
+    function (positions) {
+        this._preferredPositions = positions;
+        // If the last calculated position object isn't part of the positions anymore, clear
+        // it in order to avoid it being picked up if the consumer tries to re-apply.
+        if (positions.indexOf(/** @type {?} */ ((this._lastPosition))) === -1) {
+            this._lastPosition = null;
+        }
+        this._validatePositions();
+        return this;
+    };
+    /**
+     * Sets a minimum distance the overlay may be positioned to the edge of the viewport.
+     * @param margin Required margin between the overlay and the viewport edge in pixels.
+     */
+    /**
+     * Sets a minimum distance the overlay may be positioned to the edge of the viewport.
+     * @param {?} margin Required margin between the overlay and the viewport edge in pixels.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withViewportMargin = /**
+     * Sets a minimum distance the overlay may be positioned to the edge of the viewport.
+     * @param {?} margin Required margin between the overlay and the viewport edge in pixels.
+     * @return {?}
+     */
+    function (margin) {
+        this._viewportMargin = margin;
+        return this;
+    };
+    /** Sets whether the overlay's width and height can be constrained to fit within the viewport. */
+    /**
+     * Sets whether the overlay's width and height can be constrained to fit within the viewport.
+     * @param {?=} flexibleDimensions
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withFlexibleDimensions = /**
+     * Sets whether the overlay's width and height can be constrained to fit within the viewport.
+     * @param {?=} flexibleDimensions
+     * @return {?}
+     */
+    function (flexibleDimensions) {
+        if (flexibleDimensions === void 0) { flexibleDimensions = true; }
+        this._hasFlexibleDimensions = flexibleDimensions;
+        return this;
+    };
+    /** Sets whether the overlay can grow after the initial open via flexible width/height. */
+    /**
+     * Sets whether the overlay can grow after the initial open via flexible width/height.
+     * @param {?=} growAfterOpen
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withGrowAfterOpen = /**
+     * Sets whether the overlay can grow after the initial open via flexible width/height.
+     * @param {?=} growAfterOpen
+     * @return {?}
+     */
+    function (growAfterOpen) {
+        if (growAfterOpen === void 0) { growAfterOpen = true; }
+        this._growAfterOpen = growAfterOpen;
+        return this;
+    };
+    /** Sets whether the overlay can be pushed on-screen if none of the provided positions fit. */
+    /**
+     * Sets whether the overlay can be pushed on-screen if none of the provided positions fit.
+     * @param {?=} canPush
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withPush = /**
+     * Sets whether the overlay can be pushed on-screen if none of the provided positions fit.
+     * @param {?=} canPush
+     * @return {?}
+     */
+    function (canPush) {
+        if (canPush === void 0) { canPush = true; }
+        this._canPush = canPush;
+        return this;
+    };
+    /**
+     * Sets whether the overlay's position should be locked in after it is positioned
+     * initially. When an overlay is locked in, it won't attempt to reposition itself
+     * when the position is re-applied (e.g. when the user scrolls away).
+     * @param isLocked Whether the overlay should locked in.
+     */
+    /**
+     * Sets whether the overlay's position should be locked in after it is positioned
+     * initially. When an overlay is locked in, it won't attempt to reposition itself
+     * when the position is re-applied (e.g. when the user scrolls away).
+     * @param {?=} isLocked Whether the overlay should locked in.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withLockedPosition = /**
+     * Sets whether the overlay's position should be locked in after it is positioned
+     * initially. When an overlay is locked in, it won't attempt to reposition itself
+     * when the position is re-applied (e.g. when the user scrolls away).
+     * @param {?=} isLocked Whether the overlay should locked in.
+     * @return {?}
+     */
+    function (isLocked) {
+        if (isLocked === void 0) { isLocked = true; }
+        this._positionLocked = isLocked;
+        return this;
+    };
+    /**
+     * Sets the origin element, relative to which to position the overlay.
+     * @param origin Reference to the new origin element.
+     */
+    /**
+     * Sets the origin element, relative to which to position the overlay.
+     * @param {?} origin Reference to the new origin element.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.setOrigin = /**
+     * Sets the origin element, relative to which to position the overlay.
+     * @param {?} origin Reference to the new origin element.
+     * @return {?}
+     */
+    function (origin) {
+        this._origin = origin instanceof _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"] ? origin.nativeElement : origin;
+        return this;
+    };
+    /**
+     * Sets the default offset for the overlay's connection point on the x-axis.
+     * @param offset New offset in the X axis.
+     */
+    /**
+     * Sets the default offset for the overlay's connection point on the x-axis.
+     * @param {?} offset New offset in the X axis.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withDefaultOffsetX = /**
+     * Sets the default offset for the overlay's connection point on the x-axis.
+     * @param {?} offset New offset in the X axis.
+     * @return {?}
+     */
+    function (offset) {
+        this._offsetX = offset;
+        return this;
+    };
+    /**
+     * Sets the default offset for the overlay's connection point on the y-axis.
+     * @param offset New offset in the Y axis.
+     */
+    /**
+     * Sets the default offset for the overlay's connection point on the y-axis.
+     * @param {?} offset New offset in the Y axis.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withDefaultOffsetY = /**
+     * Sets the default offset for the overlay's connection point on the y-axis.
+     * @param {?} offset New offset in the Y axis.
+     * @return {?}
+     */
+    function (offset) {
+        this._offsetY = offset;
+        return this;
+    };
+    /**
+     * Configures that the position strategy should set a `transform-origin` on some elements
+     * inside the overlay, depending on the current position that is being applied. This is
+     * useful for the cases where the origin of an animation can change depending on the
+     * alignment of the overlay.
+     * @param selector CSS selector that will be used to find the target
+     *    elements onto which to set the transform origin.
+     */
+    /**
+     * Configures that the position strategy should set a `transform-origin` on some elements
+     * inside the overlay, depending on the current position that is being applied. This is
+     * useful for the cases where the origin of an animation can change depending on the
+     * alignment of the overlay.
+     * @param {?} selector CSS selector that will be used to find the target
+     *    elements onto which to set the transform origin.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype.withTransformOriginOn = /**
+     * Configures that the position strategy should set a `transform-origin` on some elements
+     * inside the overlay, depending on the current position that is being applied. This is
+     * useful for the cases where the origin of an animation can change depending on the
+     * alignment of the overlay.
+     * @param {?} selector CSS selector that will be used to find the target
+     *    elements onto which to set the transform origin.
+     * @return {?}
+     */
+    function (selector) {
+        this._transformOriginSelector = selector;
+        return this;
+    };
+    /**
+     * Gets the (x, y) coordinate of a connection point on the origin based on a relative position.
+     * @param {?} originRect
+     * @param {?} pos
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._getOriginPoint = /**
+     * Gets the (x, y) coordinate of a connection point on the origin based on a relative position.
+     * @param {?} originRect
+     * @param {?} pos
+     * @return {?}
+     */
+    function (originRect, pos) {
+        var /** @type {?} */ x;
+        if (pos.originX == 'center') {
+            // Note: when centering we should always use the `left`
+            // offset, otherwise the position will be wrong in RTL.
+            x = originRect.left + (originRect.width / 2);
+        }
+        else {
+            var /** @type {?} */ startX = this._isRtl() ? originRect.right : originRect.left;
+            var /** @type {?} */ endX = this._isRtl() ? originRect.left : originRect.right;
+            x = pos.originX == 'start' ? startX : endX;
+        }
+        var /** @type {?} */ y;
+        if (pos.originY == 'center') {
+            y = originRect.top + (originRect.height / 2);
+        }
+        else {
+            y = pos.originY == 'top' ? originRect.top : originRect.bottom;
+        }
+        return { x: x, y: y };
+    };
+    /**
+     * Gets the (x, y) coordinate of the top-left corner of the overlay given a given position and
+     * origin point to which the overlay should be connected.
+     * @param {?} originPoint
+     * @param {?} overlayRect
+     * @param {?} pos
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._getOverlayPoint = /**
+     * Gets the (x, y) coordinate of the top-left corner of the overlay given a given position and
+     * origin point to which the overlay should be connected.
+     * @param {?} originPoint
+     * @param {?} overlayRect
+     * @param {?} pos
+     * @return {?}
+     */
+    function (originPoint, overlayRect, pos) {
+        // Calculate the (overlayStartX, overlayStartY), the start of the
+        // potential overlay position relative to the origin point.
+        var /** @type {?} */ overlayStartX;
+        if (pos.overlayX == 'center') {
+            overlayStartX = -overlayRect.width / 2;
+        }
+        else if (pos.overlayX === 'start') {
+            overlayStartX = this._isRtl() ? -overlayRect.width : 0;
+        }
+        else {
+            overlayStartX = this._isRtl() ? 0 : -overlayRect.width;
+        }
+        var /** @type {?} */ overlayStartY;
+        if (pos.overlayY == 'center') {
+            overlayStartY = -overlayRect.height / 2;
+        }
+        else {
+            overlayStartY = pos.overlayY == 'top' ? 0 : -overlayRect.height;
+        }
+        // The (x, y) coordinates of the overlay.
+        return {
+            x: originPoint.x + overlayStartX,
+            y: originPoint.y + overlayStartY,
+        };
+    };
+    /**
+     * Gets how well an overlay at the given point will fit within the viewport.
+     * @param {?} point
+     * @param {?} overlay
+     * @param {?} viewport
+     * @param {?} position
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._getOverlayFit = /**
+     * Gets how well an overlay at the given point will fit within the viewport.
+     * @param {?} point
+     * @param {?} overlay
+     * @param {?} viewport
+     * @param {?} position
+     * @return {?}
+     */
+    function (point, overlay, viewport, position) {
+        var x = point.x, y = point.y;
+        var /** @type {?} */ offsetX = this._getOffset(position, 'x');
+        var /** @type {?} */ offsetY = this._getOffset(position, 'y');
+        // Account for the offsets since they could push the overlay out of the viewport.
+        if (offsetX) {
+            x += offsetX;
+        }
+        if (offsetY) {
+            y += offsetY;
+        }
+        // How much the overlay would overflow at this position, on each side.
+        var /** @type {?} */ leftOverflow = 0 - x;
+        var /** @type {?} */ rightOverflow = (x + overlay.width) - viewport.width;
+        var /** @type {?} */ topOverflow = 0 - y;
+        var /** @type {?} */ bottomOverflow = (y + overlay.height) - viewport.height;
+        // Visible parts of the element on each axis.
+        var /** @type {?} */ visibleWidth = this._subtractOverflows(overlay.width, leftOverflow, rightOverflow);
+        var /** @type {?} */ visibleHeight = this._subtractOverflows(overlay.height, topOverflow, bottomOverflow);
+        var /** @type {?} */ visibleArea = visibleWidth * visibleHeight;
+        return {
+            visibleArea: visibleArea,
+            isCompletelyWithinViewport: (overlay.width * overlay.height) === visibleArea,
+            fitsInViewportVertically: visibleHeight === overlay.height,
+            fitsInViewportHorizontally: visibleWidth == overlay.width,
+        };
+    };
+    /**
+     * Whether the overlay can fit within the viewport when it may resize either its width or height.
+     * @param {?} fit How well the overlay fits in the viewport at some position.
+     * @param {?} point The (x, y) coordinates of the overlat at some position.
+     * @param {?} viewport The geometry of the viewport.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._canFitWithFlexibleDimensions = /**
+     * Whether the overlay can fit within the viewport when it may resize either its width or height.
+     * @param {?} fit How well the overlay fits in the viewport at some position.
+     * @param {?} point The (x, y) coordinates of the overlat at some position.
+     * @param {?} viewport The geometry of the viewport.
+     * @return {?}
+     */
+    function (fit, point, viewport) {
+        if (this._hasFlexibleDimensions) {
+            var /** @type {?} */ availableHeight = viewport.bottom - point.y;
+            var /** @type {?} */ availableWidth = viewport.right - point.x;
+            var /** @type {?} */ minHeight = this._overlayRef.getConfig().minHeight;
+            var /** @type {?} */ minWidth = this._overlayRef.getConfig().minWidth;
+            var /** @type {?} */ verticalFit = fit.fitsInViewportVertically ||
+                (minHeight != null && minHeight <= availableHeight);
+            var /** @type {?} */ horizontalFit = fit.fitsInViewportHorizontally ||
+                (minWidth != null && minWidth <= availableWidth);
+            return verticalFit && horizontalFit;
+        }
+    };
+    /**
+     * Gets the point at which the overlay can be "pushed" on-screen. If the overlay is larger than
+     * the viewport, the top-left corner will be pushed on-screen (with overflow occuring on the
+     * right and bottom).
+     *
+     * @param {?} start The starting point from which the overlay is pushed.
+     * @param {?} overlay The overlay dimensions.
+     * @return {?} The point at which to position the overlay after pushing. This is effectively a new
+     *     originPoint.
+     */
+    FlexibleConnectedPositionStrategy.prototype._pushOverlayOnScreen = /**
+     * Gets the point at which the overlay can be "pushed" on-screen. If the overlay is larger than
+     * the viewport, the top-left corner will be pushed on-screen (with overflow occuring on the
+     * right and bottom).
+     *
+     * @param {?} start The starting point from which the overlay is pushed.
+     * @param {?} overlay The overlay dimensions.
+     * @return {?} The point at which to position the overlay after pushing. This is effectively a new
+     *     originPoint.
+     */
+    function (start, overlay) {
+        var /** @type {?} */ viewport = this._viewportRect;
+        // Determine how much the overlay goes outside the viewport on each side, which we'll use to
+        // decide which direction to push it.
+        var /** @type {?} */ overflowRight = Math.max(start.x + overlay.width - viewport.right, 0);
+        var /** @type {?} */ overflowBottom = Math.max(start.y + overlay.height - viewport.bottom, 0);
+        var /** @type {?} */ overflowTop = Math.max(viewport.top - start.y, 0);
+        var /** @type {?} */ overflowLeft = Math.max(viewport.left - start.x, 0);
+        // Amount by which to push the overlay in each direction such that it remains on-screen.
+        var /** @type {?} */ pushX, /** @type {?} */ pushY = 0;
+        // If the overlay fits completely within the bounds of the viewport, push it from whichever
+        // direction is goes off-screen. Otherwise, push the top-left corner such that its in the
+        // viewport and allow for the trailing end of the overlay to go out of bounds.
+        if (overlay.width <= viewport.width) {
+            pushX = overflowLeft || -overflowRight;
+        }
+        else {
+            pushX = viewport.left - start.x;
+        }
+        if (overlay.height <= viewport.height) {
+            pushY = overflowTop || -overflowBottom;
+        }
+        else {
+            pushY = viewport.top - start.y;
+        }
+        return {
+            x: start.x + pushX,
+            y: start.y + pushY,
+        };
+    };
+    /**
+     * Applies a computed position to the overlay and emits a position change.
+     * @param {?} position The position preference
+     * @param {?} originPoint The point on the origin element where the overlay is connected.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._applyPosition = /**
+     * Applies a computed position to the overlay and emits a position change.
+     * @param {?} position The position preference
+     * @param {?} originPoint The point on the origin element where the overlay is connected.
+     * @return {?}
+     */
+    function (position, originPoint) {
+        this._setTransformOrigin(position);
+        this._setOverlayElementStyles(originPoint, position);
+        this._setBoundingBoxStyles(originPoint, position);
+        // Save the last connected position in case the position needs to be re-calculated.
+        this._lastPosition = position;
+        // Notify that the position has been changed along with its change properties.
+        // We only emit if we've got any subscriptions, because the scroll visibility
+        // calculcations can be somewhat expensive.
+        if (this._positionChangeSubscriptions > 0) {
+            var /** @type {?} */ scrollableViewProperties = this._getScrollVisibility();
+            var /** @type {?} */ changeEvent = new ConnectedOverlayPositionChange(position, scrollableViewProperties);
+            this._positionChanges.next(changeEvent);
+        }
+        this._isInitialRender = false;
+    };
+    /**
+     * Sets the transform origin based on the configured selector and the passed-in position.
+     * @param {?} position
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._setTransformOrigin = /**
+     * Sets the transform origin based on the configured selector and the passed-in position.
+     * @param {?} position
+     * @return {?}
+     */
+    function (position) {
+        if (!this._transformOriginSelector) {
+            return;
+        }
+        var /** @type {?} */ elements = /** @type {?} */ ((this._boundingBox)).querySelectorAll(this._transformOriginSelector);
+        var /** @type {?} */ xOrigin;
+        var /** @type {?} */ yOrigin = position.overlayY;
+        if (position.overlayX === 'center') {
+            xOrigin = 'center';
+        }
+        else if (this._isRtl()) {
+            xOrigin = position.overlayX === 'start' ? 'right' : 'left';
+        }
+        else {
+            xOrigin = position.overlayX === 'start' ? 'left' : 'right';
+        }
+        for (var /** @type {?} */ i = 0; i < elements.length; i++) {
+            elements[i].style.transformOrigin = xOrigin + " " + yOrigin;
+        }
+    };
+    /**
+     * Gets the position and size of the overlay's sizing container.
+     *
+     * This method does no measuring and applies no styles so that we can cheaply compute the
+     * bounds for all positions and choose the best fit based on these results.
+     * @param {?} origin
+     * @param {?} position
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._calculateBoundingBoxRect = /**
+     * Gets the position and size of the overlay's sizing container.
+     *
+     * This method does no measuring and applies no styles so that we can cheaply compute the
+     * bounds for all positions and choose the best fit based on these results.
+     * @param {?} origin
+     * @param {?} position
+     * @return {?}
+     */
+    function (origin, position) {
+        var /** @type {?} */ viewport = this._viewportRect;
+        var /** @type {?} */ isRtl = this._isRtl();
+        var /** @type {?} */ height, /** @type {?} */ top, /** @type {?} */ bottom;
+        if (position.overlayY === 'top') {
+            // Overlay is opening "downward" and thus is bound by the bottom viewport edge.
+            top = origin.y;
+            height = viewport.bottom - origin.y;
+        }
+        else if (position.overlayY === 'bottom') {
+            // Overlay is opening "upward" and thus is bound by the top viewport edge. We need to add
+            // the viewport margin back in, because the viewport rect is narrowed down to remove the
+            // margin, whereas the `origin` position is calculated based on its `ClientRect`.
+            bottom = viewport.height - origin.y + this._viewportMargin * 2;
+            height = viewport.height - bottom + this._viewportMargin;
+        }
+        else {
+            // If neither top nor bottom, it means that the overlay
+            // is vertically centered on the origin point.
+            var /** @type {?} */ smallestDistanceToViewportEdge = Math.min(viewport.bottom - origin.y, origin.y - viewport.left);
+            var /** @type {?} */ previousHeight = this._lastBoundingBoxSize.height;
+            height = smallestDistanceToViewportEdge * 2;
+            top = origin.y - smallestDistanceToViewportEdge;
+            if (height > previousHeight && !this._isInitialRender && !this._growAfterOpen) {
+                top = origin.y - (previousHeight / 2);
+            }
+        }
+        // The overlay is opening 'right-ward' (the content flows to the right).
+        var /** @type {?} */ isBoundedByRightViewportEdge = (position.overlayX === 'start' && !isRtl) ||
+            (position.overlayX === 'end' && isRtl);
+        // The overlay is opening 'left-ward' (the content flows to the left).
+        var /** @type {?} */ isBoundedByLeftViewportEdge = (position.overlayX === 'end' && !isRtl) ||
+            (position.overlayX === 'start' && isRtl);
+        var /** @type {?} */ width, /** @type {?} */ left, /** @type {?} */ right;
+        if (isBoundedByLeftViewportEdge) {
+            right = viewport.right - origin.x + this._viewportMargin;
+            width = origin.x - viewport.left;
+        }
+        else if (isBoundedByRightViewportEdge) {
+            left = origin.x;
+            width = viewport.right - origin.x;
+        }
+        else {
+            // If neither start nor end, it means that the overlay
+            // is horizontally centered on the origin point.
+            var /** @type {?} */ smallestDistanceToViewportEdge = Math.min(viewport.right - origin.x, origin.x - viewport.top);
+            var /** @type {?} */ previousWidth = this._lastBoundingBoxSize.width;
+            width = smallestDistanceToViewportEdge * 2;
+            left = origin.x - smallestDistanceToViewportEdge;
+            if (width > previousWidth && !this._isInitialRender && !this._growAfterOpen) {
+                left = origin.x - (previousWidth / 2);
+            }
+        }
+        return { top: top, left: left, bottom: bottom, right: right, width: width, height: height };
+    };
+    /**
+     * Sets the position and size of the overlay's sizing wrapper. The wrapper is positioned on the
+     * origin's connection point and stetches to the bounds of the viewport.
+     *
+     * @param {?} origin The point on the origin element where the overlay is connected.
+     * @param {?} position The position preference
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._setBoundingBoxStyles = /**
+     * Sets the position and size of the overlay's sizing wrapper. The wrapper is positioned on the
+     * origin's connection point and stetches to the bounds of the viewport.
+     *
+     * @param {?} origin The point on the origin element where the overlay is connected.
+     * @param {?} position The position preference
+     * @return {?}
+     */
+    function (origin, position) {
+        var /** @type {?} */ boundingBoxRect = this._calculateBoundingBoxRect(origin, position);
+        // It's weird if the overlay *grows* while scrolling, so we take the last size into account
+        // when applying a new size.
+        if (!this._isInitialRender && !this._growAfterOpen) {
+            boundingBoxRect.height = Math.min(boundingBoxRect.height, this._lastBoundingBoxSize.height);
+            boundingBoxRect.width = Math.min(boundingBoxRect.width, this._lastBoundingBoxSize.width);
+        }
+        var /** @type {?} */ styles = /** @type {?} */ ({});
+        if (this._hasExactPosition()) {
+            styles.top = styles.left = '0';
+            styles.bottom = styles.right = '';
+            styles.width = styles.height = '100%';
+        }
+        else {
+            var /** @type {?} */ maxHeight = this._overlayRef.getConfig().maxHeight;
+            var /** @type {?} */ maxWidth = this._overlayRef.getConfig().maxWidth;
+            styles.height = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(boundingBoxRect.height);
+            styles.top = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(boundingBoxRect.top);
+            styles.bottom = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(boundingBoxRect.bottom);
+            styles.width = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(boundingBoxRect.width);
+            styles.left = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(boundingBoxRect.left);
+            styles.right = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(boundingBoxRect.right);
+            // Push the pane content towards the proper direction.
+            if (position.overlayX === 'center') {
+                styles.alignItems = 'center';
+            }
+            else {
+                styles.alignItems = position.overlayX === 'end' ? 'flex-end' : 'flex-start';
+            }
+            if (position.overlayY === 'center') {
+                styles.justifyContent = 'center';
+            }
+            else {
+                styles.justifyContent = position.overlayY === 'bottom' ? 'flex-end' : 'flex-start';
+            }
+            if (maxHeight) {
+                styles.maxHeight = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(maxHeight);
+            }
+            if (maxWidth) {
+                styles.maxWidth = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(maxWidth);
+            }
+        }
+        this._lastBoundingBoxSize = boundingBoxRect;
+        extendStyles(/** @type {?} */ ((this._boundingBox)).style, styles);
+    };
+    /**
+     * Resets the styles for the bounding box so that a new positioning can be computed.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._resetBoundingBoxStyles = /**
+     * Resets the styles for the bounding box so that a new positioning can be computed.
+     * @return {?}
+     */
+    function () {
+        extendStyles(/** @type {?} */ ((this._boundingBox)).style, /** @type {?} */ ({
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            height: '',
+            width: '',
+            alignItems: '',
+            justifyContent: '',
+        }));
+    };
+    /**
+     * Resets the styles for the overlay pane so that a new positioning can be computed.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._resetOverlayElementStyles = /**
+     * Resets the styles for the overlay pane so that a new positioning can be computed.
+     * @return {?}
+     */
+    function () {
+        extendStyles(this._pane.style, /** @type {?} */ ({
+            top: '',
+            left: '',
+            bottom: '',
+            right: '',
+            position: '',
+        }));
+    };
+    /**
+     * Sets positioning styles to the overlay element.
+     * @param {?} originPoint
+     * @param {?} position
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._setOverlayElementStyles = /**
+     * Sets positioning styles to the overlay element.
+     * @param {?} originPoint
+     * @param {?} position
+     * @return {?}
+     */
+    function (originPoint, position) {
+        var /** @type {?} */ styles = /** @type {?} */ ({});
+        if (this._hasExactPosition()) {
+            extendStyles(styles, this._getExactOverlayY(position, originPoint));
+            extendStyles(styles, this._getExactOverlayX(position, originPoint));
+        }
+        else {
+            styles.position = 'static';
+        }
+        // Use a transform to apply the offsets. We do this because the `center` positions rely on
+        // being in the normal flex flow and setting a `top` / `left` at all will completely throw
+        // off the position. We also can't use margins, because they won't have an effect in some
+        // cases where the element doesn't have anything to "push off of". Finally, this works
+        // better both with flexible and non-flexible positioning.
+        var /** @type {?} */ transformString = '';
+        var /** @type {?} */ offsetX = this._getOffset(position, 'x');
+        var /** @type {?} */ offsetY = this._getOffset(position, 'y');
+        if (offsetX) {
+            transformString += "translateX(" + offsetX + "px) ";
+        }
+        if (offsetY) {
+            transformString += "translateY(" + offsetY + "px)";
+        }
+        styles.transform = transformString.trim();
+        // If a maxWidth or maxHeight is specified on the overlay, we remove them. We do this because
+        // we need these values to both be set to "100%" for the automatic flexible sizing to work.
+        // The maxHeight and maxWidth are set on the boundingBox in order to enforce the constraint.
+        if (this._hasFlexibleDimensions && this._overlayRef.getConfig().maxHeight) {
+            styles.maxHeight = '';
+        }
+        if (this._hasFlexibleDimensions && this._overlayRef.getConfig().maxWidth) {
+            styles.maxWidth = '';
+        }
+        extendStyles(this._pane.style, styles);
+    };
+    /**
+     * Gets the exact top/bottom for the overlay when not using flexible sizing or when pushing.
+     * @param {?} position
+     * @param {?} originPoint
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._getExactOverlayY = /**
+     * Gets the exact top/bottom for the overlay when not using flexible sizing or when pushing.
+     * @param {?} position
+     * @param {?} originPoint
+     * @return {?}
+     */
+    function (position, originPoint) {
+        // Reset any existing styles. This is necessary in case the
+        // preferred position has changed since the last `apply`.
+        var /** @type {?} */ styles = /** @type {?} */ ({ top: null, bottom: null });
+        var /** @type {?} */ overlayPoint = this._getOverlayPoint(originPoint, this._overlayRect, position);
+        if (this._isPushed) {
+            overlayPoint = this._pushOverlayOnScreen(overlayPoint, this._overlayRect);
+        }
+        // @breaking-change 7.0.0 Currently the `_overlayContainer` is optional in order to avoid a
+        // breaking change. The null check here can be removed once the `_overlayContainer` becomes
+        // a required parameter.
+        var /** @type {?} */ virtualKeyboardOffset = this._overlayContainer ?
+            this._overlayContainer.getContainerElement().getBoundingClientRect().top : 0;
+        // Normally this would be zero, however when the overlay is attached to an input (e.g. in an
+        // autocomplete), mobile browsers will shift everything in order to put the input in the middle
+        // of the screen and to make space for the virtual keyboard. We need to account for this offset,
+        // otherwise our positioning will be thrown off.
+        overlayPoint.y -= virtualKeyboardOffset;
+        // We want to set either `top` or `bottom` based on whether the overlay wants to appear
+        // above or below the origin and the direction in which the element will expand.
+        if (position.overlayY === 'bottom') {
+            // When using `bottom`, we adjust the y position such that it is the distance
+            // from the bottom of the viewport rather than the top.
+            var /** @type {?} */ documentHeight = this._document.documentElement.clientHeight;
+            styles.bottom = documentHeight - (overlayPoint.y + this._overlayRect.height) + "px";
+        }
+        else {
+            styles.top = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(overlayPoint.y);
+        }
+        return styles;
+    };
+    /**
+     * Gets the exact left/right for the overlay when not using flexible sizing or when pushing.
+     * @param {?} position
+     * @param {?} originPoint
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._getExactOverlayX = /**
+     * Gets the exact left/right for the overlay when not using flexible sizing or when pushing.
+     * @param {?} position
+     * @param {?} originPoint
+     * @return {?}
+     */
+    function (position, originPoint) {
+        // Reset any existing styles. This is necessary in case the preferred position has
+        // changed since the last `apply`.
+        var /** @type {?} */ styles = /** @type {?} */ ({ left: null, right: null });
+        var /** @type {?} */ overlayPoint = this._getOverlayPoint(originPoint, this._overlayRect, position);
+        if (this._isPushed) {
+            overlayPoint = this._pushOverlayOnScreen(overlayPoint, this._overlayRect);
+        }
+        // We want to set either `left` or `right` based on whether the overlay wants to appear "before"
+        // or "after" the origin, which determines the direction in which the element will expand.
+        // For the horizontal axis, the meaning of "before" and "after" change based on whether the
+        // page is in RTL or LTR.
+        var /** @type {?} */ horizontalStyleProperty;
+        if (this._isRtl()) {
+            horizontalStyleProperty = position.overlayX === 'end' ? 'left' : 'right';
+        }
+        else {
+            horizontalStyleProperty = position.overlayX === 'end' ? 'right' : 'left';
+        }
+        // When we're setting `right`, we adjust the x position such that it is the distance
+        // from the right edge of the viewport rather than the left edge.
+        if (horizontalStyleProperty === 'right') {
+            var /** @type {?} */ documentWidth = this._document.documentElement.clientWidth;
+            styles.right = documentWidth - (overlayPoint.x + this._overlayRect.width) + "px";
+        }
+        else {
+            styles.left = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceCssPixelValue"])(overlayPoint.x);
+        }
+        return styles;
+    };
+    /**
+     * Gets the view properties of the trigger and overlay, including whether they are clipped
+     * or completely outside the view of any of the strategy's scrollables.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._getScrollVisibility = /**
+     * Gets the view properties of the trigger and overlay, including whether they are clipped
+     * or completely outside the view of any of the strategy's scrollables.
+     * @return {?}
+     */
+    function () {
+        // Note: needs fresh rects since the position could've changed.
+        var /** @type {?} */ originBounds = this._origin.getBoundingClientRect();
+        var /** @type {?} */ overlayBounds = this._pane.getBoundingClientRect();
+        // TODO(jelbourn): instead of needing all of the client rects for these scrolling containers
+        // every time, we should be able to use the scrollTop of the containers if the size of those
+        // containers hasn't changed.
+        var /** @type {?} */ scrollContainerBounds = this.scrollables.map(function (scrollable) {
+            return scrollable.getElementRef().nativeElement.getBoundingClientRect();
+        });
+        return {
+            isOriginClipped: isElementClippedByScrolling(originBounds, scrollContainerBounds),
+            isOriginOutsideView: isElementScrolledOutsideView(originBounds, scrollContainerBounds),
+            isOverlayClipped: isElementClippedByScrolling(overlayBounds, scrollContainerBounds),
+            isOverlayOutsideView: isElementScrolledOutsideView(overlayBounds, scrollContainerBounds),
+        };
+    };
+    /**
+     * Subtracts the amount that an element is overflowing on an axis from it's length.
+     * @param {?} length
+     * @param {...?} overflows
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._subtractOverflows = /**
+     * Subtracts the amount that an element is overflowing on an axis from it's length.
+     * @param {?} length
+     * @param {...?} overflows
+     * @return {?}
+     */
+    function (length) {
+        var overflows = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            overflows[_i - 1] = arguments[_i];
+        }
+        return overflows.reduce(function (currentValue, currentOverflow) {
+            return currentValue - Math.max(currentOverflow, 0);
+        }, length);
+    };
+    /**
+     * Narrows the given viewport rect by the current _viewportMargin.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._getNarrowedViewportRect = /**
+     * Narrows the given viewport rect by the current _viewportMargin.
+     * @return {?}
+     */
+    function () {
+        // We recalculate the viewport rect here ourselves, rather than using the ViewportRuler,
+        // because we want to use the `clientWidth` and `clientHeight` as the base. The difference
+        // being that the client properties don't include the scrollbar, as opposed to `innerWidth`
+        // and `innerHeight` that do. This is necessary, because the overlay container uses
+        // 100% `width` and `height` which don't include the scrollbar either.
+        var /** @type {?} */ width = this._document.documentElement.clientWidth;
+        var /** @type {?} */ height = this._document.documentElement.clientHeight;
+        var /** @type {?} */ scrollPosition = this._viewportRuler.getViewportScrollPosition();
+        return {
+            top: scrollPosition.top + this._viewportMargin,
+            left: scrollPosition.left + this._viewportMargin,
+            right: scrollPosition.left + width - this._viewportMargin,
+            bottom: scrollPosition.top + height - this._viewportMargin,
+            width: width - (2 * this._viewportMargin),
+            height: height - (2 * this._viewportMargin),
+        };
+    };
+    /**
+     * Whether the we're dealing with an RTL context
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._isRtl = /**
+     * Whether the we're dealing with an RTL context
+     * @return {?}
+     */
+    function () {
+        return this._overlayRef.getDirection() === 'rtl';
+    };
+    /**
+     * Determines whether the overlay uses exact or flexible positioning.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._hasExactPosition = /**
+     * Determines whether the overlay uses exact or flexible positioning.
+     * @return {?}
+     */
+    function () {
+        return !this._hasFlexibleDimensions || this._isPushed;
+    };
+    /**
+     * Retrieves the offset of a position along the x or y axis.
+     * @param {?} position
+     * @param {?} axis
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._getOffset = /**
+     * Retrieves the offset of a position along the x or y axis.
+     * @param {?} position
+     * @param {?} axis
+     * @return {?}
+     */
+    function (position, axis) {
+        if (axis === 'x') {
+            // We don't do something like `position['offset' + axis]` in
+            // order to avoid breking minifiers that rename properties.
+            return position.offsetX == null ? this._offsetX : position.offsetX;
+        }
+        return position.offsetY == null ? this._offsetY : position.offsetY;
+    };
+    /**
+     * Validates that the current position match the expected values.
+     * @return {?}
+     */
+    FlexibleConnectedPositionStrategy.prototype._validatePositions = /**
+     * Validates that the current position match the expected values.
+     * @return {?}
+     */
+    function () {
+        if (!this._preferredPositions.length) {
+            throw Error('FlexibleConnectedPositionStrategy: At least one position is required.');
+        }
+        // TODO(crisbeto): remove these once Angular's template type
+        // checking is advanced enough to catch these cases.
+        this._preferredPositions.forEach(function (pair) {
+            validateHorizontalPosition('originX', pair.originX);
+            validateVerticalPosition('originY', pair.originY);
+            validateHorizontalPosition('overlayX', pair.overlayX);
+            validateVerticalPosition('overlayY', pair.overlayY);
+        });
+    };
+    return FlexibleConnectedPositionStrategy;
+}());
+/**
+ * Shallow-extends a stylesheet object with another stylesheet object.
+ * @param {?} dest
+ * @param {?} source
+ * @return {?}
+ */
+function extendStyles(dest, source) {
+    for (var /** @type {?} */ key in source) {
+        if (source.hasOwnProperty(key)) {
+            dest[key] = source[key];
+        }
+    }
+    return dest;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * A strategy for positioning overlays. Using this strategy, an overlay is given an
+ * implicit position relative to some origin element. The relative position is defined in terms of
+ * a point on the origin element that is connected to a point on the overlay element. For example,
+ * a basic dropdown is connecting the bottom-left corner of the origin to the top-left corner
+ * of the overlay.
+ * @deprecated Use `FlexibleConnectedPositionStrategy` instead.
+ * \@breaking-change 7.0.0
+ */
+var  /**
+ * A strategy for positioning overlays. Using this strategy, an overlay is given an
+ * implicit position relative to some origin element. The relative position is defined in terms of
+ * a point on the origin element that is connected to a point on the overlay element. For example,
+ * a basic dropdown is connecting the bottom-left corner of the origin to the top-left corner
+ * of the overlay.
+ * @deprecated Use `FlexibleConnectedPositionStrategy` instead.
+ * \@breaking-change 7.0.0
+ */
+ConnectedPositionStrategy = /** @class */ (function () {
+    function ConnectedPositionStrategy(originPos, overlayPos, connectedTo, viewportRuler, document, 
+    // @breaking-change 7.0.0 `platform` parameter to be made required.
+    // @breaking-change 7.0.0 `platform` parameter to be made required.
+    platform) {
+        /**
+         * Ordered list of preferred positions, from most to least desirable.
+         */
+        this._preferredPositions = [];
+        // Since the `ConnectedPositionStrategy` is deprecated and we don't want to maintain
+        // the extra logic, we create an instance of the positioning strategy that has some
+        // defaults that make it behave as the old position strategy and to which we'll
+        // proxy all of the API calls.
+        this._positionStrategy =
+            new FlexibleConnectedPositionStrategy(connectedTo, viewportRuler, document, platform)
+                .withFlexibleDimensions(false)
+                .withPush(false)
+                .withViewportMargin(0);
+        this.withFallbackPosition(originPos, overlayPos);
+    }
+    Object.defineProperty(ConnectedPositionStrategy.prototype, "_isRtl", {
+        /** Whether the we're dealing with an RTL context */
+        get: /**
+         * Whether the we're dealing with an RTL context
+         * @return {?}
+         */
+        function () {
+            return this._overlayRef.getDirection() === 'rtl';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ConnectedPositionStrategy.prototype, "onPositionChange", {
+        /** Emits an event when the connection point changes. */
+        get: /**
+         * Emits an event when the connection point changes.
+         * @return {?}
+         */
+        function () {
+            return this._positionStrategy.positionChanges;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ConnectedPositionStrategy.prototype, "positions", {
+        /** Ordered list of preferred positions, from most to least desirable. */
+        get: /**
+         * Ordered list of preferred positions, from most to least desirable.
+         * @return {?}
+         */
+        function () {
+            return this._preferredPositions;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** Attach this position strategy to an overlay. */
+    /**
+     * Attach this position strategy to an overlay.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.attach = /**
+     * Attach this position strategy to an overlay.
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    function (overlayRef) {
+        this._overlayRef = overlayRef;
+        this._positionStrategy.attach(overlayRef);
+        if (this._direction) {
+            overlayRef.setDirection(this._direction);
+            this._direction = null;
+        }
+    };
+    /** Disposes all resources used by the position strategy. */
+    /**
+     * Disposes all resources used by the position strategy.
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.dispose = /**
+     * Disposes all resources used by the position strategy.
+     * @return {?}
+     */
+    function () {
+        this._positionStrategy.dispose();
+    };
+    /** @docs-private */
+    /**
+     * \@docs-private
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.detach = /**
+     * \@docs-private
+     * @return {?}
+     */
+    function () {
+        this._positionStrategy.detach();
+    };
+    /**
+     * Updates the position of the overlay element, using whichever preferred position relative
+     * to the origin fits on-screen.
+     * @docs-private
+     */
+    /**
+     * Updates the position of the overlay element, using whichever preferred position relative
+     * to the origin fits on-screen.
+     * \@docs-private
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.apply = /**
+     * Updates the position of the overlay element, using whichever preferred position relative
+     * to the origin fits on-screen.
+     * \@docs-private
+     * @return {?}
+     */
+    function () {
+        this._positionStrategy.apply();
+    };
+    /**
+     * Re-positions the overlay element with the trigger in its last calculated position,
+     * even if a position higher in the "preferred positions" list would now fit. This
+     * allows one to re-align the panel without changing the orientation of the panel.
+     */
+    /**
+     * Re-positions the overlay element with the trigger in its last calculated position,
+     * even if a position higher in the "preferred positions" list would now fit. This
+     * allows one to re-align the panel without changing the orientation of the panel.
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.recalculateLastPosition = /**
+     * Re-positions the overlay element with the trigger in its last calculated position,
+     * even if a position higher in the "preferred positions" list would now fit. This
+     * allows one to re-align the panel without changing the orientation of the panel.
+     * @return {?}
+     */
+    function () {
+        this._positionStrategy.reapplyLastPosition();
+    };
+    /**
+     * Sets the list of Scrollable containers that host the origin element so that
+     * on reposition we can evaluate if it or the overlay has been clipped or outside view. Every
+     * Scrollable must be an ancestor element of the strategy's origin element.
+     */
+    /**
+     * Sets the list of Scrollable containers that host the origin element so that
+     * on reposition we can evaluate if it or the overlay has been clipped or outside view. Every
+     * Scrollable must be an ancestor element of the strategy's origin element.
+     * @param {?} scrollables
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.withScrollableContainers = /**
+     * Sets the list of Scrollable containers that host the origin element so that
+     * on reposition we can evaluate if it or the overlay has been clipped or outside view. Every
+     * Scrollable must be an ancestor element of the strategy's origin element.
+     * @param {?} scrollables
+     * @return {?}
+     */
+    function (scrollables) {
+        this._positionStrategy.withScrollableContainers(scrollables);
+    };
+    /**
+     * Adds a new preferred fallback position.
+     * @param originPos
+     * @param overlayPos
+     */
+    /**
+     * Adds a new preferred fallback position.
+     * @param {?} originPos
+     * @param {?} overlayPos
+     * @param {?=} offsetX
+     * @param {?=} offsetY
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.withFallbackPosition = /**
+     * Adds a new preferred fallback position.
+     * @param {?} originPos
+     * @param {?} overlayPos
+     * @param {?=} offsetX
+     * @param {?=} offsetY
+     * @return {?}
+     */
+    function (originPos, overlayPos, offsetX, offsetY) {
+        var /** @type {?} */ position = new ConnectionPositionPair(originPos, overlayPos, offsetX, offsetY);
+        this._preferredPositions.push(position);
+        this._positionStrategy.withPositions(this._preferredPositions);
+        return this;
+    };
+    /**
+     * Sets the layout direction so the overlay's position can be adjusted to match.
+     * @param dir New layout direction.
+     */
+    /**
+     * Sets the layout direction so the overlay's position can be adjusted to match.
+     * @param {?} dir New layout direction.
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.withDirection = /**
+     * Sets the layout direction so the overlay's position can be adjusted to match.
+     * @param {?} dir New layout direction.
+     * @return {?}
+     */
+    function (dir) {
+        // Since the direction might be declared before the strategy is attached,
+        // we save the value in a temporary property and we'll transfer it to the
+        // overlay ref on attachment.
+        if (this._overlayRef) {
+            this._overlayRef.setDirection(dir);
+        }
+        else {
+            this._direction = dir;
+        }
+        return this;
+    };
+    /**
+     * Sets an offset for the overlay's connection point on the x-axis
+     * @param offset New offset in the X axis.
+     */
+    /**
+     * Sets an offset for the overlay's connection point on the x-axis
+     * @param {?} offset New offset in the X axis.
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.withOffsetX = /**
+     * Sets an offset for the overlay's connection point on the x-axis
+     * @param {?} offset New offset in the X axis.
+     * @return {?}
+     */
+    function (offset) {
+        this._positionStrategy.withDefaultOffsetX(offset);
+        return this;
+    };
+    /**
+     * Sets an offset for the overlay's connection point on the y-axis
+     * @param  offset New offset in the Y axis.
+     */
+    /**
+     * Sets an offset for the overlay's connection point on the y-axis
+     * @param {?} offset New offset in the Y axis.
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.withOffsetY = /**
+     * Sets an offset for the overlay's connection point on the y-axis
+     * @param {?} offset New offset in the Y axis.
+     * @return {?}
+     */
+    function (offset) {
+        this._positionStrategy.withDefaultOffsetY(offset);
+        return this;
+    };
+    /**
+     * Sets whether the overlay's position should be locked in after it is positioned
+     * initially. When an overlay is locked in, it won't attempt to reposition itself
+     * when the position is re-applied (e.g. when the user scrolls away).
+     * @param isLocked Whether the overlay should locked in.
+     */
+    /**
+     * Sets whether the overlay's position should be locked in after it is positioned
+     * initially. When an overlay is locked in, it won't attempt to reposition itself
+     * when the position is re-applied (e.g. when the user scrolls away).
+     * @param {?} isLocked Whether the overlay should locked in.
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.withLockedPosition = /**
+     * Sets whether the overlay's position should be locked in after it is positioned
+     * initially. When an overlay is locked in, it won't attempt to reposition itself
+     * when the position is re-applied (e.g. when the user scrolls away).
+     * @param {?} isLocked Whether the overlay should locked in.
+     * @return {?}
+     */
+    function (isLocked) {
+        this._positionStrategy.withLockedPosition(isLocked);
+        return this;
+    };
+    /**
+     * Overwrites the current set of positions with an array of new ones.
+     * @param positions Position pairs to be set on the strategy.
+     */
+    /**
+     * Overwrites the current set of positions with an array of new ones.
+     * @param {?} positions Position pairs to be set on the strategy.
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.withPositions = /**
+     * Overwrites the current set of positions with an array of new ones.
+     * @param {?} positions Position pairs to be set on the strategy.
+     * @return {?}
+     */
+    function (positions) {
+        this._preferredPositions = positions.slice();
+        this._positionStrategy.withPositions(this._preferredPositions);
+        return this;
+    };
+    /**
+     * Sets the origin element, relative to which to position the overlay.
+     * @param origin Reference to the new origin element.
+     */
+    /**
+     * Sets the origin element, relative to which to position the overlay.
+     * @param {?} origin Reference to the new origin element.
+     * @return {?}
+     */
+    ConnectedPositionStrategy.prototype.setOrigin = /**
+     * Sets the origin element, relative to which to position the overlay.
+     * @param {?} origin Reference to the new origin element.
+     * @return {?}
+     */
+    function (origin) {
+        this._positionStrategy.setOrigin(origin);
+        return this;
+    };
+    return ConnectedPositionStrategy;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * A strategy for positioning overlays. Using this strategy, an overlay is given an
+ * explicit position relative to the browser's viewport. We use flexbox, instead of
+ * transforms, in order to avoid issues with subpixel rendering which can cause the
+ * element to become blurry.
+ */
+var  /**
+ * A strategy for positioning overlays. Using this strategy, an overlay is given an
+ * explicit position relative to the browser's viewport. We use flexbox, instead of
+ * transforms, in order to avoid issues with subpixel rendering which can cause the
+ * element to become blurry.
+ */
+GlobalPositionStrategy = /** @class */ (function () {
+    function GlobalPositionStrategy() {
+        this._cssPosition = 'static';
+        this._topOffset = '';
+        this._bottomOffset = '';
+        this._leftOffset = '';
+        this._rightOffset = '';
+        this._alignItems = '';
+        this._justifyContent = '';
+        this._width = '';
+        this._height = '';
+    }
+    /**
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.attach = /**
+     * @param {?} overlayRef
+     * @return {?}
+     */
+    function (overlayRef) {
+        var /** @type {?} */ config = overlayRef.getConfig();
+        this._overlayRef = overlayRef;
+        if (this._width && !config.width) {
+            overlayRef.updateSize({ width: this._width });
+        }
+        if (this._height && !config.height) {
+            overlayRef.updateSize({ height: this._height });
+        }
+        overlayRef.hostElement.classList.add('cdk-global-overlay-wrapper');
+    };
+    /**
+     * Sets the top position of the overlay. Clears any previously set vertical position.
+     * @param value New top offset.
+     */
+    /**
+     * Sets the top position of the overlay. Clears any previously set vertical position.
+     * @param {?=} value New top offset.
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.top = /**
+     * Sets the top position of the overlay. Clears any previously set vertical position.
+     * @param {?=} value New top offset.
+     * @return {?}
+     */
+    function (value) {
+        if (value === void 0) { value = ''; }
+        this._bottomOffset = '';
+        this._topOffset = value;
+        this._alignItems = 'flex-start';
+        return this;
+    };
+    /**
+     * Sets the left position of the overlay. Clears any previously set horizontal position.
+     * @param value New left offset.
+     */
+    /**
+     * Sets the left position of the overlay. Clears any previously set horizontal position.
+     * @param {?=} value New left offset.
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.left = /**
+     * Sets the left position of the overlay. Clears any previously set horizontal position.
+     * @param {?=} value New left offset.
+     * @return {?}
+     */
+    function (value) {
+        if (value === void 0) { value = ''; }
+        this._rightOffset = '';
+        this._leftOffset = value;
+        this._justifyContent = 'flex-start';
+        return this;
+    };
+    /**
+     * Sets the bottom position of the overlay. Clears any previously set vertical position.
+     * @param value New bottom offset.
+     */
+    /**
+     * Sets the bottom position of the overlay. Clears any previously set vertical position.
+     * @param {?=} value New bottom offset.
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.bottom = /**
+     * Sets the bottom position of the overlay. Clears any previously set vertical position.
+     * @param {?=} value New bottom offset.
+     * @return {?}
+     */
+    function (value) {
+        if (value === void 0) { value = ''; }
+        this._topOffset = '';
+        this._bottomOffset = value;
+        this._alignItems = 'flex-end';
+        return this;
+    };
+    /**
+     * Sets the right position of the overlay. Clears any previously set horizontal position.
+     * @param value New right offset.
+     */
+    /**
+     * Sets the right position of the overlay. Clears any previously set horizontal position.
+     * @param {?=} value New right offset.
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.right = /**
+     * Sets the right position of the overlay. Clears any previously set horizontal position.
+     * @param {?=} value New right offset.
+     * @return {?}
+     */
+    function (value) {
+        if (value === void 0) { value = ''; }
+        this._leftOffset = '';
+        this._rightOffset = value;
+        this._justifyContent = 'flex-end';
+        return this;
+    };
+    /**
+     * Sets the overlay width and clears any previously set width.
+     * @param value New width for the overlay
+     * @deprecated Pass the `width` through the `OverlayConfig`.
+     * @breaking-change 7.0.0
+     */
+    /**
+     * Sets the overlay width and clears any previously set width.
+     * @deprecated Pass the `width` through the `OverlayConfig`.
+     * \@breaking-change 7.0.0
+     * @param {?=} value New width for the overlay
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.width = /**
+     * Sets the overlay width and clears any previously set width.
+     * @deprecated Pass the `width` through the `OverlayConfig`.
+     * \@breaking-change 7.0.0
+     * @param {?=} value New width for the overlay
+     * @return {?}
+     */
+    function (value) {
+        if (value === void 0) { value = ''; }
+        if (this._overlayRef) {
+            this._overlayRef.updateSize({ width: value });
+        }
+        else {
+            this._width = value;
+        }
+        return this;
+    };
+    /**
+     * Sets the overlay height and clears any previously set height.
+     * @param value New height for the overlay
+     * @deprecated Pass the `height` through the `OverlayConfig`.
+     * @breaking-change 7.0.0
+     */
+    /**
+     * Sets the overlay height and clears any previously set height.
+     * @deprecated Pass the `height` through the `OverlayConfig`.
+     * \@breaking-change 7.0.0
+     * @param {?=} value New height for the overlay
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.height = /**
+     * Sets the overlay height and clears any previously set height.
+     * @deprecated Pass the `height` through the `OverlayConfig`.
+     * \@breaking-change 7.0.0
+     * @param {?=} value New height for the overlay
+     * @return {?}
+     */
+    function (value) {
+        if (value === void 0) { value = ''; }
+        if (this._overlayRef) {
+            this._overlayRef.updateSize({ height: value });
+        }
+        else {
+            this._height = value;
+        }
+        return this;
+    };
+    /**
+     * Centers the overlay horizontally with an optional offset.
+     * Clears any previously set horizontal position.
+     *
+     * @param offset Overlay offset from the horizontal center.
+     */
+    /**
+     * Centers the overlay horizontally with an optional offset.
+     * Clears any previously set horizontal position.
+     *
+     * @param {?=} offset Overlay offset from the horizontal center.
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.centerHorizontally = /**
+     * Centers the overlay horizontally with an optional offset.
+     * Clears any previously set horizontal position.
+     *
+     * @param {?=} offset Overlay offset from the horizontal center.
+     * @return {?}
+     */
+    function (offset) {
+        if (offset === void 0) { offset = ''; }
+        this.left(offset);
+        this._justifyContent = 'center';
+        return this;
+    };
+    /**
+     * Centers the overlay vertically with an optional offset.
+     * Clears any previously set vertical position.
+     *
+     * @param offset Overlay offset from the vertical center.
+     */
+    /**
+     * Centers the overlay vertically with an optional offset.
+     * Clears any previously set vertical position.
+     *
+     * @param {?=} offset Overlay offset from the vertical center.
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.centerVertically = /**
+     * Centers the overlay vertically with an optional offset.
+     * Clears any previously set vertical position.
+     *
+     * @param {?=} offset Overlay offset from the vertical center.
+     * @return {?}
+     */
+    function (offset) {
+        if (offset === void 0) { offset = ''; }
+        this.top(offset);
+        this._alignItems = 'center';
+        return this;
+    };
+    /**
+     * Apply the position to the element.
+     * @docs-private
+     */
+    /**
+     * Apply the position to the element.
+     * \@docs-private
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.apply = /**
+     * Apply the position to the element.
+     * \@docs-private
+     * @return {?}
+     */
+    function () {
+        // Since the overlay ref applies the strategy asynchronously, it could
+        // have been disposed before it ends up being applied. If that is the
+        // case, we shouldn't do anything.
+        if (!this._overlayRef.hasAttached()) {
+            return;
+        }
+        var /** @type {?} */ styles = this._overlayRef.overlayElement.style;
+        var /** @type {?} */ parentStyles = this._overlayRef.hostElement.style;
+        var /** @type {?} */ config = this._overlayRef.getConfig();
+        styles.position = this._cssPosition;
+        styles.marginLeft = config.width === '100%' ? '0' : this._leftOffset;
+        styles.marginTop = config.height === '100%' ? '0' : this._topOffset;
+        styles.marginBottom = this._bottomOffset;
+        styles.marginRight = this._rightOffset;
+        if (config.width === '100%') {
+            parentStyles.justifyContent = 'flex-start';
+        }
+        else if (this._justifyContent === 'center') {
+            parentStyles.justifyContent = 'center';
+        }
+        else if (this._overlayRef.getConfig().direction === 'rtl') {
+            // In RTL the browser will invert `flex-start` and `flex-end` automatically, but we
+            // don't want that because our positioning is explicitly `left` and `right`, hence
+            // why we do another inversion to ensure that the overlay stays in the same position.
+            // TODO: reconsider this if we add `start` and `end` methods.
+            if (this._justifyContent === 'flex-start') {
+                parentStyles.justifyContent = 'flex-end';
+            }
+            else if (this._justifyContent === 'flex-end') {
+                parentStyles.justifyContent = 'flex-start';
+            }
+        }
+        else {
+            parentStyles.justifyContent = this._justifyContent;
+        }
+        parentStyles.alignItems = config.height === '100%' ? 'flex-start' : this._alignItems;
+    };
+    /**
+     * Noop implemented as a part of the PositionStrategy interface.
+     * @docs-private
+     */
+    /**
+     * Noop implemented as a part of the PositionStrategy interface.
+     * \@docs-private
+     * @return {?}
+     */
+    GlobalPositionStrategy.prototype.dispose = /**
+     * Noop implemented as a part of the PositionStrategy interface.
+     * \@docs-private
+     * @return {?}
+     */
+    function () { };
+    return GlobalPositionStrategy;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Builder for overlay position strategy.
+ */
+var OverlayPositionBuilder = /** @class */ (function () {
+    function OverlayPositionBuilder(_viewportRuler, _document, 
+    // @breaking-change 7.0.0 `_platform` and `_overlayContainer` parameters to be made required.
+    _platform, _overlayContainer) {
+        this._viewportRuler = _viewportRuler;
+        this._document = _document;
+        this._platform = _platform;
+        this._overlayContainer = _overlayContainer;
+    }
+    /**
+     * Creates a global position strategy.
+     */
+    /**
+     * Creates a global position strategy.
+     * @return {?}
+     */
+    OverlayPositionBuilder.prototype.global = /**
+     * Creates a global position strategy.
+     * @return {?}
+     */
+    function () {
+        return new GlobalPositionStrategy();
+    };
+    /**
+     * Creates a relative position strategy.
+     * @param elementRef
+     * @param originPos
+     * @param overlayPos
+     * @deprecated Use `flexibleConnectedTo` instead.
+     * @breaking-change 7.0.0
+     */
+    /**
+     * Creates a relative position strategy.
+     * @deprecated Use `flexibleConnectedTo` instead.
+     * \@breaking-change 7.0.0
+     * @param {?} elementRef
+     * @param {?} originPos
+     * @param {?} overlayPos
+     * @return {?}
+     */
+    OverlayPositionBuilder.prototype.connectedTo = /**
+     * Creates a relative position strategy.
+     * @deprecated Use `flexibleConnectedTo` instead.
+     * \@breaking-change 7.0.0
+     * @param {?} elementRef
+     * @param {?} originPos
+     * @param {?} overlayPos
+     * @return {?}
+     */
+    function (elementRef, originPos, overlayPos) {
+        return new ConnectedPositionStrategy(originPos, overlayPos, elementRef, this._viewportRuler, this._document);
+    };
+    /**
+     * Creates a flexible position strategy.
+     * @param elementRef
+     */
+    /**
+     * Creates a flexible position strategy.
+     * @param {?} elementRef
+     * @return {?}
+     */
+    OverlayPositionBuilder.prototype.flexibleConnectedTo = /**
+     * Creates a flexible position strategy.
+     * @param {?} elementRef
+     * @return {?}
+     */
+    function (elementRef) {
+        return new FlexibleConnectedPositionStrategy(elementRef, this._viewportRuler, this._document, this._platform, this._overlayContainer);
+    };
+    OverlayPositionBuilder.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    OverlayPositionBuilder.ctorParameters = function () { return [
+        { type: _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ViewportRuler"], },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"],] },] },
+        { type: _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_7__["Platform"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: OverlayContainer, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+    ]; };
+    /** @nocollapse */ OverlayPositionBuilder.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"])({ factory: function OverlayPositionBuilder_Factory() { return new OverlayPositionBuilder(Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ViewportRuler"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_7__["Platform"], 8), Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(OverlayContainer, 8)); }, token: OverlayPositionBuilder, providedIn: "root" });
+    return OverlayPositionBuilder;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Next overlay unique ID.
+ */
+var /** @type {?} */ nextUniqueId = 0;
+/**
+ * Service to create Overlays. Overlays are dynamically added pieces of floating UI, meant to be
+ * used as a low-level building block for other components. Dialogs, tooltips, menus,
+ * selects, etc. can all be built using overlays. The service should primarily be used by authors
+ * of re-usable components rather than developers building end-user applications.
+ *
+ * An overlay *is* a PortalOutlet, so any kind of Portal can be loaded into one.
+ */
+var Overlay = /** @class */ (function () {
+    function Overlay(scrollStrategies, _overlayContainer, _componentFactoryResolver, _positionBuilder, _keyboardDispatcher, _injector, _ngZone, _document, _directionality) {
+        this.scrollStrategies = scrollStrategies;
+        this._overlayContainer = _overlayContainer;
+        this._componentFactoryResolver = _componentFactoryResolver;
+        this._positionBuilder = _positionBuilder;
+        this._keyboardDispatcher = _keyboardDispatcher;
+        this._injector = _injector;
+        this._ngZone = _ngZone;
+        this._document = _document;
+        this._directionality = _directionality;
+    }
+    /**
+     * Creates an overlay.
+     * @param config Configuration applied to the overlay.
+     * @returns Reference to the created overlay.
+     */
+    /**
+     * Creates an overlay.
+     * @param {?=} config Configuration applied to the overlay.
+     * @return {?} Reference to the created overlay.
+     */
+    Overlay.prototype.create = /**
+     * Creates an overlay.
+     * @param {?=} config Configuration applied to the overlay.
+     * @return {?} Reference to the created overlay.
+     */
+    function (config) {
+        var /** @type {?} */ host = this._createHostElement();
+        var /** @type {?} */ pane = this._createPaneElement(host);
+        var /** @type {?} */ portalOutlet = this._createPortalOutlet(pane);
+        var /** @type {?} */ overlayConfig = new OverlayConfig(config);
+        overlayConfig.direction = overlayConfig.direction || this._directionality.value;
+        return new OverlayRef(portalOutlet, host, pane, overlayConfig, this._ngZone, this._keyboardDispatcher, this._document);
+    };
+    /**
+     * Gets a position builder that can be used, via fluent API,
+     * to construct and configure a position strategy.
+     * @returns An overlay position builder.
+     */
+    /**
+     * Gets a position builder that can be used, via fluent API,
+     * to construct and configure a position strategy.
+     * @return {?} An overlay position builder.
+     */
+    Overlay.prototype.position = /**
+     * Gets a position builder that can be used, via fluent API,
+     * to construct and configure a position strategy.
+     * @return {?} An overlay position builder.
+     */
+    function () {
+        return this._positionBuilder;
+    };
+    /**
+     * Creates the DOM element for an overlay and appends it to the overlay container.
+     * @param {?} host
+     * @return {?} Newly-created pane element
+     */
+    Overlay.prototype._createPaneElement = /**
+     * Creates the DOM element for an overlay and appends it to the overlay container.
+     * @param {?} host
+     * @return {?} Newly-created pane element
+     */
+    function (host) {
+        var /** @type {?} */ pane = this._document.createElement('div');
+        pane.id = "cdk-overlay-" + nextUniqueId++;
+        pane.classList.add('cdk-overlay-pane');
+        host.appendChild(pane);
+        return pane;
+    };
+    /**
+     * Creates the host element that wraps around an overlay
+     * and can be used for advanced positioning.
+     * @return {?} Newly-create host element.
+     */
+    Overlay.prototype._createHostElement = /**
+     * Creates the host element that wraps around an overlay
+     * and can be used for advanced positioning.
+     * @return {?} Newly-create host element.
+     */
+    function () {
+        var /** @type {?} */ host = this._document.createElement('div');
+        this._overlayContainer.getContainerElement().appendChild(host);
+        return host;
+    };
+    /**
+     * Create a DomPortalOutlet into which the overlay content can be loaded.
+     * @param {?} pane The DOM element to turn into a portal outlet.
+     * @return {?} A portal outlet for the given DOM element.
+     */
+    Overlay.prototype._createPortalOutlet = /**
+     * Create a DomPortalOutlet into which the overlay content can be loaded.
+     * @param {?} pane The DOM element to turn into a portal outlet.
+     * @return {?} A portal outlet for the given DOM element.
+     */
+    function (pane) {
+        // We have to resolve the ApplicationRef later in order to allow people
+        // to use overlay-based providers during app initialization.
+        if (!this._appRef) {
+            this._appRef = this._injector.get(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ApplicationRef"]);
+        }
+        return new _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_9__["DomPortalOutlet"](pane, this._componentFactoryResolver, this._appRef, this._injector);
+    };
+    Overlay.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    Overlay.ctorParameters = function () { return [
+        { type: ScrollStrategyOptions, },
+        { type: OverlayContainer, },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ComponentFactoryResolver"], },
+        { type: OverlayPositionBuilder, },
+        { type: OverlayKeyboardDispatcher, },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injector"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"],] },] },
+        { type: _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_8__["Directionality"], },
+    ]; };
+    return Overlay;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Default set of positions for the overlay. Follows the behavior of a dropdown.
+ */
+var /** @type {?} */ defaultPositionList = [
+    {
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top'
+    },
+    {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom'
+    },
+    {
+        originX: 'end',
+        originY: 'top',
+        overlayX: 'end',
+        overlayY: 'bottom'
+    },
+    {
+        originX: 'end',
+        originY: 'bottom',
+        overlayX: 'end',
+        overlayY: 'top'
+    }
+];
+/**
+ * Injection token that determines the scroll handling while the connected overlay is open.
+ */
+var /** @type {?} */ CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('cdk-connected-overlay-scroll-strategy');
+/**
+ * Directive applied to an element to make it usable as an origin for an Overlay using a
+ * ConnectedPositionStrategy.
+ */
+var CdkOverlayOrigin = /** @class */ (function () {
+    function CdkOverlayOrigin(elementRef) {
+        this.elementRef = elementRef;
+    }
+    CdkOverlayOrigin.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[cdk-overlay-origin], [overlay-origin], [cdkOverlayOrigin]',
+                    exportAs: 'cdkOverlayOrigin',
+                },] },
+    ];
+    /** @nocollapse */
+    CdkOverlayOrigin.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+    ]; };
+    return CdkOverlayOrigin;
+}());
+/**
+ * Directive to facilitate declarative creation of an
+ * Overlay using a FlexibleConnectedPositionStrategy.
+ */
+var CdkConnectedOverlay = /** @class */ (function () {
+    // TODO(jelbourn): inputs for size, scroll behavior, animation, etc.
+    function CdkConnectedOverlay(_overlay, templateRef, viewContainerRef, _scrollStrategy, _dir) {
+        this._overlay = _overlay;
+        this._scrollStrategy = _scrollStrategy;
+        this._dir = _dir;
+        this._hasBackdrop = false;
+        this._lockPosition = false;
+        this._growAfterOpen = false;
+        this._flexibleDimensions = false;
+        this._push = false;
+        this._backdropSubscription = rxjs__WEBPACK_IMPORTED_MODULE_5__["Subscription"].EMPTY;
+        /**
+         * Margin between the overlay and the viewport edges.
+         */
+        this.viewportMargin = 0;
+        /**
+         * Strategy to be used when handling scroll events while the overlay is open.
+         */
+        this.scrollStrategy = this._scrollStrategy();
+        /**
+         * Whether the overlay is open.
+         */
+        this.open = false;
+        /**
+         * Event emitted when the backdrop is clicked.
+         */
+        this.backdropClick = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Event emitted when the position has changed.
+         */
+        this.positionChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Event emitted when the overlay has been attached.
+         */
+        this.attach = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Event emitted when the overlay has been detached.
+         */
+        this.detach = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        /**
+         * Emits when there are keyboard events that are targeted at the overlay.
+         */
+        this.overlayKeydown = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this._templatePortal = new _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_9__["TemplatePortal"](templateRef, viewContainerRef);
+    }
+    Object.defineProperty(CdkConnectedOverlay.prototype, "offsetX", {
+        get: /**
+         * The offset in pixels for the overlay connection point on the x-axis
+         * @return {?}
+         */
+        function () { return this._offsetX; },
+        set: /**
+         * @param {?} offsetX
+         * @return {?}
+         */
+        function (offsetX) {
+            this._offsetX = offsetX;
+            if (this._position) {
+                this._setPositions(this._position);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkConnectedOverlay.prototype, "offsetY", {
+        get: /**
+         * The offset in pixels for the overlay connection point on the y-axis
+         * @return {?}
+         */
+        function () { return this._offsetY; },
+        set: /**
+         * @param {?} offsetY
+         * @return {?}
+         */
+        function (offsetY) {
+            this._offsetY = offsetY;
+            if (this._position) {
+                this._setPositions(this._position);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkConnectedOverlay.prototype, "hasBackdrop", {
+        get: /**
+         * Whether or not the overlay should attach a backdrop.
+         * @return {?}
+         */
+        function () { return this._hasBackdrop; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this._hasBackdrop = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkConnectedOverlay.prototype, "lockPosition", {
+        get: /**
+         * Whether or not the overlay should be locked when scrolling.
+         * @return {?}
+         */
+        function () { return this._lockPosition; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this._lockPosition = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkConnectedOverlay.prototype, "flexibleDiemsions", {
+        get: /**
+         * Whether the overlay's width and height can be constrained to fit within the viewport.
+         * @return {?}
+         */
+        function () { return this._flexibleDimensions; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this._flexibleDimensions = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkConnectedOverlay.prototype, "growAfterOpen", {
+        get: /**
+         * Whether the overlay can grow after the initial open when flexible positioning is turned on.
+         * @return {?}
+         */
+        function () { return this._growAfterOpen; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this._growAfterOpen = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkConnectedOverlay.prototype, "push", {
+        get: /**
+         * Whether the overlay can be pushed on-screen if none of the provided positions fit.
+         * @return {?}
+         */
+        function () { return this._push; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) { this._push = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkConnectedOverlay.prototype, "overlayRef", {
+        /** The associated overlay reference. */
+        get: /**
+         * The associated overlay reference.
+         * @return {?}
+         */
+        function () {
+            return this._overlayRef;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkConnectedOverlay.prototype, "dir", {
+        /** The element's layout direction. */
+        get: /**
+         * The element's layout direction.
+         * @return {?}
+         */
+        function () {
+            return this._dir ? this._dir.value : 'ltr';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    CdkConnectedOverlay.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._destroyOverlay();
+    };
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    CdkConnectedOverlay.prototype.ngOnChanges = /**
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        if (this._position) {
+            if (changes['positions']) {
+                this._position.withPositions(this.positions);
+            }
+            if (changes['lockPosition']) {
+                this._position.withLockedPosition(this.lockPosition);
+            }
+            if (changes['origin']) {
+                this._position.setOrigin(this.origin.elementRef);
+                if (this.open) {
+                    this._position.apply();
+                }
+            }
+        }
+        if (changes['open']) {
+            this.open ? this._attachOverlay() : this._detachOverlay();
+        }
+    };
+    /**
+     * Creates an overlay
+     * @return {?}
+     */
+    CdkConnectedOverlay.prototype._createOverlay = /**
+     * Creates an overlay
+     * @return {?}
+     */
+    function () {
+        if (!this.positions || !this.positions.length) {
+            this.positions = defaultPositionList;
+        }
+        this._overlayRef = this._overlay.create(this._buildConfig());
+    };
+    /**
+     * Builds the overlay config based on the directive's inputs
+     * @return {?}
+     */
+    CdkConnectedOverlay.prototype._buildConfig = /**
+     * Builds the overlay config based on the directive's inputs
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ positionStrategy = this._position = this._createPositionStrategy();
+        var /** @type {?} */ overlayConfig = new OverlayConfig({
+            direction: this._dir,
+            positionStrategy: positionStrategy,
+            scrollStrategy: this.scrollStrategy,
+            hasBackdrop: this.hasBackdrop
+        });
+        if (this.width || this.width === 0) {
+            overlayConfig.width = this.width;
+        }
+        if (this.height || this.height === 0) {
+            overlayConfig.height = this.height;
+        }
+        if (this.minWidth || this.minWidth === 0) {
+            overlayConfig.minWidth = this.minWidth;
+        }
+        if (this.minHeight || this.minHeight === 0) {
+            overlayConfig.minHeight = this.minHeight;
+        }
+        if (this.backdropClass) {
+            overlayConfig.backdropClass = this.backdropClass;
+        }
+        return overlayConfig;
+    };
+    /**
+     * Returns the position strategy of the overlay to be set on the overlay config
+     * @return {?}
+     */
+    CdkConnectedOverlay.prototype._createPositionStrategy = /**
+     * Returns the position strategy of the overlay to be set on the overlay config
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        var /** @type {?} */ strategy = this._overlay.position()
+            .flexibleConnectedTo(this.origin.elementRef)
+            .withFlexibleDimensions(this.flexibleDiemsions)
+            .withPush(this.push)
+            .withGrowAfterOpen(this.growAfterOpen)
+            .withViewportMargin(this.viewportMargin)
+            .withLockedPosition(this.lockPosition);
+        this._setPositions(strategy);
+        strategy.positionChanges.subscribe(function (p) { return _this.positionChange.emit(p); });
+        return strategy;
+    };
+    /**
+     * Sets the primary and fallback positions of a positions strategy,
+     * based on the current directive inputs.
+     * @param {?} positionStrategy
+     * @return {?}
+     */
+    CdkConnectedOverlay.prototype._setPositions = /**
+     * Sets the primary and fallback positions of a positions strategy,
+     * based on the current directive inputs.
+     * @param {?} positionStrategy
+     * @return {?}
+     */
+    function (positionStrategy) {
+        var _this = this;
+        var /** @type {?} */ positions = this.positions.map(function (pos) {
+            return ({
+                originX: pos.originX,
+                originY: pos.originY,
+                overlayX: pos.overlayX,
+                overlayY: pos.overlayY,
+                offsetX: pos.offsetX || _this.offsetX,
+                offsetY: pos.offsetY || _this.offsetY
+            });
+        });
+        positionStrategy.withPositions(positions);
+    };
+    /**
+     * Attaches the overlay and subscribes to backdrop clicks if backdrop exists
+     * @return {?}
+     */
+    CdkConnectedOverlay.prototype._attachOverlay = /**
+     * Attaches the overlay and subscribes to backdrop clicks if backdrop exists
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (!this._overlayRef) {
+            this._createOverlay(); /** @type {?} */
+            ((this._overlayRef)).keydownEvents().subscribe(function (event) {
+                _this.overlayKeydown.next(event);
+                if (event.keyCode === _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_10__["ESCAPE"]) {
+                    _this._detachOverlay();
+                }
+            });
+        }
+        else {
+            // Update the overlay size, in case the directive's inputs have changed
+            this._overlayRef.updateSize({
+                width: this.width,
+                minWidth: this.minWidth,
+                height: this.height,
+                minHeight: this.minHeight,
+            });
+        }
+        if (!this._overlayRef.hasAttached()) {
+            this._overlayRef.attach(this._templatePortal);
+            this.attach.emit();
+        }
+        if (this.hasBackdrop) {
+            this._backdropSubscription = this._overlayRef.backdropClick().subscribe(function (event) {
+                _this.backdropClick.emit(event);
+            });
+        }
+    };
+    /**
+     * Detaches the overlay and unsubscribes to backdrop clicks if backdrop exists
+     * @return {?}
+     */
+    CdkConnectedOverlay.prototype._detachOverlay = /**
+     * Detaches the overlay and unsubscribes to backdrop clicks if backdrop exists
+     * @return {?}
+     */
+    function () {
+        if (this._overlayRef) {
+            this._overlayRef.detach();
+            this.detach.emit();
+        }
+        this._backdropSubscription.unsubscribe();
+    };
+    /**
+     * Destroys the overlay created by this directive.
+     * @return {?}
+     */
+    CdkConnectedOverlay.prototype._destroyOverlay = /**
+     * Destroys the overlay created by this directive.
+     * @return {?}
+     */
+    function () {
+        if (this._overlayRef) {
+            this._overlayRef.dispose();
+        }
+        this._backdropSubscription.unsubscribe();
+    };
+    CdkConnectedOverlay.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[cdk-connected-overlay], [connected-overlay], [cdkConnectedOverlay]',
+                    exportAs: 'cdkConnectedOverlay'
+                },] },
+    ];
+    /** @nocollapse */
+    CdkConnectedOverlay.ctorParameters = function () { return [
+        { type: Overlay, },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"], },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY,] },] },
+        { type: _angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_8__["Directionality"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+    ]; };
+    CdkConnectedOverlay.propDecorators = {
+        "origin": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayOrigin',] },],
+        "positions": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayPositions',] },],
+        "offsetX": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayOffsetX',] },],
+        "offsetY": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayOffsetY',] },],
+        "width": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayWidth',] },],
+        "height": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayHeight',] },],
+        "minWidth": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayMinWidth',] },],
+        "minHeight": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayMinHeight',] },],
+        "backdropClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayBackdropClass',] },],
+        "viewportMargin": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayViewportMargin',] },],
+        "scrollStrategy": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayScrollStrategy',] },],
+        "open": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayOpen',] },],
+        "hasBackdrop": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayHasBackdrop',] },],
+        "lockPosition": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayLockPosition',] },],
+        "flexibleDiemsions": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayFlexibleDimensions',] },],
+        "growAfterOpen": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayGrowAfterOpen',] },],
+        "push": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['cdkConnectedOverlayPush',] },],
+        "backdropClick": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "positionChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "attach": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "detach": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "overlayKeydown": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+    };
+    return CdkConnectedOverlay;
+}());
+/**
+ * \@docs-private
+ * @param {?} overlay
+ * @return {?}
+ */
+function CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER_FACTORY(overlay) {
+    return function () { return overlay.scrollStrategies.reposition(); };
+}
+/**
+ * \@docs-private
+ */
+var /** @type {?} */ CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER = {
+    provide: CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY,
+    deps: [Overlay],
+    useFactory: CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER_FACTORY,
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var OverlayModule = /** @class */ (function () {
+    function OverlayModule() {
+    }
+    OverlayModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    imports: [_angular_cdk_bidi__WEBPACK_IMPORTED_MODULE_8__["BidiModule"], _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_9__["PortalModule"], _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ScrollDispatchModule"]],
+                    exports: [CdkConnectedOverlay, CdkOverlayOrigin, _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["ScrollDispatchModule"]],
+                    declarations: [CdkConnectedOverlay, CdkOverlayOrigin],
+                    providers: [
+                        Overlay,
+                        CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER,
+                    ],
+                },] },
+    ];
+    return OverlayModule;
+}());
+/**
+ * @deprecated Use `OverlayModule` instead.
+ * \@breaking-change 7.0.0
+ */
+var /** @type {?} */ OVERLAY_PROVIDERS = [
+    Overlay,
+    OverlayPositionBuilder,
+    OVERLAY_KEYBOARD_DISPATCHER_PROVIDER,
+    _angular_cdk_scrolling__WEBPACK_IMPORTED_MODULE_2__["VIEWPORT_RULER_PROVIDER"],
+    OVERLAY_CONTAINER_PROVIDER,
+    CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER,
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Alternative to OverlayContainer that supports correct displaying of overlay elements in
+ * Fullscreen mode
+ * https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen
+ *
+ * Should be provided in the root component.
+ */
+var FullscreenOverlayContainer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_4__["__extends"])(FullscreenOverlayContainer, _super);
+    function FullscreenOverlayContainer(_document) {
+        return _super.call(this, _document) || this;
+    }
+    /**
+     * @return {?}
+     */
+    FullscreenOverlayContainer.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._fullScreenEventName && this._fullScreenListener) {
+            this._document.removeEventListener(this._fullScreenEventName, this._fullScreenListener);
+        }
+    };
+    /**
+     * @return {?}
+     */
+    FullscreenOverlayContainer.prototype._createContainer = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        _super.prototype._createContainer.call(this);
+        this._adjustParentForFullscreenChange();
+        this._addFullscreenChangeListener(function () { return _this._adjustParentForFullscreenChange(); });
+    };
+    /**
+     * @return {?}
+     */
+    FullscreenOverlayContainer.prototype._adjustParentForFullscreenChange = /**
+     * @return {?}
+     */
+    function () {
+        if (!this._containerElement) {
+            return;
+        }
+        var /** @type {?} */ fullscreenElement = this.getFullscreenElement();
+        var /** @type {?} */ parent = fullscreenElement || this._document.body;
+        parent.appendChild(this._containerElement);
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    FullscreenOverlayContainer.prototype._addFullscreenChangeListener = /**
+     * @param {?} fn
+     * @return {?}
+     */
+    function (fn) {
+        var /** @type {?} */ eventName = this._getEventName();
+        if (eventName) {
+            if (this._fullScreenListener) {
+                this._document.removeEventListener(eventName, this._fullScreenListener);
+            }
+            this._document.addEventListener(eventName, fn);
+            this._fullScreenListener = fn;
+        }
+    };
+    /**
+     * @return {?}
+     */
+    FullscreenOverlayContainer.prototype._getEventName = /**
+     * @return {?}
+     */
+    function () {
+        if (!this._fullScreenEventName) {
+            if (this._document.fullscreenEnabled) {
+                this._fullScreenEventName = 'fullscreenchange';
+            }
+            else if (this._document.webkitFullscreenEnabled) {
+                this._fullScreenEventName = 'webkitfullscreenchange';
+            }
+            else if ((/** @type {?} */ (this._document)).mozFullScreenEnabled) {
+                this._fullScreenEventName = 'mozfullscreenchange';
+            }
+            else if ((/** @type {?} */ (this._document)).msFullscreenEnabled) {
+                this._fullScreenEventName = 'MSFullscreenChange';
+            }
+        }
+        return this._fullScreenEventName;
+    };
+    /**
+     * When the page is put into fullscreen mode, a specific element is specified.
+     * Only that element and its children are visible when in fullscreen mode.
+     */
+    /**
+     * When the page is put into fullscreen mode, a specific element is specified.
+     * Only that element and its children are visible when in fullscreen mode.
+     * @return {?}
+     */
+    FullscreenOverlayContainer.prototype.getFullscreenElement = /**
+     * When the page is put into fullscreen mode, a specific element is specified.
+     * Only that element and its children are visible when in fullscreen mode.
+     * @return {?}
+     */
+    function () {
+        return this._document.fullscreenElement ||
+            this._document.webkitFullscreenElement ||
+            (/** @type {?} */ (this._document)).mozFullScreenElement ||
+            (/** @type {?} */ (this._document)).msFullscreenElement ||
+            null;
+    };
+    FullscreenOverlayContainer.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    FullscreenOverlayContainer.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"],] },] },
+    ]; };
+    return FullscreenOverlayContainer;
+}(OverlayContainer));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+
+//# sourceMappingURL=overlay.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/platform.es5.js":
+/*!********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/platform.es5.js ***!
+  \********************************************************/
+/*! exports provided: Platform, supportsPassiveEventListeners, supportsScrollBehavior, getSupportedInputTypes, PlatformModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Platform", function() { return Platform; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsPassiveEventListeners", function() { return supportsPassiveEventListeners; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supportsScrollBehavior", function() { return supportsScrollBehavior; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSupportedInputTypes", function() { return getSupportedInputTypes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlatformModule", function() { return PlatformModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+// Whether the current platform supports the V8 Break Iterator. The V8 check
+// is necessary to detect all Blink based browsers.
+var /** @type {?} */ hasV8BreakIterator = (typeof Intl !== 'undefined' && (/** @type {?} */ (Intl)).v8BreakIterator);
+/**
+ * Service to detect the current platform by comparing the userAgent strings and
+ * checking browser-specific global properties.
+ */
+var Platform = /** @class */ (function () {
+    /**
+     * @breaking-change v7.0.0 remove optional decorator
+     */
+    function Platform(_platformId) {
+        this._platformId = _platformId;
+        /**
+         * Whether the Angular application is being rendered in the browser.
+         * We want to use the Angular platform check because if the Document is shimmed
+         * without the navigator, the following checks will fail. This is preferred because
+         * sometimes the Document may be shimmed without the user's knowledge or intention
+         */
+        this.isBrowser = this._platformId ?
+            Object(_angular_common__WEBPACK_IMPORTED_MODULE_1__["isPlatformBrowser"])(this._platformId) : typeof document === 'object' && !!document;
+        /**
+         * Whether the current browser is Microsoft Edge.
+         */
+        this.EDGE = this.isBrowser && /(edge)/i.test(navigator.userAgent);
+        /**
+         * Whether the current rendering engine is Microsoft Trident.
+         */
+        this.TRIDENT = this.isBrowser && /(msie|trident)/i.test(navigator.userAgent);
+        /**
+         * Whether the current rendering engine is Blink.
+         */
+        this.BLINK = this.isBrowser && (!!((/** @type {?} */ (window)).chrome || hasV8BreakIterator) &&
+            typeof CSS !== 'undefined' && !this.EDGE && !this.TRIDENT);
+        /**
+         * Whether the current rendering engine is WebKit.
+         */
+        this.WEBKIT = this.isBrowser &&
+            /AppleWebKit/i.test(navigator.userAgent) && !this.BLINK && !this.EDGE && !this.TRIDENT;
+        /**
+         * Whether the current platform is Apple iOS.
+         */
+        this.IOS = this.isBrowser && /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+            !(/** @type {?} */ (window)).MSStream;
+        /**
+         * Whether the current browser is Firefox.
+         */
+        this.FIREFOX = this.isBrowser && /(firefox|minefield)/i.test(navigator.userAgent);
+        /**
+         * Whether the current platform is Android.
+         */
+        this.ANDROID = this.isBrowser && /android/i.test(navigator.userAgent) && !this.TRIDENT;
+        /**
+         * Whether the current browser is Safari.
+         */
+        this.SAFARI = this.isBrowser && /safari/i.test(navigator.userAgent) && this.WEBKIT;
+    }
+    Platform.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    Platform.ctorParameters = function () { return [
+        { type: Object, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["PLATFORM_ID"],] },] },
+    ]; };
+    /** @nocollapse */ Platform.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"])({ factory: function Platform_Factory() { return new Platform(Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_0__["PLATFORM_ID"], 8)); }, token: Platform, providedIn: "root" });
+    return Platform;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Cached result of whether the user's browser supports passive event listeners.
+ */
+var /** @type {?} */ supportsPassiveEvents;
+/**
+ * Checks whether the user's browser supports passive event listeners.
+ * See: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+ * @return {?}
+ */
+function supportsPassiveEventListeners() {
+    if (supportsPassiveEvents == null && typeof window !== 'undefined') {
+        try {
+            window.addEventListener('test', /** @type {?} */ ((null)), Object.defineProperty({}, 'passive', {
+                get: function () { return supportsPassiveEvents = true; }
+            }));
+        }
+        finally {
+            supportsPassiveEvents = supportsPassiveEvents || false;
+        }
+    }
+    return supportsPassiveEvents;
+}
+/**
+ * Check whether the browser supports scroll behaviors.
+ * @return {?}
+ */
+function supportsScrollBehavior() {
+    return !!(document && document.documentElement && document.documentElement.style &&
+        'scrollBehavior' in document.documentElement.style);
+}
+/**
+ * Cached result Set of input types support by the current browser.
+ */
+var /** @type {?} */ supportedInputTypes;
+/**
+ * Types of `<input>` that *might* be supported.
+ */
+var /** @type {?} */ candidateInputTypes = [
+    'color',
+    'button',
+    'checkbox',
+    'date',
+    'datetime-local',
+    'email',
+    'file',
+    'hidden',
+    'image',
+    'month',
+    'number',
+    'password',
+    'radio',
+    'range',
+    'reset',
+    'search',
+    'submit',
+    'tel',
+    'text',
+    'time',
+    'url',
+    'week',
+];
+/**
+ * @return {?} The input types supported by this browser.
+ */
+function getSupportedInputTypes() {
+    // Result is cached.
+    if (supportedInputTypes) {
+        return supportedInputTypes;
+    }
+    // We can't check if an input type is not supported until we're on the browser, so say that
+    // everything is supported when not on the browser. We don't use `Platform` here since it's
+    // just a helper function and can't inject it.
+    if (typeof document !== 'object' || !document) {
+        supportedInputTypes = new Set(candidateInputTypes);
+        return supportedInputTypes;
+    }
+    var /** @type {?} */ featureTestInput = document.createElement('input');
+    supportedInputTypes = new Set(candidateInputTypes.filter(function (value) {
+        featureTestInput.setAttribute('type', value);
+        return featureTestInput.type === value;
+    }));
+    return supportedInputTypes;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var PlatformModule = /** @class */ (function () {
+    function PlatformModule() {
+    }
+    PlatformModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"] },
+    ];
+    return PlatformModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+
+//# sourceMappingURL=platform.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/portal.es5.js":
+/*!******************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/portal.es5.js ***!
+  \******************************************************/
+/*! exports provided: DomPortalHost, PortalHostDirective, TemplatePortalDirective, BasePortalHost, Portal, ComponentPortal, TemplatePortal, BasePortalOutlet, DomPortalOutlet, CdkPortal, CdkPortalOutlet, PortalModule, PortalInjector */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DomPortalHost", function() { return DomPortalOutlet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PortalHostDirective", function() { return CdkPortalOutlet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TemplatePortalDirective", function() { return CdkPortal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BasePortalHost", function() { return BasePortalOutlet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Portal", function() { return Portal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ComponentPortal", function() { return ComponentPortal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TemplatePortal", function() { return TemplatePortal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BasePortalOutlet", function() { return BasePortalOutlet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DomPortalOutlet", function() { return DomPortalOutlet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkPortal", function() { return CdkPortal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkPortalOutlet", function() { return CdkPortalOutlet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PortalModule", function() { return PortalModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PortalInjector", function() { return PortalInjector; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Throws an exception when attempting to attach a null portal to a host.
+ * \@docs-private
+ * @return {?}
+ */
+function throwNullPortalError() {
+    throw Error('Must provide a portal to attach');
+}
+/**
+ * Throws an exception when attempting to attach a portal to a host that is already attached.
+ * \@docs-private
+ * @return {?}
+ */
+function throwPortalAlreadyAttachedError() {
+    throw Error('Host already has a portal attached');
+}
+/**
+ * Throws an exception when attempting to attach a portal to an already-disposed host.
+ * \@docs-private
+ * @return {?}
+ */
+function throwPortalOutletAlreadyDisposedError() {
+    throw Error('This PortalOutlet has already been disposed');
+}
+/**
+ * Throws an exception when attempting to attach an unknown portal type.
+ * \@docs-private
+ * @return {?}
+ */
+function throwUnknownPortalTypeError() {
+    throw Error('Attempting to attach an unknown Portal type. BasePortalOutlet accepts either ' +
+        'a ComponentPortal or a TemplatePortal.');
+}
+/**
+ * Throws an exception when attempting to attach a portal to a null host.
+ * \@docs-private
+ * @return {?}
+ */
+function throwNullPortalOutletError() {
+    throw Error('Attempting to attach a portal to a null PortalOutlet');
+}
+/**
+ * Throws an exception when attempting to detach a portal that is not attached.
+ * \@docs-private
+ * @return {?}
+ */
+function throwNoPortalAttachedError() {
+    throw Error('Attempting to detach a portal that is not attached to a host');
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * A `Portal` is something that you want to render somewhere else.
+ * It can be attach to / detached from a `PortalOutlet`.
+ * @abstract
+ * @template T
+ */
+var  /**
+ * A `Portal` is something that you want to render somewhere else.
+ * It can be attach to / detached from a `PortalOutlet`.
+ * @abstract
+ * @template T
+ */
+Portal = /** @class */ (function () {
+    function Portal() {
+    }
+    /** Attach this portal to a host. */
+    /**
+     * Attach this portal to a host.
+     * @param {?} host
+     * @return {?}
+     */
+    Portal.prototype.attach = /**
+     * Attach this portal to a host.
+     * @param {?} host
+     * @return {?}
+     */
+    function (host) {
+        if (host == null) {
+            throwNullPortalOutletError();
+        }
+        if (host.hasAttached()) {
+            throwPortalAlreadyAttachedError();
+        }
+        this._attachedHost = host;
+        return /** @type {?} */ (host.attach(this));
+    };
+    /** Detach this portal from its host */
+    /**
+     * Detach this portal from its host
+     * @return {?}
+     */
+    Portal.prototype.detach = /**
+     * Detach this portal from its host
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ host = this._attachedHost;
+        if (host == null) {
+            throwNoPortalAttachedError();
+        }
+        else {
+            this._attachedHost = null;
+            host.detach();
+        }
+    };
+    Object.defineProperty(Portal.prototype, "isAttached", {
+        /** Whether this portal is attached to a host. */
+        get: /**
+         * Whether this portal is attached to a host.
+         * @return {?}
+         */
+        function () {
+            return this._attachedHost != null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Sets the PortalOutlet reference without performing `attach()`. This is used directly by
+     * the PortalOutlet when it is performing an `attach()` or `detach()`.
+     */
+    /**
+     * Sets the PortalOutlet reference without performing `attach()`. This is used directly by
+     * the PortalOutlet when it is performing an `attach()` or `detach()`.
+     * @param {?} host
+     * @return {?}
+     */
+    Portal.prototype.setAttachedHost = /**
+     * Sets the PortalOutlet reference without performing `attach()`. This is used directly by
+     * the PortalOutlet when it is performing an `attach()` or `detach()`.
+     * @param {?} host
+     * @return {?}
+     */
+    function (host) {
+        this._attachedHost = host;
+    };
+    return Portal;
+}());
+/**
+ * A `ComponentPortal` is a portal that instantiates some Component upon attachment.
+ * @template T
+ */
+var  /**
+ * A `ComponentPortal` is a portal that instantiates some Component upon attachment.
+ * @template T
+ */
+ComponentPortal = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(ComponentPortal, _super);
+    function ComponentPortal(component, viewContainerRef, injector) {
+        var _this = _super.call(this) || this;
+        _this.component = component;
+        _this.viewContainerRef = viewContainerRef;
+        _this.injector = injector;
+        return _this;
+    }
+    return ComponentPortal;
+}(Portal));
+/**
+ * A `TemplatePortal` is a portal that represents some embedded template (TemplateRef).
+ * @template C
+ */
+var  /**
+ * A `TemplatePortal` is a portal that represents some embedded template (TemplateRef).
+ * @template C
+ */
+TemplatePortal = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(TemplatePortal, _super);
+    function TemplatePortal(template, viewContainerRef, context) {
+        var _this = _super.call(this) || this;
+        _this.templateRef = template;
+        _this.viewContainerRef = viewContainerRef;
+        _this.context = context;
+        return _this;
+    }
+    Object.defineProperty(TemplatePortal.prototype, "origin", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.templateRef.elementRef;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Attach the the portal to the provided `PortalOutlet`.
+     * When a context is provided it will override the `context` property of the `TemplatePortal`
+     * instance.
+     */
+    /**
+     * Attach the the portal to the provided `PortalOutlet`.
+     * When a context is provided it will override the `context` property of the `TemplatePortal`
+     * instance.
+     * @param {?} host
+     * @param {?=} context
+     * @return {?}
+     */
+    TemplatePortal.prototype.attach = /**
+     * Attach the the portal to the provided `PortalOutlet`.
+     * When a context is provided it will override the `context` property of the `TemplatePortal`
+     * instance.
+     * @param {?} host
+     * @param {?=} context
+     * @return {?}
+     */
+    function (host, context) {
+        if (context === void 0) { context = this.context; }
+        this.context = context;
+        return _super.prototype.attach.call(this, host);
+    };
+    /**
+     * @return {?}
+     */
+    TemplatePortal.prototype.detach = /**
+     * @return {?}
+     */
+    function () {
+        this.context = undefined;
+        return _super.prototype.detach.call(this);
+    };
+    return TemplatePortal;
+}(Portal));
+/**
+ * Partial implementation of PortalOutlet that handles attaching
+ * ComponentPortal and TemplatePortal.
+ * @abstract
+ */
+var  /**
+ * Partial implementation of PortalOutlet that handles attaching
+ * ComponentPortal and TemplatePortal.
+ * @abstract
+ */
+BasePortalOutlet = /** @class */ (function () {
+    function BasePortalOutlet() {
+        /**
+         * Whether this host has already been permanently disposed.
+         */
+        this._isDisposed = false;
+    }
+    /** Whether this host has an attached portal. */
+    /**
+     * Whether this host has an attached portal.
+     * @return {?}
+     */
+    BasePortalOutlet.prototype.hasAttached = /**
+     * Whether this host has an attached portal.
+     * @return {?}
+     */
+    function () {
+        return !!this._attachedPortal;
+    };
+    /** Attaches a portal. */
+    /**
+     * Attaches a portal.
+     * @param {?} portal
+     * @return {?}
+     */
+    BasePortalOutlet.prototype.attach = /**
+     * Attaches a portal.
+     * @param {?} portal
+     * @return {?}
+     */
+    function (portal) {
+        if (!portal) {
+            throwNullPortalError();
+        }
+        if (this.hasAttached()) {
+            throwPortalAlreadyAttachedError();
+        }
+        if (this._isDisposed) {
+            throwPortalOutletAlreadyDisposedError();
+        }
+        if (portal instanceof ComponentPortal) {
+            this._attachedPortal = portal;
+            return this.attachComponentPortal(portal);
+        }
+        else if (portal instanceof TemplatePortal) {
+            this._attachedPortal = portal;
+            return this.attachTemplatePortal(portal);
+        }
+        throwUnknownPortalTypeError();
+    };
+    /** Detaches a previously attached portal. */
+    /**
+     * Detaches a previously attached portal.
+     * @return {?}
+     */
+    BasePortalOutlet.prototype.detach = /**
+     * Detaches a previously attached portal.
+     * @return {?}
+     */
+    function () {
+        if (this._attachedPortal) {
+            this._attachedPortal.setAttachedHost(null);
+            this._attachedPortal = null;
+        }
+        this._invokeDisposeFn();
+    };
+    /** Permanently dispose of this portal host. */
+    /**
+     * Permanently dispose of this portal host.
+     * @return {?}
+     */
+    BasePortalOutlet.prototype.dispose = /**
+     * Permanently dispose of this portal host.
+     * @return {?}
+     */
+    function () {
+        if (this.hasAttached()) {
+            this.detach();
+        }
+        this._invokeDisposeFn();
+        this._isDisposed = true;
+    };
+    /** @docs-private */
+    /**
+     * \@docs-private
+     * @param {?} fn
+     * @return {?}
+     */
+    BasePortalOutlet.prototype.setDisposeFn = /**
+     * \@docs-private
+     * @param {?} fn
+     * @return {?}
+     */
+    function (fn) {
+        this._disposeFn = fn;
+    };
+    /**
+     * @return {?}
+     */
+    BasePortalOutlet.prototype._invokeDisposeFn = /**
+     * @return {?}
+     */
+    function () {
+        if (this._disposeFn) {
+            this._disposeFn();
+            this._disposeFn = null;
+        }
+    };
+    return BasePortalOutlet;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * A PortalOutlet for attaching portals to an arbitrary DOM element outside of the Angular
+ * application context.
+ */
+var  /**
+ * A PortalOutlet for attaching portals to an arbitrary DOM element outside of the Angular
+ * application context.
+ */
+DomPortalOutlet = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(DomPortalOutlet, _super);
+    function DomPortalOutlet(outletElement, _componentFactoryResolver, _appRef, _defaultInjector) {
+        var _this = _super.call(this) || this;
+        _this.outletElement = outletElement;
+        _this._componentFactoryResolver = _componentFactoryResolver;
+        _this._appRef = _appRef;
+        _this._defaultInjector = _defaultInjector;
+        return _this;
+    }
+    /**
+     * Attach the given ComponentPortal to DOM element using the ComponentFactoryResolver.
+     * @param portal Portal to be attached
+     * @returns Reference to the created component.
+     */
+    /**
+     * Attach the given ComponentPortal to DOM element using the ComponentFactoryResolver.
+     * @template T
+     * @param {?} portal Portal to be attached
+     * @return {?} Reference to the created component.
+     */
+    DomPortalOutlet.prototype.attachComponentPortal = /**
+     * Attach the given ComponentPortal to DOM element using the ComponentFactoryResolver.
+     * @template T
+     * @param {?} portal Portal to be attached
+     * @return {?} Reference to the created component.
+     */
+    function (portal) {
+        var _this = this;
+        var /** @type {?} */ componentFactory = this._componentFactoryResolver.resolveComponentFactory(portal.component);
+        var /** @type {?} */ componentRef;
+        // If the portal specifies a ViewContainerRef, we will use that as the attachment point
+        // for the component (in terms of Angular's component tree, not rendering).
+        // When the ViewContainerRef is missing, we use the factory to create the component directly
+        // and then manually attach the view to the application.
+        if (portal.viewContainerRef) {
+            componentRef = portal.viewContainerRef.createComponent(componentFactory, portal.viewContainerRef.length, portal.injector || portal.viewContainerRef.parentInjector);
+            this.setDisposeFn(function () { return componentRef.destroy(); });
+        }
+        else {
+            componentRef = componentFactory.create(portal.injector || this._defaultInjector);
+            this._appRef.attachView(componentRef.hostView);
+            this.setDisposeFn(function () {
+                _this._appRef.detachView(componentRef.hostView);
+                componentRef.destroy();
+            });
+        }
+        // At this point the component has been instantiated, so we move it to the location in the DOM
+        // where we want it to be rendered.
+        this.outletElement.appendChild(this._getComponentRootNode(componentRef));
+        return componentRef;
+    };
+    /**
+     * Attaches a template portal to the DOM as an embedded view.
+     * @param portal Portal to be attached.
+     * @returns Reference to the created embedded view.
+     */
+    /**
+     * Attaches a template portal to the DOM as an embedded view.
+     * @template C
+     * @param {?} portal Portal to be attached.
+     * @return {?} Reference to the created embedded view.
+     */
+    DomPortalOutlet.prototype.attachTemplatePortal = /**
+     * Attaches a template portal to the DOM as an embedded view.
+     * @template C
+     * @param {?} portal Portal to be attached.
+     * @return {?} Reference to the created embedded view.
+     */
+    function (portal) {
+        var _this = this;
+        var /** @type {?} */ viewContainer = portal.viewContainerRef;
+        var /** @type {?} */ viewRef = viewContainer.createEmbeddedView(portal.templateRef, portal.context);
+        viewRef.detectChanges();
+        // The method `createEmbeddedView` will add the view as a child of the viewContainer.
+        // But for the DomPortalOutlet the view can be added everywhere in the DOM
+        // (e.g Overlay Container) To move the view to the specified host element. We just
+        // re-append the existing root nodes.
+        viewRef.rootNodes.forEach(function (rootNode) { return _this.outletElement.appendChild(rootNode); });
+        this.setDisposeFn((function () {
+            var /** @type {?} */ index = viewContainer.indexOf(viewRef);
+            if (index !== -1) {
+                viewContainer.remove(index);
+            }
+        }));
+        // TODO(jelbourn): Return locals from view.
+        return viewRef;
+    };
+    /**
+     * Clears out a portal from the DOM.
+     */
+    /**
+     * Clears out a portal from the DOM.
+     * @return {?}
+     */
+    DomPortalOutlet.prototype.dispose = /**
+     * Clears out a portal from the DOM.
+     * @return {?}
+     */
+    function () {
+        _super.prototype.dispose.call(this);
+        if (this.outletElement.parentNode != null) {
+            this.outletElement.parentNode.removeChild(this.outletElement);
+        }
+    };
+    /**
+     * Gets the root HTMLElement for an instantiated component.
+     * @param {?} componentRef
+     * @return {?}
+     */
+    DomPortalOutlet.prototype._getComponentRootNode = /**
+     * Gets the root HTMLElement for an instantiated component.
+     * @param {?} componentRef
+     * @return {?}
+     */
+    function (componentRef) {
+        return /** @type {?} */ ((/** @type {?} */ (componentRef.hostView)).rootNodes[0]);
+    };
+    return DomPortalOutlet;
+}(BasePortalOutlet));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Directive version of a `TemplatePortal`. Because the directive *is* a TemplatePortal,
+ * the directive instance itself can be attached to a host, enabling declarative use of portals.
+ */
+var CdkPortal = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(CdkPortal, _super);
+    function CdkPortal(templateRef, viewContainerRef) {
+        return _super.call(this, templateRef, viewContainerRef) || this;
+    }
+    CdkPortal.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
+                    selector: '[cdk-portal], [cdkPortal], [portal]',
+                    exportAs: 'cdkPortal',
+                },] },
+    ];
+    /** @nocollapse */
+    CdkPortal.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"], },
+    ]; };
+    return CdkPortal;
+}(TemplatePortal));
+/**
+ * Directive version of a PortalOutlet. Because the directive *is* a PortalOutlet, portals can be
+ * directly attached to it, enabling declarative use.
+ *
+ * Usage:
+ * `<ng-template [cdkPortalOutlet]="greeting"></ng-template>`
+ */
+var CdkPortalOutlet = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(CdkPortalOutlet, _super);
+    function CdkPortalOutlet(_componentFactoryResolver, _viewContainerRef) {
+        var _this = _super.call(this) || this;
+        _this._componentFactoryResolver = _componentFactoryResolver;
+        _this._viewContainerRef = _viewContainerRef;
+        /**
+         * Whether the portal component is initialized.
+         */
+        _this._isInitialized = false;
+        _this.attached = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        return _this;
+    }
+    Object.defineProperty(CdkPortalOutlet.prototype, "portal", {
+        /** Portal associated with the Portal outlet. */
+        get: /**
+         * Portal associated with the Portal outlet.
+         * @return {?}
+         */
+        function () {
+            return this._attachedPortal;
+        },
+        set: /**
+         * @param {?} portal
+         * @return {?}
+         */
+        function (portal) {
+            // Ignore the cases where the `portal` is set to a falsy value before the lifecycle hooks have
+            // run. This handles the cases where the user might do something like `<div cdkPortalOutlet>`
+            // and attach a portal programmatically in the parent component. When Angular does the first CD
+            // round, it will fire the setter with empty string, causing the user's content to be cleared.
+            if (this.hasAttached() && !portal && !this._isInitialized) {
+                return;
+            }
+            if (this.hasAttached()) {
+                _super.prototype.detach.call(this);
+            }
+            if (portal) {
+                _super.prototype.attach.call(this, portal);
+            }
+            this._attachedPortal = portal;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(CdkPortalOutlet.prototype, "attachedRef", {
+        /** Component or view reference that is attached to the portal. */
+        get: /**
+         * Component or view reference that is attached to the portal.
+         * @return {?}
+         */
+        function () {
+            return this._attachedRef;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    CdkPortalOutlet.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        this._isInitialized = true;
+    };
+    /**
+     * @return {?}
+     */
+    CdkPortalOutlet.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        _super.prototype.dispose.call(this);
+        this._attachedPortal = null;
+        this._attachedRef = null;
+    };
+    /**
+     * Attach the given ComponentPortal to this PortalOutlet using the ComponentFactoryResolver.
+     *
+     * @param portal Portal to be attached to the portal outlet.
+     * @returns Reference to the created component.
+     */
+    /**
+     * Attach the given ComponentPortal to this PortalOutlet using the ComponentFactoryResolver.
+     *
+     * @template T
+     * @param {?} portal Portal to be attached to the portal outlet.
+     * @return {?} Reference to the created component.
+     */
+    CdkPortalOutlet.prototype.attachComponentPortal = /**
+     * Attach the given ComponentPortal to this PortalOutlet using the ComponentFactoryResolver.
+     *
+     * @template T
+     * @param {?} portal Portal to be attached to the portal outlet.
+     * @return {?} Reference to the created component.
+     */
+    function (portal) {
+        portal.setAttachedHost(this);
+        // If the portal specifies an origin, use that as the logical location of the component
+        // in the application tree. Otherwise use the location of this PortalOutlet.
+        var /** @type {?} */ viewContainerRef = portal.viewContainerRef != null ?
+            portal.viewContainerRef :
+            this._viewContainerRef;
+        var /** @type {?} */ componentFactory = this._componentFactoryResolver.resolveComponentFactory(portal.component);
+        var /** @type {?} */ ref = viewContainerRef.createComponent(componentFactory, viewContainerRef.length, portal.injector || viewContainerRef.parentInjector);
+        _super.prototype.setDisposeFn.call(this, function () { return ref.destroy(); });
+        this._attachedPortal = portal;
+        this._attachedRef = ref;
+        this.attached.emit(ref);
+        return ref;
+    };
+    /**
+     * Attach the given TemplatePortal to this PortlHost as an embedded View.
+     * @param portal Portal to be attached.
+     * @returns Reference to the created embedded view.
+     */
+    /**
+     * Attach the given TemplatePortal to this PortlHost as an embedded View.
+     * @template C
+     * @param {?} portal Portal to be attached.
+     * @return {?} Reference to the created embedded view.
+     */
+    CdkPortalOutlet.prototype.attachTemplatePortal = /**
+     * Attach the given TemplatePortal to this PortlHost as an embedded View.
+     * @template C
+     * @param {?} portal Portal to be attached.
+     * @return {?} Reference to the created embedded view.
+     */
+    function (portal) {
+        var _this = this;
+        portal.setAttachedHost(this);
+        var /** @type {?} */ viewRef = this._viewContainerRef.createEmbeddedView(portal.templateRef, portal.context);
+        _super.prototype.setDisposeFn.call(this, function () { return _this._viewContainerRef.clear(); });
+        this._attachedPortal = portal;
+        this._attachedRef = viewRef;
+        this.attached.emit(viewRef);
+        return viewRef;
+    };
+    CdkPortalOutlet.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
+                    selector: '[cdkPortalOutlet], [cdkPortalHost], [portalHost]',
+                    exportAs: 'cdkPortalOutlet, cdkPortalHost',
+                    inputs: ['portal: cdkPortalOutlet']
+                },] },
+    ];
+    /** @nocollapse */
+    CdkPortalOutlet.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ComponentFactoryResolver"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"], },
+    ]; };
+    CdkPortalOutlet.propDecorators = {
+        "attached": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"] },],
+    };
+    return CdkPortalOutlet;
+}(BasePortalOutlet));
+var PortalModule = /** @class */ (function () {
+    function PortalModule() {
+    }
+    PortalModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"], args: [{
+                    exports: [CdkPortal, CdkPortalOutlet],
+                    declarations: [CdkPortal, CdkPortalOutlet],
+                },] },
+    ];
+    return PortalModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Custom injector to be used when providing custom
+ * injection tokens to components inside a portal.
+ * \@docs-private
+ */
+var  /**
+ * Custom injector to be used when providing custom
+ * injection tokens to components inside a portal.
+ * \@docs-private
+ */
+PortalInjector = /** @class */ (function () {
+    function PortalInjector(_parentInjector, _customTokens) {
+        this._parentInjector = _parentInjector;
+        this._customTokens = _customTokens;
+    }
+    /**
+     * @param {?} token
+     * @param {?=} notFoundValue
+     * @return {?}
+     */
+    PortalInjector.prototype.get = /**
+     * @param {?} token
+     * @param {?=} notFoundValue
+     * @return {?}
+     */
+    function (token, notFoundValue) {
+        var /** @type {?} */ value = this._customTokens.get(token);
+        if (typeof value !== 'undefined') {
+            return value;
+        }
+        return this._parentInjector.get(token, notFoundValue);
+    };
+    return PortalInjector;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+
+//# sourceMappingURL=portal.es5.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@angular/cdk/esm5/scrolling.es5.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@angular/cdk/esm5/scrolling.es5.js ***!
+  \*********************************************************/
+/*! exports provided: DEFAULT_SCROLL_TIME, ScrollDispatcher, SCROLL_DISPATCHER_PROVIDER_FACTORY, SCROLL_DISPATCHER_PROVIDER, CdkScrollable, DEFAULT_RESIZE_TIME, ViewportRuler, VIEWPORT_RULER_PROVIDER_FACTORY, VIEWPORT_RULER_PROVIDER, ScrollDispatchModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_SCROLL_TIME", function() { return DEFAULT_SCROLL_TIME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollDispatcher", function() { return ScrollDispatcher; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SCROLL_DISPATCHER_PROVIDER_FACTORY", function() { return SCROLL_DISPATCHER_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SCROLL_DISPATCHER_PROVIDER", function() { return SCROLL_DISPATCHER_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CdkScrollable", function() { return CdkScrollable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEFAULT_RESIZE_TIME", function() { return DEFAULT_RESIZE_TIME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ViewportRuler", function() { return ViewportRuler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VIEWPORT_RULER_PROVIDER_FACTORY", function() { return VIEWPORT_RULER_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VIEWPORT_RULER_PROVIDER", function() { return VIEWPORT_RULER_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollDispatchModule", function() { return ScrollDispatchModule; });
+/* harmony import */ var _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/cdk/platform */ "./node_modules/@angular/cdk/esm5/platform.es5.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Time in ms to throttle the scrolling events by default.
+ */
+var /** @type {?} */ DEFAULT_SCROLL_TIME = 20;
+/**
+ * Service contained all registered Scrollable references and emits an event when any one of the
+ * Scrollable references emit a scrolled event.
+ */
+var ScrollDispatcher = /** @class */ (function () {
+    function ScrollDispatcher(_ngZone, _platform) {
+        this._ngZone = _ngZone;
+        this._platform = _platform;
+        /**
+         * Subject for notifying that a registered scrollable reference element has been scrolled.
+         */
+        this._scrolled = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        /**
+         * Keeps track of the global `scroll` and `resize` subscriptions.
+         */
+        this._globalSubscription = null;
+        /**
+         * Keeps track of the amount of subscriptions to `scrolled`. Used for cleaning up afterwards.
+         */
+        this._scrolledCount = 0;
+        /**
+         * Map of all the scrollable references that are registered with the service and their
+         * scroll event subscriptions.
+         */
+        this.scrollContainers = new Map();
+    }
+    /**
+     * Registers a scrollable instance with the service and listens for its scrolled events. When the
+     * scrollable is scrolled, the service emits the event to its scrolled observable.
+     * @param scrollable Scrollable instance to be registered.
+     */
+    /**
+     * Registers a scrollable instance with the service and listens for its scrolled events. When the
+     * scrollable is scrolled, the service emits the event to its scrolled observable.
+     * @param {?} scrollable Scrollable instance to be registered.
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.register = /**
+     * Registers a scrollable instance with the service and listens for its scrolled events. When the
+     * scrollable is scrolled, the service emits the event to its scrolled observable.
+     * @param {?} scrollable Scrollable instance to be registered.
+     * @return {?}
+     */
+    function (scrollable) {
+        var _this = this;
+        var /** @type {?} */ scrollSubscription = scrollable.elementScrolled()
+            .subscribe(function () { return _this._scrolled.next(scrollable); });
+        this.scrollContainers.set(scrollable, scrollSubscription);
+    };
+    /**
+     * Deregisters a Scrollable reference and unsubscribes from its scroll event observable.
+     * @param scrollable Scrollable instance to be deregistered.
+     */
+    /**
+     * Deregisters a Scrollable reference and unsubscribes from its scroll event observable.
+     * @param {?} scrollable Scrollable instance to be deregistered.
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.deregister = /**
+     * Deregisters a Scrollable reference and unsubscribes from its scroll event observable.
+     * @param {?} scrollable Scrollable instance to be deregistered.
+     * @return {?}
+     */
+    function (scrollable) {
+        var /** @type {?} */ scrollableReference = this.scrollContainers.get(scrollable);
+        if (scrollableReference) {
+            scrollableReference.unsubscribe();
+            this.scrollContainers.delete(scrollable);
+        }
+    };
+    /**
+     * Returns an observable that emits an event whenever any of the registered Scrollable
+     * references (or window, document, or body) fire a scrolled event. Can provide a time in ms
+     * to override the default "throttle" time.
+     *
+     * **Note:** in order to avoid hitting change detection for every scroll event,
+     * all of the events emitted from this stream will be run outside the Angular zone.
+     * If you need to update any data bindings as a result of a scroll event, you have
+     * to run the callback using `NgZone.run`.
+     */
+    /**
+     * Returns an observable that emits an event whenever any of the registered Scrollable
+     * references (or window, document, or body) fire a scrolled event. Can provide a time in ms
+     * to override the default "throttle" time.
+     *
+     * **Note:** in order to avoid hitting change detection for every scroll event,
+     * all of the events emitted from this stream will be run outside the Angular zone.
+     * If you need to update any data bindings as a result of a scroll event, you have
+     * to run the callback using `NgZone.run`.
+     * @param {?=} auditTimeInMs
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.scrolled = /**
+     * Returns an observable that emits an event whenever any of the registered Scrollable
+     * references (or window, document, or body) fire a scrolled event. Can provide a time in ms
+     * to override the default "throttle" time.
+     *
+     * **Note:** in order to avoid hitting change detection for every scroll event,
+     * all of the events emitted from this stream will be run outside the Angular zone.
+     * If you need to update any data bindings as a result of a scroll event, you have
+     * to run the callback using `NgZone.run`.
+     * @param {?=} auditTimeInMs
+     * @return {?}
+     */
+    function (auditTimeInMs) {
+        var _this = this;
+        if (auditTimeInMs === void 0) { auditTimeInMs = DEFAULT_SCROLL_TIME; }
+        return this._platform.isBrowser ? rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"].create(function (observer) {
+            if (!_this._globalSubscription) {
+                _this._addGlobalListener();
+            }
+            // In the case of a 0ms delay, use an observable without auditTime
+            // since it does add a perceptible delay in processing overhead.
+            var /** @type {?} */ subscription = auditTimeInMs > 0 ?
+                _this._scrolled.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["auditTime"])(auditTimeInMs)).subscribe(observer) :
+                _this._scrolled.subscribe(observer);
+            _this._scrolledCount++;
+            return function () {
+                subscription.unsubscribe();
+                _this._scrolledCount--;
+                if (!_this._scrolledCount) {
+                    _this._removeGlobalListener();
+                }
+            };
+        }) : Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])();
+    };
+    /**
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._removeGlobalListener();
+        this.scrollContainers.forEach(function (_, container) { return _this.deregister(container); });
+        this._scrolled.complete();
+    };
+    /**
+     * Returns an observable that emits whenever any of the
+     * scrollable ancestors of an element are scrolled.
+     * @param elementRef Element whose ancestors to listen for.
+     * @param auditTimeInMs Time to throttle the scroll events.
+     */
+    /**
+     * Returns an observable that emits whenever any of the
+     * scrollable ancestors of an element are scrolled.
+     * @param {?} elementRef Element whose ancestors to listen for.
+     * @param {?=} auditTimeInMs Time to throttle the scroll events.
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.ancestorScrolled = /**
+     * Returns an observable that emits whenever any of the
+     * scrollable ancestors of an element are scrolled.
+     * @param {?} elementRef Element whose ancestors to listen for.
+     * @param {?=} auditTimeInMs Time to throttle the scroll events.
+     * @return {?}
+     */
+    function (elementRef, auditTimeInMs) {
+        var /** @type {?} */ ancestors = this.getAncestorScrollContainers(elementRef);
+        return this.scrolled(auditTimeInMs).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["filter"])(function (target) {
+            return !target || ancestors.indexOf(target) > -1;
+        }));
+    };
+    /** Returns all registered Scrollables that contain the provided element. */
+    /**
+     * Returns all registered Scrollables that contain the provided element.
+     * @param {?} elementRef
+     * @return {?}
+     */
+    ScrollDispatcher.prototype.getAncestorScrollContainers = /**
+     * Returns all registered Scrollables that contain the provided element.
+     * @param {?} elementRef
+     * @return {?}
+     */
+    function (elementRef) {
+        var _this = this;
+        var /** @type {?} */ scrollingContainers = [];
+        this.scrollContainers.forEach(function (_subscription, scrollable) {
+            if (_this._scrollableContainsElement(scrollable, elementRef)) {
+                scrollingContainers.push(scrollable);
+            }
+        });
+        return scrollingContainers;
+    };
+    /**
+     * Returns true if the element is contained within the provided Scrollable.
+     * @param {?} scrollable
+     * @param {?} elementRef
+     * @return {?}
+     */
+    ScrollDispatcher.prototype._scrollableContainsElement = /**
+     * Returns true if the element is contained within the provided Scrollable.
+     * @param {?} scrollable
+     * @param {?} elementRef
+     * @return {?}
+     */
+    function (scrollable, elementRef) {
+        var /** @type {?} */ element = elementRef.nativeElement;
+        var /** @type {?} */ scrollableElement = scrollable.getElementRef().nativeElement;
+        // Traverse through the element parents until we reach null, checking if any of the elements
+        // are the scrollable's element.
+        do {
+            if (element == scrollableElement) {
+                return true;
+            }
+        } while (element = /** @type {?} */ ((element)).parentElement);
+        return false;
+    };
+    /**
+     * Sets up the global scroll listeners.
+     * @return {?}
+     */
+    ScrollDispatcher.prototype._addGlobalListener = /**
+     * Sets up the global scroll listeners.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._globalSubscription = this._ngZone.runOutsideAngular(function () {
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["fromEvent"])(window.document, 'scroll').subscribe(function () { return _this._scrolled.next(); });
+        });
+    };
+    /**
+     * Cleans up the global scroll listener.
+     * @return {?}
+     */
+    ScrollDispatcher.prototype._removeGlobalListener = /**
+     * Cleans up the global scroll listener.
+     * @return {?}
+     */
+    function () {
+        if (this._globalSubscription) {
+            this._globalSubscription.unsubscribe();
+            this._globalSubscription = null;
+        }
+    };
+    ScrollDispatcher.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    ScrollDispatcher.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], },
+        { type: _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["Platform"], },
+    ]; };
+    /** @nocollapse */ ScrollDispatcher.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function ScrollDispatcher_Factory() { return new ScrollDispatcher(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["Platform"])); }, token: ScrollDispatcher, providedIn: "root" });
+    return ScrollDispatcher;
+}());
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ * @param {?} parentDispatcher
+ * @param {?} ngZone
+ * @param {?} platform
+ * @return {?}
+ */
+function SCROLL_DISPATCHER_PROVIDER_FACTORY(parentDispatcher, ngZone, platform) {
+    return parentDispatcher || new ScrollDispatcher(ngZone, platform);
+}
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ */
+var /** @type {?} */ SCROLL_DISPATCHER_PROVIDER = {
+    // If there is already a ScrollDispatcher available, use that. Otherwise, provide a new one.
+    provide: ScrollDispatcher,
+    deps: [[new _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_1__["SkipSelf"](), ScrollDispatcher], _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["Platform"]],
+    useFactory: SCROLL_DISPATCHER_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Sends an event when the directive's element is scrolled. Registers itself with the
+ * ScrollDispatcher service to include itself as part of its collection of scrolling events that it
+ * can be listened to through the service.
+ */
+var CdkScrollable = /** @class */ (function () {
+    function CdkScrollable(_elementRef, _scroll, _ngZone) {
+        var _this = this;
+        this._elementRef = _elementRef;
+        this._scroll = _scroll;
+        this._ngZone = _ngZone;
+        this._elementScrolled = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this._scrollListener = function (event) { return _this._elementScrolled.next(event); };
+    }
+    /**
+     * @return {?}
+     */
+    CdkScrollable.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this._ngZone.runOutsideAngular(function () {
+            _this.getElementRef().nativeElement.addEventListener('scroll', _this._scrollListener);
+        });
+        this._scroll.register(this);
+    };
+    /**
+     * @return {?}
+     */
+    CdkScrollable.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._scroll.deregister(this);
+        if (this._scrollListener) {
+            this.getElementRef().nativeElement.removeEventListener('scroll', this._scrollListener);
+        }
+        this._elementScrolled.complete();
+    };
+    /**
+     * Returns observable that emits when a scroll event is fired on the host element.
+     */
+    /**
+     * Returns observable that emits when a scroll event is fired on the host element.
+     * @return {?}
+     */
+    CdkScrollable.prototype.elementScrolled = /**
+     * Returns observable that emits when a scroll event is fired on the host element.
+     * @return {?}
+     */
+    function () {
+        return this._elementScrolled.asObservable();
+    };
+    /**
+     * @return {?}
+     */
+    CdkScrollable.prototype.getElementRef = /**
+     * @return {?}
+     */
+    function () {
+        return this._elementRef;
+    };
+    CdkScrollable.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"], args: [{
+                    selector: '[cdk-scrollable], [cdkScrollable]'
+                },] },
+    ];
+    /** @nocollapse */
+    CdkScrollable.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], },
+        { type: ScrollDispatcher, },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], },
+    ]; };
+    return CdkScrollable;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Time in ms to throttle the resize events by default.
+ */
+var /** @type {?} */ DEFAULT_RESIZE_TIME = 20;
+/**
+ * Simple utility for getting the bounds of the browser viewport.
+ * \@docs-private
+ */
+var ViewportRuler = /** @class */ (function () {
+    function ViewportRuler(_platform, ngZone) {
+        var _this = this;
+        this._platform = _platform;
+        this._change = _platform.isBrowser ? ngZone.runOutsideAngular(function () {
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["merge"])(Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["fromEvent"])(window, 'resize'), Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["fromEvent"])(window, 'orientationchange'));
+        }) : Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])();
+        this._invalidateCache = this.change().subscribe(function () { return _this._updateViewportSize(); });
+    }
+    /**
+     * @return {?}
+     */
+    ViewportRuler.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._invalidateCache.unsubscribe();
+    };
+    /** Returns the viewport's width and height. */
+    /**
+     * Returns the viewport's width and height.
+     * @return {?}
+     */
+    ViewportRuler.prototype.getViewportSize = /**
+     * Returns the viewport's width and height.
+     * @return {?}
+     */
+    function () {
+        if (!this._viewportSize) {
+            this._updateViewportSize();
+        }
+        var /** @type {?} */ output = { width: this._viewportSize.width, height: this._viewportSize.height };
+        // If we're not on a browser, don't cache the size since it'll be mocked out anyway.
+        if (!this._platform.isBrowser) {
+            this._viewportSize = /** @type {?} */ ((null));
+        }
+        return output;
+    };
+    /** Gets a ClientRect for the viewport's bounds. */
+    /**
+     * Gets a ClientRect for the viewport's bounds.
+     * @return {?}
+     */
+    ViewportRuler.prototype.getViewportRect = /**
+     * Gets a ClientRect for the viewport's bounds.
+     * @return {?}
+     */
+    function () {
+        // Use the document element's bounding rect rather than the window scroll properties
+        // (e.g. pageYOffset, scrollY) due to in issue in Chrome and IE where window scroll
+        // properties and client coordinates (boundingClientRect, clientX/Y, etc.) are in different
+        // conceptual viewports. Under most circumstances these viewports are equivalent, but they
+        // can disagree when the page is pinch-zoomed (on devices that support touch).
+        // See https://bugs.chromium.org/p/chromium/issues/detail?id=489206#c4
+        // We use the documentElement instead of the body because, by default (without a css reset)
+        // browsers typically give the document body an 8px margin, which is not included in
+        // getBoundingClientRect().
+        var /** @type {?} */ scrollPosition = this.getViewportScrollPosition();
+        var _a = this.getViewportSize(), width = _a.width, height = _a.height;
+        return {
+            top: scrollPosition.top,
+            left: scrollPosition.left,
+            bottom: scrollPosition.top + height,
+            right: scrollPosition.left + width,
+            height: height,
+            width: width,
+        };
+    };
+    /** Gets the (top, left) scroll position of the viewport. */
+    /**
+     * Gets the (top, left) scroll position of the viewport.
+     * @return {?}
+     */
+    ViewportRuler.prototype.getViewportScrollPosition = /**
+     * Gets the (top, left) scroll position of the viewport.
+     * @return {?}
+     */
+    function () {
+        // While we can get a reference to the fake document
+        // during SSR, it doesn't have getBoundingClientRect.
+        if (!this._platform.isBrowser) {
+            return { top: 0, left: 0 };
+        }
+        // The top-left-corner of the viewport is determined by the scroll position of the document
+        // body, normally just (scrollLeft, scrollTop). However, Chrome and Firefox disagree about
+        // whether `document.body` or `document.documentElement` is the scrolled element, so reading
+        // `scrollTop` and `scrollLeft` is inconsistent. However, using the bounding rect of
+        // `document.documentElement` works consistently, where the `top` and `left` values will
+        // equal negative the scroll position.
+        var /** @type {?} */ documentRect = document.documentElement.getBoundingClientRect();
+        var /** @type {?} */ top = -documentRect.top || document.body.scrollTop || window.scrollY ||
+            document.documentElement.scrollTop || 0;
+        var /** @type {?} */ left = -documentRect.left || document.body.scrollLeft || window.scrollX ||
+            document.documentElement.scrollLeft || 0;
+        return { top: top, left: left };
+    };
+    /**
+     * Returns a stream that emits whenever the size of the viewport changes.
+     * @param throttleTime Time in milliseconds to throttle the stream.
+     */
+    /**
+     * Returns a stream that emits whenever the size of the viewport changes.
+     * @param {?=} throttleTime Time in milliseconds to throttle the stream.
+     * @return {?}
+     */
+    ViewportRuler.prototype.change = /**
+     * Returns a stream that emits whenever the size of the viewport changes.
+     * @param {?=} throttleTime Time in milliseconds to throttle the stream.
+     * @return {?}
+     */
+    function (throttleTime) {
+        if (throttleTime === void 0) { throttleTime = DEFAULT_RESIZE_TIME; }
+        return throttleTime > 0 ? this._change.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["auditTime"])(throttleTime)) : this._change;
+    };
+    /**
+     * Updates the cached viewport size.
+     * @return {?}
+     */
+    ViewportRuler.prototype._updateViewportSize = /**
+     * Updates the cached viewport size.
+     * @return {?}
+     */
+    function () {
+        this._viewportSize = this._platform.isBrowser ?
+            { width: window.innerWidth, height: window.innerHeight } :
+            { width: 0, height: 0 };
+    };
+    ViewportRuler.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    ViewportRuler.ctorParameters = function () { return [
+        { type: _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["Platform"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"], },
+    ]; };
+    /** @nocollapse */ ViewportRuler.ngInjectableDef = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["defineInjectable"])({ factory: function ViewportRuler_Factory() { return new ViewportRuler(Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["Platform"]), Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"])); }, token: ViewportRuler, providedIn: "root" });
+    return ViewportRuler;
+}());
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ * @param {?} parentRuler
+ * @param {?} platform
+ * @param {?} ngZone
+ * @return {?}
+ */
+function VIEWPORT_RULER_PROVIDER_FACTORY(parentRuler, platform, ngZone) {
+    return parentRuler || new ViewportRuler(platform, ngZone);
+}
+/**
+ * \@docs-private \@deprecated \@breaking-change 7.0.0
+ */
+var /** @type {?} */ VIEWPORT_RULER_PROVIDER = {
+    // If there is already a ViewportRuler available, use that. Otherwise, provide a new one.
+    provide: ViewportRuler,
+    deps: [[new _angular_core__WEBPACK_IMPORTED_MODULE_1__["Optional"](), new _angular_core__WEBPACK_IMPORTED_MODULE_1__["SkipSelf"](), ViewportRuler], _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["Platform"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"]],
+    useFactory: VIEWPORT_RULER_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var ScrollDispatchModule = /** @class */ (function () {
+    function ScrollDispatchModule() {
+    }
+    ScrollDispatchModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"], args: [{
+                    imports: [_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_0__["PlatformModule"]],
+                    exports: [CdkScrollable],
+                    declarations: [CdkScrollable],
+                },] },
+    ];
+    return ScrollDispatchModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+
+//# sourceMappingURL=scrolling.es5.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@angular/common/fesm5/common.js":
 /*!******************************************************!*\
   !*** ./node_modules/@angular/common/fesm5/common.js ***!
@@ -56113,6 +71210,490 @@ var platformBrowserDynamic = Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["
 
 /***/ }),
 
+/***/ "./node_modules/@angular/platform-browser/fesm5/animations.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@angular/platform-browser/fesm5/animations.js ***!
+  \********************************************************************/
+/*! exports provided: ɵangular_packages_platform_browser_animations_animations_g, ɵangular_packages_platform_browser_animations_animations_e, ɵangular_packages_platform_browser_animations_animations_f, ɵangular_packages_platform_browser_animations_animations_a, ɵangular_packages_platform_browser_animations_animations_c, ɵangular_packages_platform_browser_animations_animations_d, ɵangular_packages_platform_browser_animations_animations_b, BrowserAnimationsModule, NoopAnimationsModule, ANIMATION_MODULE_TYPE, ɵBrowserAnimationBuilder, ɵBrowserAnimationFactory, ɵAnimationRenderer, ɵAnimationRendererFactory */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_g", function() { return BaseAnimationRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_e", function() { return BROWSER_ANIMATIONS_PROVIDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_f", function() { return BROWSER_NOOP_ANIMATIONS_PROVIDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_a", function() { return InjectableAnimationEngine; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_c", function() { return instantiateDefaultStyleNormalizer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_d", function() { return instantiateRendererFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵangular_packages_platform_browser_animations_animations_b", function() { return instantiateSupportedAnimationDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BrowserAnimationsModule", function() { return BrowserAnimationsModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NoopAnimationsModule", function() { return NoopAnimationsModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ANIMATION_MODULE_TYPE", function() { return ANIMATION_MODULE_TYPE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵBrowserAnimationBuilder", function() { return BrowserAnimationBuilder; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵBrowserAnimationFactory", function() { return BrowserAnimationFactory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationRenderer", function() { return AnimationRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵAnimationRendererFactory", function() { return AnimationRendererFactory; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
+/* harmony import */ var _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/animations/browser */ "./node_modules/@angular/animations/fesm5/browser.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/**
+ * @license Angular v6.1.10
+ * (c) 2010-2018 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+
+
+
+
+
+
+
+var BrowserAnimationBuilder = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(BrowserAnimationBuilder, _super);
+    function BrowserAnimationBuilder(rootRenderer, doc) {
+        var _this = _super.call(this) || this;
+        _this._nextAnimationId = 0;
+        var typeData = {
+            id: '0',
+            encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewEncapsulation"].None,
+            styles: [],
+            data: { animation: [] }
+        };
+        _this._renderer = rootRenderer.createRenderer(doc.body, typeData);
+        return _this;
+    }
+    BrowserAnimationBuilder.prototype.build = function (animation) {
+        var id = this._nextAnimationId.toString();
+        this._nextAnimationId++;
+        var entry = Array.isArray(animation) ? Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["sequence"])(animation) : animation;
+        issueAnimationCommand(this._renderer, null, id, 'register', [entry]);
+        return new BrowserAnimationFactory(id, this._renderer);
+    };
+    BrowserAnimationBuilder = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])(),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Inject"])(_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["DOCUMENT"])),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_2__["RendererFactory2"], Object])
+    ], BrowserAnimationBuilder);
+    return BrowserAnimationBuilder;
+}(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["AnimationBuilder"]));
+var BrowserAnimationFactory = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(BrowserAnimationFactory, _super);
+    function BrowserAnimationFactory(_id, _renderer) {
+        var _this = _super.call(this) || this;
+        _this._id = _id;
+        _this._renderer = _renderer;
+        return _this;
+    }
+    BrowserAnimationFactory.prototype.create = function (element, options) {
+        return new RendererAnimationPlayer(this._id, element, options || {}, this._renderer);
+    };
+    return BrowserAnimationFactory;
+}(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["AnimationFactory"]));
+var RendererAnimationPlayer = /** @class */ (function () {
+    function RendererAnimationPlayer(id, element, options, _renderer) {
+        this.id = id;
+        this.element = element;
+        this._renderer = _renderer;
+        this.parentPlayer = null;
+        this._started = false;
+        this.totalTime = 0;
+        this._command('create', options);
+    }
+    RendererAnimationPlayer.prototype._listen = function (eventName, callback) {
+        return this._renderer.listen(this.element, "@@" + this.id + ":" + eventName, callback);
+    };
+    RendererAnimationPlayer.prototype._command = function (command) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return issueAnimationCommand(this._renderer, this.element, this.id, command, args);
+    };
+    RendererAnimationPlayer.prototype.onDone = function (fn) { this._listen('done', fn); };
+    RendererAnimationPlayer.prototype.onStart = function (fn) { this._listen('start', fn); };
+    RendererAnimationPlayer.prototype.onDestroy = function (fn) { this._listen('destroy', fn); };
+    RendererAnimationPlayer.prototype.init = function () { this._command('init'); };
+    RendererAnimationPlayer.prototype.hasStarted = function () { return this._started; };
+    RendererAnimationPlayer.prototype.play = function () {
+        this._command('play');
+        this._started = true;
+    };
+    RendererAnimationPlayer.prototype.pause = function () { this._command('pause'); };
+    RendererAnimationPlayer.prototype.restart = function () { this._command('restart'); };
+    RendererAnimationPlayer.prototype.finish = function () { this._command('finish'); };
+    RendererAnimationPlayer.prototype.destroy = function () { this._command('destroy'); };
+    RendererAnimationPlayer.prototype.reset = function () { this._command('reset'); };
+    RendererAnimationPlayer.prototype.setPosition = function (p) { this._command('setPosition', p); };
+    RendererAnimationPlayer.prototype.getPosition = function () { return 0; };
+    return RendererAnimationPlayer;
+}());
+function issueAnimationCommand(renderer, element, id, command, args) {
+    return renderer.setProperty(element, "@@" + id + ":" + command, args);
+}
+
+var ANIMATION_PREFIX = '@';
+var DISABLE_ANIMATIONS_FLAG = '@.disabled';
+var AnimationRendererFactory = /** @class */ (function () {
+    function AnimationRendererFactory(delegate, engine, _zone) {
+        this.delegate = delegate;
+        this.engine = engine;
+        this._zone = _zone;
+        this._currentId = 0;
+        this._microtaskId = 1;
+        this._animationCallbacksBuffer = [];
+        this._rendererCache = new Map();
+        this._cdRecurDepth = 0;
+        this.promise = Promise.resolve(0);
+        engine.onRemovalComplete = function (element, delegate) {
+            // Note: if an component element has a leave animation, and the component
+            // a host leave animation, the view engine will call `removeChild` for the parent
+            // component renderer as well as for the child component renderer.
+            // Therefore, we need to check if we already removed the element.
+            if (delegate && delegate.parentNode(element)) {
+                delegate.removeChild(element.parentNode, element);
+            }
+        };
+    }
+    AnimationRendererFactory.prototype.createRenderer = function (hostElement, type) {
+        var _this = this;
+        var EMPTY_NAMESPACE_ID = '';
+        // cache the delegates to find out which cached delegate can
+        // be used by which cached renderer
+        var delegate = this.delegate.createRenderer(hostElement, type);
+        if (!hostElement || !type || !type.data || !type.data['animation']) {
+            var renderer = this._rendererCache.get(delegate);
+            if (!renderer) {
+                renderer = new BaseAnimationRenderer(EMPTY_NAMESPACE_ID, delegate, this.engine);
+                // only cache this result when the base renderer is used
+                this._rendererCache.set(delegate, renderer);
+            }
+            return renderer;
+        }
+        var componentId = type.id;
+        var namespaceId = type.id + '-' + this._currentId;
+        this._currentId++;
+        this.engine.register(namespaceId, hostElement);
+        var animationTriggers = type.data['animation'];
+        animationTriggers.forEach(function (trigger) { return _this.engine.registerTrigger(componentId, namespaceId, hostElement, trigger.name, trigger); });
+        return new AnimationRenderer(this, namespaceId, delegate, this.engine);
+    };
+    AnimationRendererFactory.prototype.begin = function () {
+        this._cdRecurDepth++;
+        if (this.delegate.begin) {
+            this.delegate.begin();
+        }
+    };
+    AnimationRendererFactory.prototype._scheduleCountTask = function () {
+        var _this = this;
+        // always use promise to schedule microtask instead of use Zone
+        this.promise.then(function () { _this._microtaskId++; });
+    };
+    /** @internal */
+    AnimationRendererFactory.prototype.scheduleListenerCallback = function (count, fn, data) {
+        var _this = this;
+        if (count >= 0 && count < this._microtaskId) {
+            this._zone.run(function () { return fn(data); });
+            return;
+        }
+        if (this._animationCallbacksBuffer.length == 0) {
+            Promise.resolve(null).then(function () {
+                _this._zone.run(function () {
+                    _this._animationCallbacksBuffer.forEach(function (tuple) {
+                        var _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(tuple, 2), fn = _a[0], data = _a[1];
+                        fn(data);
+                    });
+                    _this._animationCallbacksBuffer = [];
+                });
+            });
+        }
+        this._animationCallbacksBuffer.push([fn, data]);
+    };
+    AnimationRendererFactory.prototype.end = function () {
+        var _this = this;
+        this._cdRecurDepth--;
+        // this is to prevent animations from running twice when an inner
+        // component does CD when a parent component insted has inserted it
+        if (this._cdRecurDepth == 0) {
+            this._zone.runOutsideAngular(function () {
+                _this._scheduleCountTask();
+                _this.engine.flush(_this._microtaskId);
+            });
+        }
+        if (this.delegate.end) {
+            this.delegate.end();
+        }
+    };
+    AnimationRendererFactory.prototype.whenRenderingDone = function () { return this.engine.whenRenderingDone(); };
+    AnimationRendererFactory = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])(),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_2__["RendererFactory2"], _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"], _angular_core__WEBPACK_IMPORTED_MODULE_2__["NgZone"]])
+    ], AnimationRendererFactory);
+    return AnimationRendererFactory;
+}());
+var BaseAnimationRenderer = /** @class */ (function () {
+    function BaseAnimationRenderer(namespaceId, delegate, engine) {
+        this.namespaceId = namespaceId;
+        this.delegate = delegate;
+        this.engine = engine;
+        this.destroyNode = this.delegate.destroyNode ? function (n) { return delegate.destroyNode(n); } : null;
+    }
+    Object.defineProperty(BaseAnimationRenderer.prototype, "data", {
+        get: function () { return this.delegate.data; },
+        enumerable: true,
+        configurable: true
+    });
+    BaseAnimationRenderer.prototype.destroy = function () {
+        this.engine.destroy(this.namespaceId, this.delegate);
+        this.delegate.destroy();
+    };
+    BaseAnimationRenderer.prototype.createElement = function (name, namespace) {
+        return this.delegate.createElement(name, namespace);
+    };
+    BaseAnimationRenderer.prototype.createComment = function (value) { return this.delegate.createComment(value); };
+    BaseAnimationRenderer.prototype.createText = function (value) { return this.delegate.createText(value); };
+    BaseAnimationRenderer.prototype.appendChild = function (parent, newChild) {
+        this.delegate.appendChild(parent, newChild);
+        this.engine.onInsert(this.namespaceId, newChild, parent, false);
+    };
+    BaseAnimationRenderer.prototype.insertBefore = function (parent, newChild, refChild) {
+        this.delegate.insertBefore(parent, newChild, refChild);
+        this.engine.onInsert(this.namespaceId, newChild, parent, true);
+    };
+    BaseAnimationRenderer.prototype.removeChild = function (parent, oldChild) {
+        this.engine.onRemove(this.namespaceId, oldChild, this.delegate);
+    };
+    BaseAnimationRenderer.prototype.selectRootElement = function (selectorOrNode) { return this.delegate.selectRootElement(selectorOrNode); };
+    BaseAnimationRenderer.prototype.parentNode = function (node) { return this.delegate.parentNode(node); };
+    BaseAnimationRenderer.prototype.nextSibling = function (node) { return this.delegate.nextSibling(node); };
+    BaseAnimationRenderer.prototype.setAttribute = function (el, name, value, namespace) {
+        this.delegate.setAttribute(el, name, value, namespace);
+    };
+    BaseAnimationRenderer.prototype.removeAttribute = function (el, name, namespace) {
+        this.delegate.removeAttribute(el, name, namespace);
+    };
+    BaseAnimationRenderer.prototype.addClass = function (el, name) { this.delegate.addClass(el, name); };
+    BaseAnimationRenderer.prototype.removeClass = function (el, name) { this.delegate.removeClass(el, name); };
+    BaseAnimationRenderer.prototype.setStyle = function (el, style, value, flags) {
+        this.delegate.setStyle(el, style, value, flags);
+    };
+    BaseAnimationRenderer.prototype.removeStyle = function (el, style, flags) {
+        this.delegate.removeStyle(el, style, flags);
+    };
+    BaseAnimationRenderer.prototype.setProperty = function (el, name, value) {
+        if (name.charAt(0) == ANIMATION_PREFIX && name == DISABLE_ANIMATIONS_FLAG) {
+            this.disableAnimations(el, !!value);
+        }
+        else {
+            this.delegate.setProperty(el, name, value);
+        }
+    };
+    BaseAnimationRenderer.prototype.setValue = function (node, value) { this.delegate.setValue(node, value); };
+    BaseAnimationRenderer.prototype.listen = function (target, eventName, callback) {
+        return this.delegate.listen(target, eventName, callback);
+    };
+    BaseAnimationRenderer.prototype.disableAnimations = function (element, value) {
+        this.engine.disableAnimations(element, value);
+    };
+    return BaseAnimationRenderer;
+}());
+var AnimationRenderer = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(AnimationRenderer, _super);
+    function AnimationRenderer(factory, namespaceId, delegate, engine) {
+        var _this = _super.call(this, namespaceId, delegate, engine) || this;
+        _this.factory = factory;
+        _this.namespaceId = namespaceId;
+        return _this;
+    }
+    AnimationRenderer.prototype.setProperty = function (el, name, value) {
+        if (name.charAt(0) == ANIMATION_PREFIX) {
+            if (name.charAt(1) == '.' && name == DISABLE_ANIMATIONS_FLAG) {
+                value = value === undefined ? true : !!value;
+                this.disableAnimations(el, value);
+            }
+            else {
+                this.engine.process(this.namespaceId, el, name.substr(1), value);
+            }
+        }
+        else {
+            this.delegate.setProperty(el, name, value);
+        }
+    };
+    AnimationRenderer.prototype.listen = function (target, eventName, callback) {
+        var _this = this;
+        var _a;
+        if (eventName.charAt(0) == ANIMATION_PREFIX) {
+            var element = resolveElementFromTarget(target);
+            var name_1 = eventName.substr(1);
+            var phase = '';
+            // @listener.phase is for trigger animation callbacks
+            // @@listener is for animation builder callbacks
+            if (name_1.charAt(0) != ANIMATION_PREFIX) {
+                _a = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__read"])(parseTriggerCallbackName(name_1), 2), name_1 = _a[0], phase = _a[1];
+            }
+            return this.engine.listen(this.namespaceId, element, name_1, phase, function (event) {
+                var countId = event['_data'] || -1;
+                _this.factory.scheduleListenerCallback(countId, callback, event);
+            });
+        }
+        return this.delegate.listen(target, eventName, callback);
+    };
+    return AnimationRenderer;
+}(BaseAnimationRenderer));
+function resolveElementFromTarget(target) {
+    switch (target) {
+        case 'body':
+            return document.body;
+        case 'document':
+            return document;
+        case 'window':
+            return window;
+        default:
+            return target;
+    }
+}
+function parseTriggerCallbackName(triggerName) {
+    var dotIndex = triggerName.indexOf('.');
+    var trigger = triggerName.substring(0, dotIndex);
+    var phase = triggerName.substr(dotIndex + 1);
+    return [trigger, phase];
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var InjectableAnimationEngine = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"])(InjectableAnimationEngine, _super);
+    function InjectableAnimationEngine(doc, driver, normalizer) {
+        return _super.call(this, doc.body, driver, normalizer) || this;
+    }
+    InjectableAnimationEngine = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])(),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__param"])(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_5__["DOCUMENT"])),
+        Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [Object, _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["AnimationDriver"], _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationStyleNormalizer"]])
+    ], InjectableAnimationEngine);
+    return InjectableAnimationEngine;
+}(_angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"]));
+function instantiateSupportedAnimationDriver() {
+    return Object(_angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵsupportsWebAnimations"])() ? new _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵWebAnimationsDriver"]() : new _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵCssKeyframesDriver"]();
+}
+function instantiateDefaultStyleNormalizer() {
+    return new _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵWebAnimationsStyleNormalizer"]();
+}
+function instantiateRendererFactory(renderer, engine, zone) {
+    return new AnimationRendererFactory(renderer, engine, zone);
+}
+/**
+ * @experimental Animation support is experimental.
+ */
+var ANIMATION_MODULE_TYPE = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["InjectionToken"]('AnimationModuleType');
+var SHARED_ANIMATION_PROVIDERS = [
+    { provide: _angular_animations__WEBPACK_IMPORTED_MODULE_1__["AnimationBuilder"], useClass: BrowserAnimationBuilder },
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationStyleNormalizer"], useFactory: instantiateDefaultStyleNormalizer },
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"], useClass: InjectableAnimationEngine }, {
+        provide: _angular_core__WEBPACK_IMPORTED_MODULE_2__["RendererFactory2"],
+        useFactory: instantiateRendererFactory,
+        deps: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["ɵDomRendererFactory2"], _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵAnimationEngine"], _angular_core__WEBPACK_IMPORTED_MODULE_2__["NgZone"]]
+    }
+];
+/**
+ * Separate providers from the actual module so that we can do a local modification in Google3 to
+ * include them in the BrowserModule.
+ */
+var BROWSER_ANIMATIONS_PROVIDERS = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])([
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["AnimationDriver"], useFactory: instantiateSupportedAnimationDriver },
+    { provide: ANIMATION_MODULE_TYPE, useValue: 'BrowserAnimations' }
+], SHARED_ANIMATION_PROVIDERS);
+/**
+ * Separate providers from the actual module so that we can do a local modification in Google3 to
+ * include them in the BrowserTestingModule.
+ */
+var BROWSER_NOOP_ANIMATIONS_PROVIDERS = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])([
+    { provide: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["AnimationDriver"], useClass: _angular_animations_browser__WEBPACK_IMPORTED_MODULE_4__["ɵNoopAnimationDriver"] },
+    { provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' }
+], SHARED_ANIMATION_PROVIDERS);
+
+/**
+ * Exports `BrowserModule` with additional [dependency-injection providers](guide/glossary#provider)
+ * for use with animations. See [Animations](guide/animations).
+ * @experimental
+ */
+var BrowserAnimationsModule = /** @class */ (function () {
+    function BrowserAnimationsModule() {
+    }
+    BrowserAnimationsModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
+            exports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["BrowserModule"]],
+            providers: BROWSER_ANIMATIONS_PROVIDERS,
+        })
+    ], BrowserAnimationsModule);
+    return BrowserAnimationsModule;
+}());
+/**
+ * A null player that must be imported to allow disabling of animations.
+ * @experimental
+ */
+var NoopAnimationsModule = /** @class */ (function () {
+    function NoopAnimationsModule() {
+    }
+    NoopAnimationsModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
+            exports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["BrowserModule"]],
+            providers: BROWSER_NOOP_ANIMATIONS_PROVIDERS,
+        })
+    ], NoopAnimationsModule);
+    return NoopAnimationsModule;
+}());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=animations.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@angular/platform-browser/fesm5/platform-browser.js ***!
@@ -58673,6 +74254,5624 @@ var VERSION = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["Version"]('6.1.10'
 
 
 //# sourceMappingURL=platform-browser.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js ***!
+  \************************************************************************************/
+/*! exports provided: OWL_DATE_TIME_LOCALE, OWL_DATE_TIME_LOCALE_FACTORY, OWL_DATE_TIME_LOCALE_PROVIDER, DateTimeAdapter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_LOCALE", function() { return OWL_DATE_TIME_LOCALE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_LOCALE_FACTORY", function() { return OWL_DATE_TIME_LOCALE_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_LOCALE_PROVIDER", function() { return OWL_DATE_TIME_LOCALE_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DateTimeAdapter", function() { return DateTimeAdapter; });
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var OWL_DATE_TIME_LOCALE = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["InjectionToken"]('OWL_DATE_TIME_LOCALE', {
+    providedIn: 'root',
+    factory: OWL_DATE_TIME_LOCALE_FACTORY,
+});
+function OWL_DATE_TIME_LOCALE_FACTORY() {
+    return Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["inject"])(_angular_core__WEBPACK_IMPORTED_MODULE_1__["LOCALE_ID"]);
+}
+var OWL_DATE_TIME_LOCALE_PROVIDER = { provide: OWL_DATE_TIME_LOCALE, useExisting: _angular_core__WEBPACK_IMPORTED_MODULE_1__["LOCALE_ID"] };
+var DateTimeAdapter = (function () {
+    function DateTimeAdapter() {
+        this._localeChanges = new rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]();
+        this.millisecondsInDay = 86400000;
+        this.milliseondsInMinute = 60000;
+    }
+    Object.defineProperty(DateTimeAdapter.prototype, "localeChanges", {
+        get: function () {
+            return this._localeChanges;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DateTimeAdapter.prototype.compare = function (first, second) {
+        if (!this.isValid(first) || !this.isValid(second)) {
+            throw Error('JSNativeDate: Cannot compare invalid dates.');
+        }
+        var dateFirst = this.clone(first);
+        var dateSecond = this.clone(second);
+        var diff = this.getTime(dateFirst) - this.getTime(dateSecond);
+        if (diff < 0) {
+            return -1;
+        }
+        else if (diff > 0) {
+            return 1;
+        }
+        else {
+            return diff;
+        }
+    };
+    DateTimeAdapter.prototype.compareYear = function (first, second) {
+        if (!this.isValid(first) || !this.isValid(second)) {
+            throw Error('JSNativeDate: Cannot compare invalid dates.');
+        }
+        var yearLeft = this.getYear(first);
+        var yearRight = this.getYear(second);
+        var diff = yearLeft - yearRight;
+        if (diff < 0) {
+            return -1;
+        }
+        else if (diff > 0) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    };
+    DateTimeAdapter.prototype.deserialize = function (value) {
+        if (value == null || this.isDateInstance(value) && this.isValid(value)) {
+            return value;
+        }
+        return this.invalid();
+    };
+    DateTimeAdapter.prototype.setLocale = function (locale) {
+        this.locale = locale;
+        this._localeChanges.next();
+    };
+    DateTimeAdapter.prototype.clampDate = function (date, min, max) {
+        if (min && this.compare(date, min) < 0) {
+            return min;
+        }
+        if (max && this.compare(date, max) > 0) {
+            return max;
+        }
+        return date;
+    };
+    return DateTimeAdapter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js ***!
+  \***********************************************************************************/
+/*! exports provided: OWL_DATE_TIME_FORMATS */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_FORMATS", function() { return OWL_DATE_TIME_FORMATS; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+var OWL_DATE_TIME_FORMATS = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('OWL_DATE_TIME_FORMATS');
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/adapter/native-date-time-adapter.class.js":
+/*!*******************************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/adapter/native-date-time-adapter.class.js ***!
+  \*******************************************************************************************/
+/*! exports provided: NativeDateTimeAdapter, ɵ0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NativeDateTimeAdapter", function() { return NativeDateTimeAdapter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵ0", function() { return ɵ0; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/platform */ "./node_modules/@angular/cdk/esm5/platform.es5.js");
+/* harmony import */ var _date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+
+
+
+var DEFAULT_MONTH_NAMES = {
+    'long': [
+        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+        'October', 'November', 'December'
+    ],
+    'short': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    'narrow': ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
+};
+var DEFAULT_DAY_OF_WEEK_NAMES = {
+    'long': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    'short': ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    'narrow': ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+};
+var ɵ0 = function (i) { return String(i + 1); };
+var DEFAULT_DATE_NAMES = range(31, ɵ0);
+var SUPPORTS_INTL_API = typeof Intl !== 'undefined';
+var ISO_8601_REGEX = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|(?:(?:\+|-)\d{2}:\d{2}))?)?$/;
+function range(length, valueFunction) {
+    var valuesArray = Array(length);
+    for (var i = 0; i < length; i++) {
+        valuesArray[i] = valueFunction(i);
+    }
+    return valuesArray;
+}
+var NativeDateTimeAdapter = (function (_super) {
+    __extends(NativeDateTimeAdapter, _super);
+    function NativeDateTimeAdapter(owlDateTimeLocale, platform) {
+        var _this = _super.call(this) || this;
+        _this.owlDateTimeLocale = owlDateTimeLocale;
+        _super.prototype.setLocale.call(_this, owlDateTimeLocale);
+        _this.useUtcForDisplay = !platform.TRIDENT;
+        _this._clampDate = platform.TRIDENT || platform.EDGE;
+        return _this;
+    }
+    NativeDateTimeAdapter.prototype.getYear = function (date) {
+        return date.getFullYear();
+    };
+    NativeDateTimeAdapter.prototype.getMonth = function (date) {
+        return date.getMonth();
+    };
+    NativeDateTimeAdapter.prototype.getDay = function (date) {
+        return date.getDay();
+    };
+    NativeDateTimeAdapter.prototype.getDate = function (date) {
+        return date.getDate();
+    };
+    NativeDateTimeAdapter.prototype.getHours = function (date) {
+        return date.getHours();
+    };
+    NativeDateTimeAdapter.prototype.getMinutes = function (date) {
+        return date.getMinutes();
+    };
+    NativeDateTimeAdapter.prototype.getSeconds = function (date) {
+        return date.getSeconds();
+    };
+    NativeDateTimeAdapter.prototype.getTime = function (date) {
+        return date.getTime();
+    };
+    NativeDateTimeAdapter.prototype.getNumDaysInMonth = function (date) {
+        var lastDateOfMonth = this.createDateWithOverflow(this.getYear(date), this.getMonth(date) + 1, 0);
+        return this.getDate(lastDateOfMonth);
+    };
+    NativeDateTimeAdapter.prototype.differenceInCalendarDays = function (dateLeft, dateRight) {
+        if (this.isValid(dateLeft) && this.isValid(dateRight)) {
+            var dateLeftStartOfDay = this.createDate(this.getYear(dateLeft), this.getMonth(dateLeft), this.getDate(dateLeft));
+            var dateRightStartOfDay = this.createDate(this.getYear(dateRight), this.getMonth(dateRight), this.getDate(dateRight));
+            var timeStampLeft = this.getTime(dateLeftStartOfDay) - dateLeftStartOfDay.getTimezoneOffset() * this.milliseondsInMinute;
+            var timeStampRight = this.getTime(dateRightStartOfDay) - dateRightStartOfDay.getTimezoneOffset() * this.milliseondsInMinute;
+            return Math.round((timeStampLeft - timeStampRight) / this.millisecondsInDay);
+        }
+        else {
+            return null;
+        }
+    };
+    NativeDateTimeAdapter.prototype.getYearName = function (date) {
+        if (SUPPORTS_INTL_API) {
+            var dtf = new Intl.DateTimeFormat(this.locale, { year: 'numeric', timeZone: 'utc' });
+            return this.stripDirectionalityCharacters(this._format(dtf, date));
+        }
+        return String(this.getYear(date));
+    };
+    NativeDateTimeAdapter.prototype.getMonthNames = function (style) {
+        var _this = this;
+        if (SUPPORTS_INTL_API) {
+            var dtf_1 = new Intl.DateTimeFormat(this.locale, { month: style, timeZone: 'utc' });
+            return range(12, function (i) { return _this.stripDirectionalityCharacters(_this._format(dtf_1, new Date(2017, i, 1))); });
+        }
+        return DEFAULT_MONTH_NAMES[style];
+    };
+    NativeDateTimeAdapter.prototype.getDayOfWeekNames = function (style) {
+        var _this = this;
+        if (SUPPORTS_INTL_API) {
+            var dtf_2 = new Intl.DateTimeFormat(this.locale, { weekday: style, timeZone: 'utc' });
+            return range(7, function (i) {
+                return _this.stripDirectionalityCharacters(_this._format(dtf_2, new Date(2017, 0, i + 1)));
+            });
+        }
+        return DEFAULT_DAY_OF_WEEK_NAMES[style];
+    };
+    NativeDateTimeAdapter.prototype.getDateNames = function () {
+        var _this = this;
+        if (SUPPORTS_INTL_API) {
+            var dtf_3 = new Intl.DateTimeFormat(this.locale, { day: 'numeric', timeZone: 'utc' });
+            return range(31, function (i) {
+                return _this.stripDirectionalityCharacters(_this._format(dtf_3, new Date(2017, 0, i + 1)));
+            });
+        }
+        return DEFAULT_DATE_NAMES;
+    };
+    NativeDateTimeAdapter.prototype.toIso8601 = function (date) {
+        return date.toISOString();
+    };
+    NativeDateTimeAdapter.prototype.isEqual = function (dateLeft, dateRight) {
+        if (this.isValid(dateLeft) && this.isValid(dateRight)) {
+            return dateLeft.getTime() === dateRight.getTime();
+        }
+        else {
+            return false;
+        }
+    };
+    NativeDateTimeAdapter.prototype.isSameDay = function (dateLeft, dateRight) {
+        if (this.isValid(dateLeft) && this.isValid(dateRight)) {
+            var dateLeftStartOfDay = this.clone(dateLeft);
+            var dateRightStartOfDay = this.clone(dateRight);
+            dateLeftStartOfDay.setHours(0, 0, 0, 0);
+            dateRightStartOfDay.setHours(0, 0, 0, 0);
+            return dateLeftStartOfDay.getTime() === dateRightStartOfDay.getTime();
+        }
+        else {
+            return false;
+        }
+    };
+    NativeDateTimeAdapter.prototype.isValid = function (date) {
+        return date && !isNaN(date.getTime());
+    };
+    NativeDateTimeAdapter.prototype.invalid = function () {
+        return new Date(NaN);
+    };
+    NativeDateTimeAdapter.prototype.isDateInstance = function (obj) {
+        return obj instanceof Date;
+    };
+    NativeDateTimeAdapter.prototype.addCalendarYears = function (date, amount) {
+        return this.addCalendarMonths(date, amount * 12);
+    };
+    NativeDateTimeAdapter.prototype.addCalendarMonths = function (date, amount) {
+        var result = this.clone(date);
+        amount = Number(amount);
+        var desiredMonth = result.getMonth() + amount;
+        var dateWithDesiredMonth = new Date(0);
+        dateWithDesiredMonth.setFullYear(result.getFullYear(), desiredMonth, 1);
+        dateWithDesiredMonth.setHours(0, 0, 0, 0);
+        var daysInMonth = this.getNumDaysInMonth(dateWithDesiredMonth);
+        result.setMonth(desiredMonth, Math.min(daysInMonth, result.getDate()));
+        return result;
+    };
+    NativeDateTimeAdapter.prototype.addCalendarDays = function (date, amount) {
+        var result = this.clone(date);
+        amount = Number(amount);
+        result.setDate(result.getDate() + amount);
+        return result;
+    };
+    NativeDateTimeAdapter.prototype.setHours = function (date, amount) {
+        var result = this.clone(date);
+        result.setHours(amount);
+        return result;
+    };
+    NativeDateTimeAdapter.prototype.setMinutes = function (date, amount) {
+        var result = this.clone(date);
+        result.setMinutes(amount);
+        return result;
+    };
+    NativeDateTimeAdapter.prototype.setSeconds = function (date, amount) {
+        var result = this.clone(date);
+        result.setSeconds(amount);
+        return result;
+    };
+    NativeDateTimeAdapter.prototype.createDate = function (year, month, date, hours, minutes, seconds) {
+        if (hours === void 0) { hours = 0; }
+        if (minutes === void 0) { minutes = 0; }
+        if (seconds === void 0) { seconds = 0; }
+        if (month < 0 || month > 11) {
+            throw Error("Invalid month index \"" + month + "\". Month index has to be between 0 and 11.");
+        }
+        if (date < 1) {
+            throw Error("Invalid date \"" + date + "\". Date has to be greater than 0.");
+        }
+        if (hours < 0 || hours > 23) {
+            throw Error("Invalid hours \"" + hours + "\". Hours has to be between 0 and 23.");
+        }
+        if (minutes < 0 || minutes > 59) {
+            throw Error("Invalid minutes \"" + minutes + "\". Minutes has to between 0 and 59.");
+        }
+        if (seconds < 0 || seconds > 59) {
+            throw Error("Invalid seconds \"" + seconds + "\". Seconds has to be between 0 and 59.");
+        }
+        var result = this.createDateWithOverflow(year, month, date, hours, minutes, seconds);
+        if (result.getMonth() !== month) {
+            throw Error("Invalid date \"" + date + "\" for month with index \"" + month + "\".");
+        }
+        return result;
+    };
+    NativeDateTimeAdapter.prototype.clone = function (date) {
+        return this.createDate(this.getYear(date), this.getMonth(date), this.getDate(date), this.getHours(date), this.getMinutes(date), this.getSeconds(date));
+    };
+    NativeDateTimeAdapter.prototype.now = function () {
+        return new Date();
+    };
+    NativeDateTimeAdapter.prototype.format = function (date, displayFormat) {
+        if (!this.isValid(date)) {
+            throw Error('JSNativeDate: Cannot format invalid date.');
+        }
+        if (SUPPORTS_INTL_API) {
+            if (this._clampDate && (date.getFullYear() < 1 || date.getFullYear() > 9999)) {
+                date = this.clone(date);
+                date.setFullYear(Math.max(1, Math.min(9999, date.getFullYear())));
+            }
+            displayFormat = __assign({}, displayFormat, { timeZone: 'utc' });
+            var dtf = new Intl.DateTimeFormat(this.locale, displayFormat);
+            return this.stripDirectionalityCharacters(this._format(dtf, date));
+        }
+        return this.stripDirectionalityCharacters(date.toDateString());
+    };
+    NativeDateTimeAdapter.prototype.parse = function (value, parseFormat) {
+        if (typeof value === 'number') {
+            return new Date(value);
+        }
+        return value ? new Date(Date.parse(value)) : null;
+    };
+    NativeDateTimeAdapter.prototype.deserialize = function (value) {
+        if (typeof value === 'string') {
+            if (!value) {
+                return null;
+            }
+            if (ISO_8601_REGEX.test(value)) {
+                var date = new Date(value);
+                if (this.isValid(date)) {
+                    return date;
+                }
+            }
+        }
+        return _super.prototype.deserialize.call(this, value);
+    };
+    NativeDateTimeAdapter.prototype.createDateWithOverflow = function (year, month, date, hours, minutes, seconds) {
+        if (hours === void 0) { hours = 0; }
+        if (minutes === void 0) { minutes = 0; }
+        if (seconds === void 0) { seconds = 0; }
+        var result = new Date(year, month, date, hours, minutes, seconds);
+        if (year >= 0 && year < 100) {
+            result.setFullYear(this.getYear(result) - 1900);
+        }
+        return result;
+    };
+    NativeDateTimeAdapter.prototype.stripDirectionalityCharacters = function (str) {
+        return str.replace(/[\u200e\u200f]/g, '');
+    };
+    NativeDateTimeAdapter.prototype._format = function (dtf, date) {
+        var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()));
+        return dtf.format(d);
+    };
+    NativeDateTimeAdapter.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    NativeDateTimeAdapter.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__["OWL_DATE_TIME_LOCALE"],] },] },
+        { type: _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_1__["Platform"], },
+    ]; };
+    return NativeDateTimeAdapter;
+}(_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__["DateTimeAdapter"]));
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/adapter/native-date-time-format.class.js":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/adapter/native-date-time-format.class.js ***!
+  \******************************************************************************************/
+/*! exports provided: OWL_NATIVE_DATE_TIME_FORMATS */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_NATIVE_DATE_TIME_FORMATS", function() { return OWL_NATIVE_DATE_TIME_FORMATS; });
+var OWL_NATIVE_DATE_TIME_FORMATS = {
+    parseInput: null,
+    fullPickerInput: { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' },
+    datePickerInput: { year: 'numeric', month: 'numeric', day: 'numeric' },
+    timePickerInput: { hour: 'numeric', minute: 'numeric' },
+    monthYearLabel: { year: 'numeric', month: 'short' },
+    dateA11yLabel: { year: 'numeric', month: 'long', day: 'numeric' },
+    monthYearA11yLabel: { year: 'numeric', month: 'long' },
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/adapter/native-date-time.module.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/adapter/native-date-time.module.js ***!
+  \************************************************************************************/
+/*! exports provided: NativeDateTimeModule, OwlNativeDateTimeModule, ɵ0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NativeDateTimeModule", function() { return NativeDateTimeModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlNativeDateTimeModule", function() { return OwlNativeDateTimeModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵ0", function() { return ɵ0; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_cdk_platform__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/platform */ "./node_modules/@angular/cdk/esm5/platform.es5.js");
+/* harmony import */ var _date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var _native_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./native-date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/native-date-time-adapter.class.js");
+/* harmony import */ var _date_time_format_class__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js");
+/* harmony import */ var _native_date_time_format_class__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./native-date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/native-date-time-format.class.js");
+
+
+
+
+
+
+var NativeDateTimeModule = (function () {
+    function NativeDateTimeModule() {
+    }
+    NativeDateTimeModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    imports: [_angular_cdk_platform__WEBPACK_IMPORTED_MODULE_1__["PlatformModule"]],
+                    providers: [
+                        { provide: _date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__["DateTimeAdapter"], useClass: _native_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_3__["NativeDateTimeAdapter"] },
+                    ],
+                },] },
+    ];
+    return NativeDateTimeModule;
+}());
+
+var ɵ0 = _native_date_time_format_class__WEBPACK_IMPORTED_MODULE_5__["OWL_NATIVE_DATE_TIME_FORMATS"];
+var OwlNativeDateTimeModule = (function () {
+    function OwlNativeDateTimeModule() {
+    }
+    OwlNativeDateTimeModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    imports: [NativeDateTimeModule],
+                    providers: [{ provide: _date_time_format_class__WEBPACK_IMPORTED_MODULE_4__["OWL_DATE_TIME_FORMATS"], useValue: ɵ0 }],
+                },] },
+    ];
+    return OwlNativeDateTimeModule;
+}());
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/calendar-body.component.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/calendar-body.component.js ***!
+  \****************************************************************************/
+/*! exports provided: CalendarCell, OwlCalendarBodyComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CalendarCell", function() { return CalendarCell; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlCalendarBodyComponent", function() { return OwlCalendarBodyComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+var CalendarCell = (function () {
+    function CalendarCell(value, displayValue, ariaLabel, enabled, out, cellClass) {
+        if (out === void 0) { out = false; }
+        if (cellClass === void 0) { cellClass = ''; }
+        this.value = value;
+        this.displayValue = displayValue;
+        this.ariaLabel = ariaLabel;
+        this.enabled = enabled;
+        this.out = out;
+        this.cellClass = cellClass;
+    }
+    return CalendarCell;
+}());
+
+var OwlCalendarBodyComponent = (function () {
+    function OwlCalendarBodyComponent(elmRef, ngZone) {
+        this.elmRef = elmRef;
+        this.ngZone = ngZone;
+        this.activeCell = 0;
+        this.numCols = 7;
+        this.cellRatio = 1;
+        this.select = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    Object.defineProperty(OwlCalendarBodyComponent.prototype, "owlDTCalendarBodyClass", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarBodyComponent.prototype, "isInSingleMode", {
+        get: function () {
+            return this.selectMode === 'single';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarBodyComponent.prototype, "isInRangeMode", {
+        get: function () {
+            return this.selectMode === 'range' || this.selectMode === 'rangeFrom'
+                || this.selectMode === 'rangeTo';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlCalendarBodyComponent.prototype.ngOnInit = function () {
+    };
+    OwlCalendarBodyComponent.prototype.selectCell = function (cell) {
+        this.select.emit(cell);
+    };
+    OwlCalendarBodyComponent.prototype.isActiveCell = function (rowIndex, colIndex) {
+        var cellNumber = rowIndex * this.numCols + colIndex;
+        return cellNumber === this.activeCell;
+    };
+    OwlCalendarBodyComponent.prototype.isSelected = function (value) {
+        if (!this.selectedValues || this.selectedValues.length === 0) {
+            return false;
+        }
+        if (this.isInSingleMode) {
+            return value === this.selectedValues[0];
+        }
+        if (this.isInRangeMode) {
+            var fromValue = this.selectedValues[0];
+            var toValue = this.selectedValues[1];
+            return value === fromValue || value === toValue;
+        }
+    };
+    OwlCalendarBodyComponent.prototype.isInRange = function (value) {
+        if (this.isInRangeMode) {
+            var fromValue = this.selectedValues[0];
+            var toValue = this.selectedValues[1];
+            if (fromValue !== null && toValue !== null) {
+                return value >= fromValue && value <= toValue;
+            }
+            else {
+                return value === fromValue || value === toValue;
+            }
+        }
+    };
+    OwlCalendarBodyComponent.prototype.isRangeFrom = function (value) {
+        if (this.isInRangeMode) {
+            var fromValue = this.selectedValues[0];
+            return fromValue !== null && value === fromValue;
+        }
+    };
+    OwlCalendarBodyComponent.prototype.isRangeTo = function (value) {
+        if (this.isInRangeMode) {
+            var toValue = this.selectedValues[1];
+            return toValue !== null && value === toValue;
+        }
+    };
+    OwlCalendarBodyComponent.prototype.focusActiveCell = function () {
+        var _this = this;
+        this.ngZone.runOutsideAngular(function () {
+            _this.ngZone.onStable.asObservable().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["take"])(1)).subscribe(function () {
+                _this.elmRef.nativeElement.querySelector('.owl-dt-calendar-cell-active').focus();
+            });
+        });
+    };
+    OwlCalendarBodyComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: '[owl-date-time-calendar-body]',
+                    exportAs: 'owlDateTimeCalendarBody',
+                    template: "<tr *ngFor=\"let row of rows; let rowIndex = index\" role=\"row\"><td *ngFor=\"let item of row; let colIndex = index\" class=\"owl-dt-calendar-cell {{item.cellClass}}\" [tabindex]=\"isActiveCell(rowIndex, colIndex) ? 0 : -1\" [class.owl-dt-calendar-cell-active]=\"isActiveCell(rowIndex, colIndex)\" [class.owl-dt-calendar-cell-disabled]=\"!item.enabled\" [class.owl-dt-calendar-cell-in-range]=\"isInRange(item.value)\" [class.owl-dt-calendar-cell-range-from]=\"isRangeFrom(item.value)\" [class.owl-dt-calendar-cell-range-to]=\"isRangeTo(item.value)\" [attr.aria-label]=\"item.ariaLabel\" [attr.aria-disabled]=\"!item.enabled || null\" [style.width.%]=\"100 / numCols\" [style.paddingTop.%]=\"50 * cellRatio / numCols\" [style.paddingBottom.%]=\"50 * cellRatio / numCols\" (click)=\"selectCell(item)\"><span class=\"owl-dt-calendar-cell-content\" [ngClass]=\"{\n                'owl-dt-calendar-cell-out': item.out,\n                'owl-dt-calendar-cell-today': item.value === todayValue,\n                'owl-dt-calendar-cell-selected': isSelected(item.value)\n              }\">{{item.displayValue}}</span></td></tr>",
+                    styles: [""],
+                    preserveWhitespaces: false,
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                },] },
+    ];
+    OwlCalendarBodyComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+    ]; };
+    OwlCalendarBodyComponent.propDecorators = {
+        "activeCell": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "rows": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "numCols": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "cellRatio": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "todayValue": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selectedValues": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selectMode": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "select": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "owlDTCalendarBodyClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-calendar-body',] },],
+    };
+    return OwlCalendarBodyComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/calendar-month-view.component.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/calendar-month-view.component.js ***!
+  \**********************************************************************************/
+/*! exports provided: OwlMonthViewComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlMonthViewComponent", function() { return OwlMonthViewComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _calendar_body_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calendar-body.component */ "./node_modules/ng-pick-datetime/date-time/calendar-body.component.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var _adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./adapter/date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/cdk/keycodes */ "./node_modules/@angular/cdk/esm5/keycodes.es5.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+
+
+
+
+
+
+
+var DAYS_PER_WEEK = 7;
+var WEEKS_PER_VIEW = 6;
+var OwlMonthViewComponent = (function () {
+    function OwlMonthViewComponent(cdRef, dateTimeAdapter, dateTimeFormats) {
+        this.cdRef = cdRef;
+        this.dateTimeAdapter = dateTimeAdapter;
+        this.dateTimeFormats = dateTimeFormats;
+        this.hideOtherMonths = false;
+        this._firstDayOfWeek = 0;
+        this._selectMode = 'single';
+        this._selecteds = [];
+        this.localeSub = rxjs__WEBPACK_IMPORTED_MODULE_4__["Subscription"].EMPTY;
+        this.initiated = false;
+        this.selectedDates = [];
+        this.selectedChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.userSelection = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.pickerMomentChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    Object.defineProperty(OwlMonthViewComponent.prototype, "firstDayOfWeek", {
+        get: function () {
+            return this._firstDayOfWeek;
+        },
+        set: function (val) {
+            val = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_6__["coerceNumberProperty"])(val);
+            if (val >= 0 && val <= 6 && val !== this._firstDayOfWeek) {
+                this._firstDayOfWeek = val;
+                if (this.initiated) {
+                    this.generateWeekDays();
+                    this.generateCalendar();
+                    this.cdRef.markForCheck();
+                }
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "selectMode", {
+        get: function () {
+            return this._selectMode;
+        },
+        set: function (val) {
+            this._selectMode = val;
+            if (this.initiated) {
+                this.generateCalendar();
+                this.cdRef.markForCheck();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "selected", {
+        get: function () {
+            return this._selected;
+        },
+        set: function (value) {
+            var oldSelected = this._selected;
+            value = this.dateTimeAdapter.deserialize(value);
+            this._selected = this.getValidDate(value);
+            if (!this.dateTimeAdapter.isSameDay(oldSelected, this._selected)) {
+                this.setSelectedDates();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "selecteds", {
+        get: function () {
+            return this._selecteds;
+        },
+        set: function (values) {
+            var _this = this;
+            this._selecteds = values.map(function (v) {
+                v = _this.dateTimeAdapter.deserialize(v);
+                return _this.getValidDate(v);
+            });
+            this.setSelectedDates();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "pickerMoment", {
+        get: function () {
+            return this._pickerMoment;
+        },
+        set: function (value) {
+            var oldMoment = this._pickerMoment;
+            value = this.dateTimeAdapter.deserialize(value);
+            this._pickerMoment = this.getValidDate(value) || this.dateTimeAdapter.now();
+            this.firstDateOfMonth = this.dateTimeAdapter.createDate(this.dateTimeAdapter.getYear(this._pickerMoment), this.dateTimeAdapter.getMonth(this._pickerMoment), 1);
+            if (!this.isSameMonth(oldMoment, this._pickerMoment) && this.initiated) {
+                this.generateCalendar();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "dateFilter", {
+        get: function () {
+            return this._dateFilter;
+        },
+        set: function (filter) {
+            this._dateFilter = filter;
+            if (this.initiated) {
+                this.generateCalendar();
+                this.cdRef.markForCheck();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "minDate", {
+        get: function () {
+            return this._minDate;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._minDate = this.getValidDate(value);
+            if (this.initiated) {
+                this.generateCalendar();
+                this.cdRef.markForCheck();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "maxDate", {
+        get: function () {
+            return this._maxDate;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._maxDate = this.getValidDate(value);
+            if (this.initiated) {
+                this.generateCalendar();
+                this.cdRef.markForCheck();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "weekdays", {
+        get: function () {
+            return this._weekdays;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "days", {
+        get: function () {
+            return this._days;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "activeCell", {
+        get: function () {
+            if (this.pickerMoment) {
+                return this.dateTimeAdapter.getDate(this.pickerMoment) + this.firstRowOffset - 1;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "isInSingleMode", {
+        get: function () {
+            return this.selectMode === 'single';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "isInRangeMode", {
+        get: function () {
+            return this.selectMode === 'range' || this.selectMode === 'rangeFrom'
+                || this.selectMode === 'rangeTo';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMonthViewComponent.prototype, "owlDTCalendarView", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlMonthViewComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.generateWeekDays();
+        this.localeSub = this.dateTimeAdapter.localeChanges.subscribe(function () {
+            _this.generateWeekDays();
+            _this.generateCalendar();
+            _this.cdRef.markForCheck();
+        });
+    };
+    OwlMonthViewComponent.prototype.ngAfterContentInit = function () {
+        this.generateCalendar();
+        this.initiated = true;
+    };
+    OwlMonthViewComponent.prototype.ngOnDestroy = function () {
+        this.localeSub.unsubscribe();
+    };
+    OwlMonthViewComponent.prototype.selectCalendarCell = function (cell) {
+        if (!cell.enabled || (this.hideOtherMonths && cell.out)) {
+            return;
+        }
+        this.selectDate(cell.value);
+    };
+    OwlMonthViewComponent.prototype.selectDate = function (date) {
+        var daysDiff = date - 1;
+        var selected = this.dateTimeAdapter.addCalendarDays(this.firstDateOfMonth, daysDiff);
+        this.selectedChange.emit(selected);
+        this.userSelection.emit();
+    };
+    OwlMonthViewComponent.prototype.handleCalendarKeydown = function (event) {
+        var moment;
+        switch (event.keyCode) {
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["LEFT_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarDays(this.pickerMoment, -1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["RIGHT_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarDays(this.pickerMoment, 1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["UP_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarDays(this.pickerMoment, -7);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["DOWN_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarDays(this.pickerMoment, 7);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["HOME"]:
+                moment = this.dateTimeAdapter.addCalendarDays(this.pickerMoment, 1 - this.dateTimeAdapter.getDate(this.pickerMoment));
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["END"]:
+                moment = this.dateTimeAdapter.addCalendarDays(this.pickerMoment, this.dateTimeAdapter.getNumDaysInMonth(this.pickerMoment) -
+                    this.dateTimeAdapter.getDate(this.pickerMoment));
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["PAGE_UP"]:
+                moment = event.altKey ?
+                    this.dateTimeAdapter.addCalendarYears(this.pickerMoment, -1) :
+                    this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, -1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["PAGE_DOWN"]:
+                moment = event.altKey ?
+                    this.dateTimeAdapter.addCalendarYears(this.pickerMoment, 1) :
+                    this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, 1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["ENTER"]:
+                if (!this.dateFilter || this.dateFilter(this.pickerMoment)) {
+                    this.selectDate(this.dateTimeAdapter.getDate(this.pickerMoment));
+                }
+                break;
+            default:
+                return;
+        }
+        this.focusActiveCell();
+        event.preventDefault();
+    };
+    OwlMonthViewComponent.prototype.generateWeekDays = function () {
+        var longWeekdays = this.dateTimeAdapter.getDayOfWeekNames('long');
+        var shortWeekdays = this.dateTimeAdapter.getDayOfWeekNames('short');
+        var narrowWeekdays = this.dateTimeAdapter.getDayOfWeekNames('narrow');
+        var firstDayOfWeek = this.firstDayOfWeek;
+        var weekdays = longWeekdays.map(function (long, i) {
+            return { long: long, short: shortWeekdays[i], narrow: narrowWeekdays[i] };
+        });
+        this._weekdays = weekdays.slice(firstDayOfWeek).concat(weekdays.slice(0, firstDayOfWeek));
+        this.dateNames = this.dateTimeAdapter.getDateNames();
+        return;
+    };
+    OwlMonthViewComponent.prototype.generateCalendar = function () {
+        if (!this.pickerMoment) {
+            return;
+        }
+        this.todayDate = null;
+        var startWeekdayOfMonth = this.dateTimeAdapter.getDay(this.firstDateOfMonth);
+        var firstDayOfWeek = this.firstDayOfWeek;
+        var daysDiff = 0 - (startWeekdayOfMonth + (DAYS_PER_WEEK - firstDayOfWeek)) % DAYS_PER_WEEK;
+        this.firstRowOffset = Math.abs(daysDiff);
+        this._days = [];
+        for (var i = 0; i < WEEKS_PER_VIEW; i++) {
+            var week = [];
+            for (var j = 0; j < DAYS_PER_WEEK; j++) {
+                var date = this.dateTimeAdapter.addCalendarDays(this.firstDateOfMonth, daysDiff);
+                var dateCell = this.createDateCell(date, daysDiff);
+                if (this.dateTimeAdapter.isSameDay(this.dateTimeAdapter.now(), date)) {
+                    this.todayDate = daysDiff + 1;
+                }
+                week.push(dateCell);
+                daysDiff += 1;
+            }
+            this._days.push(week);
+        }
+        this.setSelectedDates();
+    };
+    OwlMonthViewComponent.prototype.createDateCell = function (date, daysDiff) {
+        var daysInMonth = this.dateTimeAdapter.getNumDaysInMonth(this.pickerMoment);
+        var dateNum = this.dateTimeAdapter.getDate(date);
+        var dateName = dateNum.toString();
+        var ariaLabel = this.dateTimeAdapter.format(date, this.dateTimeFormats.dateA11yLabel);
+        var enabled = this.isDateEnabled(date);
+        var dayValue = daysDiff + 1;
+        var out = dayValue < 1 || dayValue > daysInMonth;
+        var cellClass = 'owl-dt-day-' + this.dateTimeAdapter.getDay(date);
+        return new _calendar_body_component__WEBPACK_IMPORTED_MODULE_1__["CalendarCell"](dayValue, dateName, ariaLabel, enabled, out, cellClass);
+    };
+    OwlMonthViewComponent.prototype.isDateEnabled = function (date) {
+        return !!date &&
+            (!this.dateFilter || this.dateFilter(date)) &&
+            (!this.minDate || this.dateTimeAdapter.compare(date, this.minDate) >= 0) &&
+            (!this.maxDate || this.dateTimeAdapter.compare(date, this.maxDate) <= 0);
+    };
+    OwlMonthViewComponent.prototype.getValidDate = function (obj) {
+        return (this.dateTimeAdapter.isDateInstance(obj) && this.dateTimeAdapter.isValid(obj)) ? obj : null;
+    };
+    OwlMonthViewComponent.prototype.isSameMonth = function (dateLeft, dateRight) {
+        return !!(dateLeft && dateRight &&
+            this.dateTimeAdapter.isValid(dateLeft) && this.dateTimeAdapter.isValid(dateRight) &&
+            this.dateTimeAdapter.getYear(dateLeft) === this.dateTimeAdapter.getYear(dateRight) &&
+            this.dateTimeAdapter.getMonth(dateLeft) === this.dateTimeAdapter.getMonth(dateRight));
+    };
+    OwlMonthViewComponent.prototype.setSelectedDates = function () {
+        var _this = this;
+        this.selectedDates = [];
+        if (!this.firstDateOfMonth) {
+            return;
+        }
+        if (this.isInSingleMode && this.selected) {
+            var dayDiff = this.dateTimeAdapter.differenceInCalendarDays(this.selected, this.firstDateOfMonth);
+            this.selectedDates[0] = dayDiff + 1;
+            return;
+        }
+        if (this.isInRangeMode && this.selecteds) {
+            this.selectedDates = this.selecteds.map(function (selected) {
+                if (_this.dateTimeAdapter.isValid(selected)) {
+                    var dayDiff = _this.dateTimeAdapter.differenceInCalendarDays(selected, _this.firstDateOfMonth);
+                    return dayDiff + 1;
+                }
+                else {
+                    return null;
+                }
+            });
+        }
+    };
+    OwlMonthViewComponent.prototype.focusActiveCell = function () {
+        this.calendarBodyElm.focusActiveCell();
+    };
+    OwlMonthViewComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'owl-date-time-month-view',
+                    exportAs: 'owlYearView',
+                    template: "<table class=\"owl-dt-calendar-table owl-dt-calendar-month-table\" [class.owl-dt-calendar-only-current-month]=\"hideOtherMonths\"><thead class=\"owl-dt-calendar-header\"><tr class=\"owl-dt-weekdays\"><th *ngFor=\"let weekday of weekdays\" [attr.aria-label]=\"weekday.long\" class=\"owl-dt-weekday\" scope=\"col\"><span>{{weekday.short}}</span></th></tr><tr><th class=\"owl-dt-calendar-table-divider\" aria-hidden=\"true\" colspan=\"7\"></th></tr></thead><tbody owl-date-time-calendar-body role=\"grid\" [rows]=\"days\" [todayValue]=\"todayDate\" [selectedValues]=\"selectedDates\" [selectMode]=\"selectMode\" [activeCell]=\"activeCell\" (keydown)=\"handleCalendarKeydown($event)\" (select)=\"selectCalendarCell($event)\"></tbody></table>",
+                    styles: [""],
+                    preserveWhitespaces: false,
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                },] },
+    ];
+    OwlMonthViewComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_3__["OWL_DATE_TIME_FORMATS"],] },] },
+    ]; };
+    OwlMonthViewComponent.propDecorators = {
+        "hideOtherMonths": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "firstDayOfWeek": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selectMode": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selecteds": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "pickerMoment": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "dateFilter": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "minDate": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "maxDate": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selectedChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "userSelection": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "pickerMomentChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "calendarBodyElm": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: [_calendar_body_component__WEBPACK_IMPORTED_MODULE_1__["OwlCalendarBodyComponent"],] },],
+        "owlDTCalendarView": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-calendar-view',] },],
+    };
+    return OwlMonthViewComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/calendar-multi-year-view.component.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/calendar-multi-year-view.component.js ***!
+  \***************************************************************************************/
+/*! exports provided: YEARS_PER_ROW, YEAR_ROWS, OwlMultiYearViewComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "YEARS_PER_ROW", function() { return YEARS_PER_ROW; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "YEAR_ROWS", function() { return YEAR_ROWS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlMultiYearViewComponent", function() { return OwlMultiYearViewComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var _calendar_body_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./calendar-body.component */ "./node_modules/ng-pick-datetime/date-time/calendar-body.component.js");
+/* harmony import */ var _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/keycodes */ "./node_modules/@angular/cdk/esm5/keycodes.es5.js");
+/* harmony import */ var _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./date-time-picker-intl.service */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-intl.service.js");
+
+
+
+
+
+var YEARS_PER_ROW = 3;
+var YEAR_ROWS = 7;
+var OwlMultiYearViewComponent = (function () {
+    function OwlMultiYearViewComponent(cdRef, pickerIntl, dateTimeAdapter) {
+        this.cdRef = cdRef;
+        this.pickerIntl = pickerIntl;
+        this.dateTimeAdapter = dateTimeAdapter;
+        this._selectMode = 'single';
+        this._selecteds = [];
+        this.initiated = false;
+        this.change = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.yearSelected = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.pickerMomentChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.keyboardEnter = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "selectMode", {
+        get: function () {
+            return this._selectMode;
+        },
+        set: function (val) {
+            this._selectMode = val;
+            if (this.initiated) {
+                this.setSelectedYears();
+                this.cdRef.markForCheck();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "selected", {
+        get: function () {
+            return this._selected;
+        },
+        set: function (value) {
+            var oldSelected = this._selected;
+            value = this.dateTimeAdapter.deserialize(value);
+            this._selected = this.getValidDate(value);
+            if (!this.dateTimeAdapter.isSameDay(oldSelected, this._selected)) {
+                this.setSelectedYears();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "selecteds", {
+        get: function () {
+            return this._selecteds;
+        },
+        set: function (values) {
+            var _this = this;
+            this._selecteds = values.map(function (v) {
+                v = _this.dateTimeAdapter.deserialize(v);
+                return _this.getValidDate(v);
+            });
+            this.setSelectedYears();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "pickerMoment", {
+        get: function () {
+            return this._pickerMoment;
+        },
+        set: function (value) {
+            var oldMoment = this._pickerMoment;
+            value = this.dateTimeAdapter.deserialize(value);
+            this._pickerMoment = this.getValidDate(value) || this.dateTimeAdapter.now();
+            if (oldMoment && this._pickerMoment &&
+                !this.isSameYearList(oldMoment, this._pickerMoment)) {
+                this.generateYearList();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "dateFilter", {
+        get: function () {
+            return this._dateFilter;
+        },
+        set: function (filter) {
+            this._dateFilter = filter;
+            if (this.initiated) {
+                this.generateYearList();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "minDate", {
+        get: function () {
+            return this._minDate;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._minDate = this.getValidDate(value);
+            if (this.initiated) {
+                this.generateYearList();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "maxDate", {
+        get: function () {
+            return this._maxDate;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._maxDate = this.getValidDate(value);
+            if (this.initiated) {
+                this.generateYearList();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "todayYear", {
+        get: function () {
+            return this._todayYear;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "years", {
+        get: function () {
+            return this._years;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "selectedYears", {
+        get: function () {
+            return this._selectedYears;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "isInSingleMode", {
+        get: function () {
+            return this.selectMode === 'single';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "isInRangeMode", {
+        get: function () {
+            return this.selectMode === 'range' || this.selectMode === 'rangeFrom'
+                || this.selectMode === 'rangeTo';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "activeCell", {
+        get: function () {
+            if (this._pickerMoment) {
+                return this.dateTimeAdapter.getYear(this._pickerMoment) % (YEARS_PER_ROW * YEAR_ROWS);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "tableHeader", {
+        get: function () {
+            if (this._years && this._years.length > 0) {
+                return this._years[0][0].displayValue + " ~ " + this._years[YEAR_ROWS - 1][YEARS_PER_ROW - 1].displayValue;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "prevButtonLabel", {
+        get: function () {
+            return this.pickerIntl.prevMultiYearLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "nextButtonLabel", {
+        get: function () {
+            return this.pickerIntl.nextMultiYearLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "owlDTCalendarView", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlMultiYearViewComponent.prototype, "owlDTCalendarMultiYearView", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlMultiYearViewComponent.prototype.ngOnInit = function () {
+    };
+    OwlMultiYearViewComponent.prototype.ngAfterContentInit = function () {
+        this._todayYear = this.dateTimeAdapter.getYear(this.dateTimeAdapter.now());
+        this.generateYearList();
+        this.initiated = true;
+    };
+    OwlMultiYearViewComponent.prototype.selectCalendarCell = function (cell) {
+        this.selectYear(cell.value);
+    };
+    OwlMultiYearViewComponent.prototype.selectYear = function (year) {
+        this.yearSelected.emit(this.dateTimeAdapter.createDate(year, 0, 1));
+        var firstDateOfMonth = this.dateTimeAdapter.createDate(year, this.dateTimeAdapter.getMonth(this.pickerMoment), 1);
+        var daysInMonth = this.dateTimeAdapter.getNumDaysInMonth(firstDateOfMonth);
+        var selected = this.dateTimeAdapter.createDate(year, this.dateTimeAdapter.getMonth(this.pickerMoment), Math.min(daysInMonth, this.dateTimeAdapter.getDate(this.pickerMoment)), this.dateTimeAdapter.getHours(this.pickerMoment), this.dateTimeAdapter.getMinutes(this.pickerMoment), this.dateTimeAdapter.getSeconds(this.pickerMoment));
+        this.change.emit(selected);
+    };
+    OwlMultiYearViewComponent.prototype.prevYearList = function (event) {
+        this._pickerMoment = this.dateTimeAdapter.addCalendarYears(this.pickerMoment, -1 * YEAR_ROWS * YEARS_PER_ROW);
+        this.generateYearList();
+        event.preventDefault();
+    };
+    OwlMultiYearViewComponent.prototype.nextYearList = function (event) {
+        this._pickerMoment = this.dateTimeAdapter.addCalendarYears(this.pickerMoment, YEAR_ROWS * YEARS_PER_ROW);
+        this.generateYearList();
+        event.preventDefault();
+    };
+    OwlMultiYearViewComponent.prototype.generateYearList = function () {
+        this._years = [];
+        var pickerMomentYear = this.dateTimeAdapter.getYear(this._pickerMoment);
+        var offset = pickerMomentYear % (YEARS_PER_ROW * YEAR_ROWS);
+        for (var i = 0; i < YEAR_ROWS; i++) {
+            var row = [];
+            for (var j = 0; j < YEARS_PER_ROW; j++) {
+                var year = pickerMomentYear - offset + (j + i * YEARS_PER_ROW);
+                var yearCell = this.createYearCell(year);
+                row.push(yearCell);
+            }
+            this._years.push(row);
+        }
+        return;
+    };
+    OwlMultiYearViewComponent.prototype.previousEnabled = function () {
+        if (!this.minDate) {
+            return true;
+        }
+        return !this.minDate || !this.isSameYearList(this._pickerMoment, this.minDate);
+    };
+    OwlMultiYearViewComponent.prototype.nextEnabled = function () {
+        return !this.maxDate || !this.isSameYearList(this._pickerMoment, this.maxDate);
+    };
+    OwlMultiYearViewComponent.prototype.handleCalendarKeydown = function (event) {
+        var moment;
+        switch (event.keyCode) {
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["LEFT_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this._pickerMoment, -1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["RIGHT_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this._pickerMoment, 1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["UP_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this._pickerMoment, -1 * YEARS_PER_ROW);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["DOWN_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this._pickerMoment, YEARS_PER_ROW);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["HOME"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this._pickerMoment, -this.dateTimeAdapter.getYear(this._pickerMoment) % (YEARS_PER_ROW * YEAR_ROWS));
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["END"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this._pickerMoment, (YEARS_PER_ROW * YEAR_ROWS) - this.dateTimeAdapter.getYear(this._pickerMoment) % (YEARS_PER_ROW * YEAR_ROWS) - 1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["PAGE_UP"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this.pickerMoment, event.altKey ? -10 * (YEARS_PER_ROW * YEAR_ROWS) : -1 * (YEARS_PER_ROW * YEAR_ROWS));
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["PAGE_DOWN"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this.pickerMoment, event.altKey ? 10 * (YEARS_PER_ROW * YEAR_ROWS) : (YEARS_PER_ROW * YEAR_ROWS));
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_3__["ENTER"]:
+                this.selectYear(this.dateTimeAdapter.getYear(this._pickerMoment));
+                this.keyboardEnter.emit();
+                break;
+            default:
+                return;
+        }
+        this.focusActiveCell();
+        event.preventDefault();
+    };
+    OwlMultiYearViewComponent.prototype.createYearCell = function (year) {
+        var startDateOfYear = this.dateTimeAdapter.createDate(year, 0, 1);
+        var ariaLabel = this.dateTimeAdapter.getYearName(startDateOfYear);
+        var cellClass = 'owl-dt-year-' + year;
+        return new _calendar_body_component__WEBPACK_IMPORTED_MODULE_2__["CalendarCell"](year, year.toString(), ariaLabel, this.isYearEnabled(year), false, cellClass);
+    };
+    OwlMultiYearViewComponent.prototype.setSelectedYears = function () {
+        var _this = this;
+        this._selectedYears = [];
+        if (this.isInSingleMode && this.selected) {
+            this._selectedYears[0] = this.dateTimeAdapter.getYear(this.selected);
+        }
+        if (this.isInRangeMode && this.selecteds) {
+            this._selectedYears = this.selecteds.map(function (selected) {
+                if (_this.dateTimeAdapter.isValid(selected)) {
+                    return _this.dateTimeAdapter.getYear(selected);
+                }
+                else {
+                    return null;
+                }
+            });
+        }
+    };
+    OwlMultiYearViewComponent.prototype.isYearEnabled = function (year) {
+        if (year === undefined || year === null ||
+            (this.maxDate && year > this.dateTimeAdapter.getYear(this.maxDate)) ||
+            (this.minDate && year < this.dateTimeAdapter.getYear(this.minDate))) {
+            return false;
+        }
+        if (!this.dateFilter) {
+            return true;
+        }
+        var firstOfYear = this.dateTimeAdapter.createDate(year, 0, 1);
+        for (var date = firstOfYear; this.dateTimeAdapter.getYear(date) == year; date = this.dateTimeAdapter.addCalendarDays(date, 1)) {
+            if (this.dateFilter(date)) {
+                return true;
+            }
+        }
+        return false;
+    };
+    OwlMultiYearViewComponent.prototype.isSameYearList = function (date1, date2) {
+        return Math.floor(this.dateTimeAdapter.getYear(date1) / (YEARS_PER_ROW * YEAR_ROWS)) ===
+            Math.floor(this.dateTimeAdapter.getYear(date2) / (YEARS_PER_ROW * YEAR_ROWS));
+    };
+    OwlMultiYearViewComponent.prototype.getValidDate = function (obj) {
+        return (this.dateTimeAdapter.isDateInstance(obj) && this.dateTimeAdapter.isValid(obj)) ? obj : null;
+    };
+    OwlMultiYearViewComponent.prototype.focusActiveCell = function () {
+        this.calendarBodyElm.focusActiveCell();
+    };
+    OwlMultiYearViewComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'owl-date-time-multi-year-view',
+                    template: "<button class=\"owl-dt-control-button owl-dt-control-arrow-button\" [disabled]=\"!previousEnabled()\" [attr.aria-label]=\"prevButtonLabel\" type=\"button\" tabindex=\"0\" (click)=\"prevYearList($event)\"><span class=\"owl-dt-control-button-content\" tabindex=\"-1\"><!-- <editor-fold desc=\"SVG Arrow Left\"> --> <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 250.738 250.738\" style=\"enable-background:new 0 0 250.738 250.738;\" xml:space=\"preserve\" width=\"100%\" height=\"100%\"><path style=\"fill-rule: evenodd; clip-rule: evenodd;\" d=\"M96.633,125.369l95.053-94.533c7.101-7.055,7.101-18.492,0-25.546   c-7.1-7.054-18.613-7.054-25.714,0L58.989,111.689c-3.784,3.759-5.487,8.759-5.238,13.68c-0.249,4.922,1.454,9.921,5.238,13.681   l106.983,106.398c7.101,7.055,18.613,7.055,25.714,0c7.101-7.054,7.101-18.491,0-25.544L96.633,125.369z\"/></svg><!-- </editor-fold> --></span></button><table class=\"owl-dt-calendar-table owl-dt-calendar-multi-year-table\"><thead class=\"owl-dt-calendar-header\"><tr><th colspan=\"3\">{{tableHeader}}</th></tr></thead><tbody owl-date-time-calendar-body role=\"grid\" [rows]=\"years\" [numCols]=\"3\" [cellRatio]=\"3 / 7\" [activeCell]=\"activeCell\" [todayValue]=\"todayYear\" [selectedValues]=\"selectedYears\" [selectMode]=\"selectMode\" (keydown)=\"handleCalendarKeydown($event)\" (select)=\"selectCalendarCell($event)\"></tbody></table><button class=\"owl-dt-control-button owl-dt-control-arrow-button\" [disabled]=\"!nextEnabled()\" [attr.aria-label]=\"nextButtonLabel\" type=\"button\" tabindex=\"0\" (click)=\"nextYearList($event)\"><span class=\"owl-dt-control-button-content\" tabindex=\"-1\"><!-- <editor-fold desc=\"SVG Arrow Right\"> --> <svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 250.738 250.738\" style=\"enable-background:new 0 0 250.738 250.738;\" xml:space=\"preserve\"><path style=\"fill-rule:evenodd;clip-rule:evenodd;\" d=\"M191.75,111.689L84.766,5.291c-7.1-7.055-18.613-7.055-25.713,0\n                c-7.101,7.054-7.101,18.49,0,25.544l95.053,94.534l-95.053,94.533c-7.101,7.054-7.101,18.491,0,25.545\n                c7.1,7.054,18.613,7.054,25.713,0L191.75,139.05c3.784-3.759,5.487-8.759,5.238-13.681\n                C197.237,120.447,195.534,115.448,191.75,111.689z\"/></svg><!-- </editor-fold> --></span></button>",
+                    styles: [""],
+                    preserveWhitespaces: false,
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                },] },
+    ];
+    OwlMultiYearViewComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_4__["OwlDateTimeIntl"], },
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_1__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+    ]; };
+    OwlMultiYearViewComponent.propDecorators = {
+        "selectMode": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selecteds": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "pickerMoment": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "dateFilter": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "minDate": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "maxDate": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "change": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "yearSelected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "pickerMomentChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "keyboardEnter": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "calendarBodyElm": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: [_calendar_body_component__WEBPACK_IMPORTED_MODULE_2__["OwlCalendarBodyComponent"],] },],
+        "owlDTCalendarView": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-calendar-view',] },],
+        "owlDTCalendarMultiYearView": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-calendar-multi-year-view',] },],
+    };
+    return OwlMultiYearViewComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/calendar-year-view.component.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/calendar-year-view.component.js ***!
+  \*********************************************************************************/
+/*! exports provided: OwlYearViewComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlYearViewComponent", function() { return OwlYearViewComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _calendar_body_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calendar-body.component */ "./node_modules/ng-pick-datetime/date-time/calendar-body.component.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var _adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./adapter/date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/cdk/keycodes */ "./node_modules/@angular/cdk/esm5/keycodes.es5.js");
+
+
+
+
+
+
+var MONTHS_PER_YEAR = 12;
+var MONTHS_PER_ROW = 3;
+var OwlYearViewComponent = (function () {
+    function OwlYearViewComponent(cdRef, dateTimeAdapter, dateTimeFormats) {
+        this.cdRef = cdRef;
+        this.dateTimeAdapter = dateTimeAdapter;
+        this.dateTimeFormats = dateTimeFormats;
+        this._selectMode = 'single';
+        this._selecteds = [];
+        this.localeSub = rxjs__WEBPACK_IMPORTED_MODULE_4__["Subscription"].EMPTY;
+        this.initiated = false;
+        this.selectedMonths = [];
+        this.change = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.monthSelected = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.pickerMomentChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.keyboardEnter = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.monthNames = this.dateTimeAdapter.getMonthNames('short');
+    }
+    Object.defineProperty(OwlYearViewComponent.prototype, "selectMode", {
+        get: function () {
+            return this._selectMode;
+        },
+        set: function (val) {
+            this._selectMode = val;
+            if (this.initiated) {
+                this.generateMonthList();
+                this.cdRef.markForCheck();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "selected", {
+        get: function () {
+            return this._selected;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._selected = this.getValidDate(value);
+            this.setSelectedMonths();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "selecteds", {
+        get: function () {
+            return this._selecteds;
+        },
+        set: function (values) {
+            this._selecteds = [];
+            for (var i = 0; i < values.length; i++) {
+                var value = this.dateTimeAdapter.deserialize(values[i]);
+                this._selecteds.push(this.getValidDate(value));
+            }
+            this.setSelectedMonths();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "pickerMoment", {
+        get: function () {
+            return this._pickerMoment;
+        },
+        set: function (value) {
+            var oldMoment = this._pickerMoment;
+            value = this.dateTimeAdapter.deserialize(value);
+            this._pickerMoment = this.getValidDate(value) || this.dateTimeAdapter.now();
+            if (!this.hasSameYear(oldMoment, this._pickerMoment) && this.initiated) {
+                this.generateMonthList();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "dateFilter", {
+        get: function () {
+            return this._dateFilter;
+        },
+        set: function (filter) {
+            this._dateFilter = filter;
+            if (this.initiated) {
+                this.generateMonthList();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "minDate", {
+        get: function () {
+            return this._minDate;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._minDate = this.getValidDate(value);
+            if (this.initiated) {
+                this.generateMonthList();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "maxDate", {
+        get: function () {
+            return this._maxDate;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._maxDate = this.getValidDate(value);
+            if (this.initiated) {
+                this.generateMonthList();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "months", {
+        get: function () {
+            return this._months;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "activeCell", {
+        get: function () {
+            if (this._pickerMoment) {
+                return this.dateTimeAdapter.getMonth(this._pickerMoment);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "isInSingleMode", {
+        get: function () {
+            return this.selectMode === 'single';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "isInRangeMode", {
+        get: function () {
+            return this.selectMode === 'range' || this.selectMode === 'rangeFrom'
+                || this.selectMode === 'rangeTo';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlYearViewComponent.prototype, "owlDTCalendarView", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlYearViewComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.localeSub = this.dateTimeAdapter.localeChanges.subscribe(function () {
+            _this.generateMonthList();
+            _this.cdRef.markForCheck();
+        });
+    };
+    OwlYearViewComponent.prototype.ngAfterContentInit = function () {
+        this.generateMonthList();
+        this.initiated = true;
+    };
+    OwlYearViewComponent.prototype.ngOnDestroy = function () {
+        this.localeSub.unsubscribe();
+    };
+    OwlYearViewComponent.prototype.selectCalendarCell = function (cell) {
+        this.selectMonth(cell.value);
+    };
+    OwlYearViewComponent.prototype.selectMonth = function (month) {
+        var firstDateOfMonth = this.dateTimeAdapter.createDate(this.dateTimeAdapter.getYear(this.pickerMoment), month, 1);
+        this.monthSelected.emit(firstDateOfMonth);
+        var daysInMonth = this.dateTimeAdapter.getNumDaysInMonth(firstDateOfMonth);
+        var result = this.dateTimeAdapter.createDate(this.dateTimeAdapter.getYear(this.pickerMoment), month, Math.min(daysInMonth, this.dateTimeAdapter.getDate(this.pickerMoment)), this.dateTimeAdapter.getHours(this.pickerMoment), this.dateTimeAdapter.getMinutes(this.pickerMoment), this.dateTimeAdapter.getSeconds(this.pickerMoment));
+        this.change.emit(result);
+    };
+    OwlYearViewComponent.prototype.handleCalendarKeydown = function (event) {
+        var moment;
+        switch (event.keyCode) {
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["LEFT_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, -1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["RIGHT_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, 1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["UP_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, -3);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["DOWN_ARROW"]:
+                moment = this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, 3);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["HOME"]:
+                moment = this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, -this.dateTimeAdapter.getMonth(this.pickerMoment));
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["END"]:
+                moment = this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, 11 - this.dateTimeAdapter.getMonth(this.pickerMoment));
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["PAGE_UP"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this.pickerMoment, event.altKey ? -10 : -1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["PAGE_DOWN"]:
+                moment = this.dateTimeAdapter.addCalendarYears(this.pickerMoment, event.altKey ? 10 : 1);
+                this.pickerMomentChange.emit(moment);
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_5__["ENTER"]:
+                this.selectMonth(this.dateTimeAdapter.getMonth(this.pickerMoment));
+                this.keyboardEnter.emit();
+                break;
+            default:
+                return;
+        }
+        this.focusActiveCell();
+        event.preventDefault();
+    };
+    OwlYearViewComponent.prototype.generateMonthList = function () {
+        if (!this.pickerMoment) {
+            return;
+        }
+        this.setSelectedMonths();
+        this.todayMonth = this.getMonthInCurrentYear(this.dateTimeAdapter.now());
+        this._months = [];
+        for (var i = 0; i < MONTHS_PER_YEAR / MONTHS_PER_ROW; i++) {
+            var row = [];
+            for (var j = 0; j < MONTHS_PER_ROW; j++) {
+                var month = j + i * MONTHS_PER_ROW;
+                var monthCell = this.createMonthCell(month);
+                row.push(monthCell);
+            }
+            this._months.push(row);
+        }
+        return;
+    };
+    OwlYearViewComponent.prototype.createMonthCell = function (month) {
+        var startDateOfMonth = this.dateTimeAdapter.createDate(this.dateTimeAdapter.getYear(this.pickerMoment), month, 1);
+        var ariaLabel = this.dateTimeAdapter.format(startDateOfMonth, this.dateTimeFormats.monthYearA11yLabel);
+        var cellClass = 'owl-dt-month-' + month;
+        return new _calendar_body_component__WEBPACK_IMPORTED_MODULE_1__["CalendarCell"](month, this.monthNames[month], ariaLabel, this.isMonthEnabled(month), false, cellClass);
+    };
+    OwlYearViewComponent.prototype.isMonthEnabled = function (month) {
+        var firstDateOfMonth = this.dateTimeAdapter.createDate(this.dateTimeAdapter.getYear(this.pickerMoment), month, 1);
+        for (var date = firstDateOfMonth; this.dateTimeAdapter.getMonth(date) === month; date = this.dateTimeAdapter.addCalendarDays(date, 1)) {
+            if (!!date &&
+                (!this.dateFilter || this.dateFilter(date)) &&
+                (!this.minDate || this.dateTimeAdapter.compare(date, this.minDate) >= 0) &&
+                (!this.maxDate || this.dateTimeAdapter.compare(date, this.maxDate) <= 0)) {
+                return true;
+            }
+        }
+        return false;
+    };
+    OwlYearViewComponent.prototype.getMonthInCurrentYear = function (date) {
+        if (this.getValidDate(date) && this.getValidDate(this._pickerMoment)) {
+            var result = this.dateTimeAdapter.compareYear(date, this._pickerMoment);
+            if (result < 0) {
+                return -1;
+            }
+            else if (result > 0) {
+                return 12;
+            }
+            else {
+                return this.dateTimeAdapter.getMonth(date);
+            }
+        }
+        else {
+            return null;
+        }
+    };
+    OwlYearViewComponent.prototype.setSelectedMonths = function () {
+        this.selectedMonths = [];
+        if (this.isInSingleMode && this.selected) {
+            this.selectedMonths[0] = this.getMonthInCurrentYear(this.selected);
+        }
+        if (this.isInRangeMode && this.selecteds) {
+            this.selectedMonths[0] = this.getMonthInCurrentYear(this.selecteds[0]);
+            this.selectedMonths[1] = this.getMonthInCurrentYear(this.selecteds[1]);
+        }
+    };
+    OwlYearViewComponent.prototype.hasSameYear = function (dateLeft, dateRight) {
+        return !!(dateLeft && dateRight &&
+            this.dateTimeAdapter.getYear(dateLeft) === this.dateTimeAdapter.getYear(dateRight));
+    };
+    OwlYearViewComponent.prototype.getValidDate = function (obj) {
+        return (this.dateTimeAdapter.isDateInstance(obj) && this.dateTimeAdapter.isValid(obj)) ? obj : null;
+    };
+    OwlYearViewComponent.prototype.focusActiveCell = function () {
+        this.calendarBodyElm.focusActiveCell();
+    };
+    OwlYearViewComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'owl-date-time-year-view',
+                    exportAs: 'owlMonthView',
+                    template: "<table class=\"owl-dt-calendar-table owl-dt-calendar-year-table\"><thead class=\"owl-dt-calendar-header\"><tr><th class=\"owl-dt-calendar-table-divider\" aria-hidden=\"true\" colspan=\"3\"></th></tr></thead><tbody owl-date-time-calendar-body role=\"grid\" [rows]=\"months\" [numCols]=\"3\" [cellRatio]=\"3 / 7\" [activeCell]=\"activeCell\" [todayValue]=\"todayMonth\" [selectedValues]=\"selectedMonths\" [selectMode]=\"selectMode\" (keydown)=\"handleCalendarKeydown($event)\" (select)=\"selectCalendarCell($event)\"></tbody></table>",
+                    styles: [""],
+                    preserveWhitespaces: false,
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                },] },
+    ];
+    OwlYearViewComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_3__["OWL_DATE_TIME_FORMATS"],] },] },
+    ]; };
+    OwlYearViewComponent.propDecorators = {
+        "selectMode": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selecteds": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "pickerMoment": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "dateFilter": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "minDate": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "maxDate": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "change": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "monthSelected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "pickerMomentChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "keyboardEnter": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "calendarBodyElm": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: [_calendar_body_component__WEBPACK_IMPORTED_MODULE_1__["OwlCalendarBodyComponent"],] },],
+        "owlDTCalendarView": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-calendar-view',] },],
+    };
+    return OwlYearViewComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/calendar.component.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/calendar.component.js ***!
+  \***********************************************************************/
+/*! exports provided: OwlCalendarComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlCalendarComponent", function() { return OwlCalendarComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./date-time-picker-intl.service */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-intl.service.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var _adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./adapter/date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+
+
+
+
+
+
+var OwlCalendarComponent = (function () {
+    function OwlCalendarComponent(elmRef, pickerIntl, ngZone, cdRef, dateTimeAdapter, dateTimeFormats) {
+        var _this = this;
+        this.elmRef = elmRef;
+        this.pickerIntl = pickerIntl;
+        this.ngZone = ngZone;
+        this.cdRef = cdRef;
+        this.dateTimeAdapter = dateTimeAdapter;
+        this.dateTimeFormats = dateTimeFormats;
+        this.firstDayOfWeek = 0;
+        this._selecteds = [];
+        this.startView = 'month';
+        this.pickerMomentChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.selectedChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.userSelection = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.yearSelected = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.monthSelected = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.dateFilterForViews = function (date) {
+            return !!date &&
+                (!_this.dateFilter || _this.dateFilter(date)) &&
+                (!_this.minDate || _this.dateTimeAdapter.compare(date, _this.minDate) >= 0) &&
+                (!_this.maxDate || _this.dateTimeAdapter.compare(date, _this.maxDate) <= 0);
+        };
+        this.intlChangesSub = rxjs__WEBPACK_IMPORTED_MODULE_5__["Subscription"].EMPTY;
+        this.moveFocusOnNextTick = false;
+        this.intlChangesSub = this.pickerIntl.changes.subscribe(function () {
+            _this.cdRef.markForCheck();
+        });
+    }
+    Object.defineProperty(OwlCalendarComponent.prototype, "minDate", {
+        get: function () {
+            return this._minDate;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            value = this.getValidDate(value);
+            this._minDate = value ?
+                this.dateTimeAdapter.createDate(this.dateTimeAdapter.getYear(value), this.dateTimeAdapter.getMonth(value), this.dateTimeAdapter.getDate(value)) : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "maxDate", {
+        get: function () {
+            return this._maxDate;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            value = this.getValidDate(value);
+            this._maxDate = value ?
+                this.dateTimeAdapter.createDate(this.dateTimeAdapter.getYear(value), this.dateTimeAdapter.getMonth(value), this.dateTimeAdapter.getDate(value)) : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "pickerMoment", {
+        get: function () {
+            return this._pickerMoment;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._pickerMoment = this.getValidDate(value) || this.dateTimeAdapter.now();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "selected", {
+        get: function () {
+            return this._selected;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._selected = this.getValidDate(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "selecteds", {
+        get: function () {
+            return this._selecteds;
+        },
+        set: function (values) {
+            var _this = this;
+            this._selecteds = values.map(function (v) {
+                v = _this.dateTimeAdapter.deserialize(v);
+                return _this.getValidDate(v);
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "periodButtonText", {
+        get: function () {
+            return this.isMonthView ? this.dateTimeAdapter.format(this.pickerMoment, this.dateTimeFormats.monthYearLabel) :
+                this.dateTimeAdapter.getYearName(this.pickerMoment);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "periodButtonLabel", {
+        get: function () {
+            return this.isMonthView ? this.pickerIntl.switchToMultiYearViewLabel :
+                this.pickerIntl.switchToMonthViewLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "prevButtonLabel", {
+        get: function () {
+            if (this._currentView === 'month') {
+                return this.pickerIntl.prevMonthLabel;
+            }
+            else if (this._currentView === 'year') {
+                return this.pickerIntl.prevYearLabel;
+            }
+            else {
+                return null;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "nextButtonLabel", {
+        get: function () {
+            if (this._currentView === 'month') {
+                return this.pickerIntl.nextMonthLabel;
+            }
+            else if (this._currentView === 'year') {
+                return this.pickerIntl.nextYearLabel;
+            }
+            else {
+                return null;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "currentView", {
+        get: function () {
+            return this._currentView;
+        },
+        set: function (view) {
+            this._currentView = view;
+            this.moveFocusOnNextTick = true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "isInSingleMode", {
+        get: function () {
+            return this.selectMode === 'single';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "isInRangeMode", {
+        get: function () {
+            return this.selectMode === 'range' || this.selectMode === 'rangeFrom'
+                || this.selectMode === 'rangeTo';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "showControlArrows", {
+        get: function () {
+            return this._currentView !== 'multi-years';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "isMonthView", {
+        get: function () {
+            return this._currentView === 'month';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlCalendarComponent.prototype, "owlDTCalendarClass", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlCalendarComponent.prototype.ngOnInit = function () {
+    };
+    OwlCalendarComponent.prototype.ngAfterContentInit = function () {
+        this._currentView = this.startView;
+    };
+    OwlCalendarComponent.prototype.ngAfterViewChecked = function () {
+        if (this.moveFocusOnNextTick) {
+            this.moveFocusOnNextTick = false;
+            this.focusActiveCell();
+        }
+    };
+    OwlCalendarComponent.prototype.ngOnDestroy = function () {
+        this.intlChangesSub.unsubscribe();
+    };
+    OwlCalendarComponent.prototype.toggleViews = function () {
+        this.currentView = this._currentView == 'month' ? 'multi-years' : 'month';
+    };
+    OwlCalendarComponent.prototype.previousClicked = function () {
+        this.pickerMoment = this.isMonthView ?
+            this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, -1) :
+            this.dateTimeAdapter.addCalendarYears(this.pickerMoment, -1);
+        this.pickerMomentChange.emit(this.pickerMoment);
+    };
+    OwlCalendarComponent.prototype.nextClicked = function () {
+        this.pickerMoment = this.isMonthView ?
+            this.dateTimeAdapter.addCalendarMonths(this.pickerMoment, 1) :
+            this.dateTimeAdapter.addCalendarYears(this.pickerMoment, 1);
+        this.pickerMomentChange.emit(this.pickerMoment);
+    };
+    OwlCalendarComponent.prototype.dateSelected = function (date) {
+        if (!this.dateFilterForViews(date)) {
+            return;
+        }
+        this.selectedChange.emit(date);
+    };
+    OwlCalendarComponent.prototype.goToDateInView = function (date, view) {
+        this.handlePickerMomentChange(date);
+        this.currentView = view;
+        return;
+    };
+    OwlCalendarComponent.prototype.handlePickerMomentChange = function (date) {
+        this.pickerMoment = this.dateTimeAdapter.clampDate(date, this.minDate, this.maxDate);
+        this.pickerMomentChange.emit(this.pickerMoment);
+        return;
+    };
+    OwlCalendarComponent.prototype.userSelected = function () {
+        this.userSelection.emit();
+    };
+    OwlCalendarComponent.prototype.prevButtonEnabled = function () {
+        return !this.minDate || !this.isSameView(this.pickerMoment, this.minDate);
+    };
+    OwlCalendarComponent.prototype.nextButtonEnabled = function () {
+        return !this.maxDate || !this.isSameView(this.pickerMoment, this.maxDate);
+    };
+    OwlCalendarComponent.prototype.focusActiveCell = function () {
+        var _this = this;
+        this.ngZone.runOutsideAngular(function () {
+            _this.ngZone.onStable.asObservable().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["take"])(1)).subscribe(function () {
+                _this.elmRef.nativeElement.querySelector('.owl-dt-calendar-cell-active').focus();
+            });
+        });
+    };
+    OwlCalendarComponent.prototype.selectYearInMultiYearView = function (normalizedYear) {
+        this.yearSelected.emit(normalizedYear);
+    };
+    OwlCalendarComponent.prototype.selectMonthInYearView = function (normalizedMonth) {
+        this.monthSelected.emit(normalizedMonth);
+    };
+    OwlCalendarComponent.prototype.isSameView = function (date1, date2) {
+        if (this._currentView === 'month') {
+            return !!(date1 && date2 &&
+                this.dateTimeAdapter.getYear(date1) === this.dateTimeAdapter.getYear(date2) &&
+                this.dateTimeAdapter.getMonth(date1) === this.dateTimeAdapter.getMonth(date2));
+        }
+        else if (this._currentView === 'year') {
+            return !!(date1 && date2 &&
+                this.dateTimeAdapter.getYear(date1) === this.dateTimeAdapter.getYear(date2));
+        }
+        else {
+            return false;
+        }
+    };
+    OwlCalendarComponent.prototype.getValidDate = function (obj) {
+        return (this.dateTimeAdapter.isDateInstance(obj) && this.dateTimeAdapter.isValid(obj)) ? obj : null;
+    };
+    OwlCalendarComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'owl-date-time-calendar',
+                    exportAs: 'owlDateTimeCalendar',
+                    template: "<div class=\"owl-dt-calendar-control\"><!-- focus when keyboard tab (http://kizu.ru/en/blog/keyboard-only-focus/#x) --> <button class=\"owl-dt-control owl-dt-control-button owl-dt-control-arrow-button\" type=\"button\" tabindex=\"0\" [style.visibility]=\"showControlArrows? 'visible': 'hidden'\" [disabled]=\"!prevButtonEnabled()\" [attr.aria-label]=\"prevButtonLabel\" (click)=\"previousClicked()\"><span class=\"owl-dt-control-content owl-dt-control-button-content\" tabindex=\"-1\"><!-- <editor-fold desc=\"SVG Arrow Left\"> --> <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 250.738 250.738\" style=\"enable-background:new 0 0 250.738 250.738;\" xml:space=\"preserve\" width=\"100%\" height=\"100%\"><path style=\"fill-rule: evenodd; clip-rule: evenodd;\" d=\"M96.633,125.369l95.053-94.533c7.101-7.055,7.101-18.492,0-25.546   c-7.1-7.054-18.613-7.054-25.714,0L58.989,111.689c-3.784,3.759-5.487,8.759-5.238,13.68c-0.249,4.922,1.454,9.921,5.238,13.681   l106.983,106.398c7.101,7.055,18.613,7.055,25.714,0c7.101-7.054,7.101-18.491,0-25.544L96.633,125.369z\"/></svg><!-- </editor-fold> --></span></button><div class=\"owl-dt-calendar-control-content\"><button class=\"owl-dt-control owl-dt-control-button owl-dt-control-period-button\" type=\"button\" tabindex=\"0\" [attr.aria-label]=\"periodButtonLabel\" (click)=\"toggleViews()\"><span class=\"owl-dt-control-content owl-dt-control-button-content\" tabindex=\"-1\">{{periodButtonText}} <span class=\"owl-dt-control-button-arrow\" [style.transform]=\"'rotate(' + (isMonthView? 0 : 180) +'deg)'\"><!-- <editor-fold desc=\"SVG Arrow\"> --> <svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"50%\" height=\"50%\" viewBox=\"0 0 292.362 292.362\" style=\"enable-background:new 0 0 292.362 292.362;\" xml:space=\"preserve\"><g><path d=\"M286.935,69.377c-3.614-3.617-7.898-5.424-12.848-5.424H18.274c-4.952,0-9.233,1.807-12.85,5.424\n                                C1.807,72.998,0,77.279,0,82.228c0,4.948,1.807,9.229,5.424,12.847l127.907,127.907c3.621,3.617,7.902,5.428,12.85,5.428\n                                s9.233-1.811,12.847-5.428L286.935,95.074c3.613-3.617,5.427-7.898,5.427-12.847C292.362,77.279,290.548,72.998,286.935,69.377z\"/></g></svg><!-- </editor-fold> --></span></span></button></div><button class=\"owl-dt-control owl-dt-control-button owl-dt-control-arrow-button\" type=\"button\" tabindex=\"0\" [style.visibility]=\"showControlArrows? 'visible': 'hidden'\" [disabled]=\"!nextButtonEnabled()\" [attr.aria-label]=\"nextButtonLabel\" (click)=\"nextClicked()\"><span class=\"owl-dt-control-content owl-dt-control-button-content\" tabindex=\"-1\"><!-- <editor-fold desc=\"SVG Arrow Right\"> --> <svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 250.738 250.738\" style=\"enable-background:new 0 0 250.738 250.738;\" xml:space=\"preserve\"><path style=\"fill-rule:evenodd;clip-rule:evenodd;\" d=\"M191.75,111.689L84.766,5.291c-7.1-7.055-18.613-7.055-25.713,0\n                    c-7.101,7.054-7.101,18.49,0,25.544l95.053,94.534l-95.053,94.533c-7.101,7.054-7.101,18.491,0,25.545\n                    c7.1,7.054,18.613,7.054,25.713,0L191.75,139.05c3.784-3.759,5.487-8.759,5.238-13.681\n                    C197.237,120.447,195.534,115.448,191.75,111.689z\"/></svg><!-- </editor-fold> --></span></button></div><div class=\"owl-dt-calendar-main\" cdkMonitorSubtreeFocus [ngSwitch]=\"currentView\" tabindex=\"-1\"><owl-date-time-month-view *ngSwitchCase=\"'month'\" [pickerMoment]=\"pickerMoment\" [firstDayOfWeek]=\"firstDayOfWeek\" [selected]=\"selected\" [selecteds]=\"selecteds\" [selectMode]=\"selectMode\" [minDate]=\"minDate\" [maxDate]=\"maxDate\" [dateFilter]=\"dateFilter\" [hideOtherMonths]=\"hideOtherMonths\" (pickerMomentChange)=\"handlePickerMomentChange($event)\" (selectedChange)=\"dateSelected($event)\" (userSelection)=\"userSelected()\"></owl-date-time-month-view><owl-date-time-year-view *ngSwitchCase=\"'year'\" [pickerMoment]=\"pickerMoment\" [selected]=\"selected\" [selecteds]=\"selecteds\" [selectMode]=\"selectMode\" [minDate]=\"minDate\" [maxDate]=\"maxDate\" [dateFilter]=\"dateFilter\" (keyboardEnter)=\"focusActiveCell()\" (pickerMomentChange)=\"handlePickerMomentChange($event)\" (monthSelected)=\"selectMonthInYearView($event)\" (change)=\"goToDateInView($event, 'month')\"></owl-date-time-year-view><owl-date-time-multi-year-view *ngSwitchCase=\"'multi-years'\" [pickerMoment]=\"pickerMoment\" [selected]=\"selected\" [selecteds]=\"selecteds\" [selectMode]=\"selectMode\" [minDate]=\"minDate\" [maxDate]=\"maxDate\" [dateFilter]=\"dateFilter\" (keyboardEnter)=\"focusActiveCell()\" (pickerMomentChange)=\"handlePickerMomentChange($event)\" (yearSelected)=\"selectYearInMultiYearView($event)\" (change)=\"goToDateInView($event, 'year')\"></owl-date-time-multi-year-view></div>",
+                    styles: [""],
+                    preserveWhitespaces: false,
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                },] },
+    ];
+    OwlCalendarComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_1__["OwlDateTimeIntl"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_3__["OWL_DATE_TIME_FORMATS"],] },] },
+    ]; };
+    OwlCalendarComponent.propDecorators = {
+        "dateFilter": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "firstDayOfWeek": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "minDate": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "maxDate": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "pickerMoment": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selectMode": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selecteds": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "startView": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "hideOtherMonths": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "pickerMomentChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "selectedChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "userSelection": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "yearSelected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "monthSelected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "owlDTCalendarClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-calendar',] },],
+    };
+    return OwlCalendarComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/date-time-inline.component.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/date-time-inline.component.js ***!
+  \*******************************************************************************/
+/*! exports provided: OWL_DATETIME_VALUE_ACCESSOR, OwlDateTimeInlineComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DATETIME_VALUE_ACCESSOR", function() { return OWL_DATETIME_VALUE_ACCESSOR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeInlineComponent", function() { return OwlDateTimeInlineComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+/* harmony import */ var _date_time_class__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./date-time.class */ "./node_modules/ng-pick-datetime/date-time/date-time.class.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var _adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./adapter/date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js");
+/* harmony import */ var _date_time_picker_container_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./date-time-picker-container.component */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-container.component.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+
+
+var OWL_DATETIME_VALUE_ACCESSOR = {
+    provide: _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NG_VALUE_ACCESSOR"],
+    useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["forwardRef"])(function () { return OwlDateTimeInlineComponent; }),
+    multi: true
+};
+var OwlDateTimeInlineComponent = (function (_super) {
+    __extends(OwlDateTimeInlineComponent, _super);
+    function OwlDateTimeInlineComponent(changeDetector, dateTimeAdapter, dateTimeFormats) {
+        var _this = _super.call(this, dateTimeAdapter, dateTimeFormats) || this;
+        _this.changeDetector = changeDetector;
+        _this.dateTimeAdapter = dateTimeAdapter;
+        _this.dateTimeFormats = dateTimeFormats;
+        _this._pickerType = 'both';
+        _this._disabled = false;
+        _this._selectMode = 'single';
+        _this._values = [];
+        _this.yearSelected = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        _this.monthSelected = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        _this._selecteds = [];
+        _this.onModelChange = function () {
+        };
+        _this.onModelTouched = function () {
+        };
+        return _this;
+    }
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "pickerType", {
+        get: function () {
+            return this._pickerType;
+        },
+        set: function (val) {
+            if (val !== this._pickerType) {
+                this._pickerType = val;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "disabled", {
+        get: function () {
+            return !!this._disabled;
+        },
+        set: function (value) {
+            this._disabled = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_2__["coerceBooleanProperty"])(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "selectMode", {
+        get: function () {
+            return this._selectMode;
+        },
+        set: function (mode) {
+            if (mode !== 'single' && mode !== 'range' &&
+                mode !== 'rangeFrom' && mode !== 'rangeTo') {
+                throw Error('OwlDateTime Error: invalid selectMode value!');
+            }
+            this._selectMode = mode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "startAt", {
+        get: function () {
+            if (this._startAt) {
+                return this._startAt;
+            }
+            if (this.selectMode === 'single') {
+                return this.value || null;
+            }
+            else if (this.selectMode === 'range' ||
+                this.selectMode === 'rangeFrom') {
+                return this.values[0] || null;
+            }
+            else if (this.selectMode === 'rangeTo') {
+                return this.values[1] || null;
+            }
+            else {
+                return null;
+            }
+        },
+        set: function (date) {
+            this._startAt = this.getValidDate(this.dateTimeAdapter.deserialize(date));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "dateTimeFilter", {
+        get: function () {
+            return this._dateTimeFilter;
+        },
+        set: function (filter) {
+            this._dateTimeFilter = filter;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "minDateTime", {
+        get: function () {
+            return this._min || null;
+        },
+        set: function (value) {
+            this._min = this.getValidDate(this.dateTimeAdapter.deserialize(value));
+            this.changeDetector.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "maxDateTime", {
+        get: function () {
+            return this._max || null;
+        },
+        set: function (value) {
+            this._max = this.getValidDate(this.dateTimeAdapter.deserialize(value));
+            this.changeDetector.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "value", {
+        get: function () {
+            return this._value;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            value = this.getValidDate(value);
+            this._value = value;
+            this.selected = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "values", {
+        get: function () {
+            return this._values;
+        },
+        set: function (values) {
+            var _this = this;
+            if (values && values.length > 0) {
+                values = values.map(function (v) {
+                    v = _this.dateTimeAdapter.deserialize(v);
+                    v = _this.getValidDate(v);
+                    return v ? _this.dateTimeAdapter.clone(v) : null;
+                });
+                this._values = values.slice();
+                this.selecteds = values.slice();
+            }
+            else {
+                this._values = [];
+                this.selecteds = [];
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "selected", {
+        get: function () {
+            return this._selected;
+        },
+        set: function (value) {
+            this._selected = value;
+            this.changeDetector.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "selecteds", {
+        get: function () {
+            return this._selecteds;
+        },
+        set: function (values) {
+            this._selecteds = values;
+            this.changeDetector.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "opened", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "pickerMode", {
+        get: function () {
+            return 'inline';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "isInSingleMode", {
+        get: function () {
+            return this._selectMode === 'single';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "isInRangeMode", {
+        get: function () {
+            return this._selectMode === 'range' || this._selectMode === 'rangeFrom'
+                || this._selectMode === 'rangeTo';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInlineComponent.prototype, "owlDTInlineClass", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlDateTimeInlineComponent.prototype.ngOnInit = function () {
+        this.container.picker = this;
+    };
+    OwlDateTimeInlineComponent.prototype.writeValue = function (value) {
+        if (this.isInSingleMode) {
+            this.value = value;
+            this.container.pickerMoment = value;
+        }
+        else {
+            this.values = value;
+            this.container.pickerMoment = this._values[this.container.activeSelectedIndex];
+        }
+    };
+    OwlDateTimeInlineComponent.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
+    };
+    OwlDateTimeInlineComponent.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
+    };
+    OwlDateTimeInlineComponent.prototype.setDisabledState = function (isDisabled) {
+        this.disabled = isDisabled;
+    };
+    OwlDateTimeInlineComponent.prototype.select = function (date) {
+        if (this.disabled) {
+            return;
+        }
+        if (Array.isArray(date)) {
+            this.values = date.slice();
+        }
+        else {
+            this.value = date;
+        }
+        this.onModelChange(date);
+        this.onModelTouched();
+    };
+    OwlDateTimeInlineComponent.prototype.selectYear = function (normalizedYear) {
+        this.yearSelected.emit(normalizedYear);
+    };
+    OwlDateTimeInlineComponent.prototype.selectMonth = function (normalizedMonth) {
+        this.monthSelected.emit(normalizedMonth);
+    };
+    OwlDateTimeInlineComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'owl-date-time-inline',
+                    template: "<owl-date-time-container></owl-date-time-container>",
+                    styles: [""],
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                    preserveWhitespaces: false,
+                    providers: [
+                        OWL_DATETIME_VALUE_ACCESSOR,
+                    ],
+                },] },
+    ];
+    OwlDateTimeInlineComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_4__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_5__["OWL_DATE_TIME_FORMATS"],] },] },
+    ]; };
+    OwlDateTimeInlineComponent.propDecorators = {
+        "container": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: [_date_time_picker_container_component__WEBPACK_IMPORTED_MODULE_6__["OwlDateTimeContainerComponent"],] },],
+        "pickerType": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "disabled": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selectMode": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "startAt": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "dateTimeFilter": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['owlDateTimeFilter',] },],
+        "minDateTime": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['min',] },],
+        "maxDateTime": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['max',] },],
+        "value": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "values": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "yearSelected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "monthSelected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "owlDTInlineClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-inline',] },],
+    };
+    return OwlDateTimeInlineComponent;
+}(_date_time_class__WEBPACK_IMPORTED_MODULE_3__["OwlDateTime"]));
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/date-time-picker-container.component.js":
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/date-time-picker-container.component.js ***!
+  \*****************************************************************************************/
+/*! exports provided: OwlDateTimeContainerComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeContainerComponent", function() { return OwlDateTimeContainerComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./date-time-picker-intl.service */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-intl.service.js");
+/* harmony import */ var _calendar_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./calendar.component */ "./node_modules/ng-pick-datetime/date-time/calendar.component.js");
+/* harmony import */ var _timer_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./timer.component */ "./node_modules/ng-pick-datetime/date-time/timer.component.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _date_time_picker_animations__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./date-time-picker.animations */ "./node_modules/ng-pick-datetime/date-time/date-time-picker.animations.js");
+/* harmony import */ var _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/cdk/keycodes */ "./node_modules/@angular/cdk/esm5/keycodes.es5.js");
+
+
+
+
+
+
+
+
+var OwlDateTimeContainerComponent = (function () {
+    function OwlDateTimeContainerComponent(cdRef, elmRef, pickerIntl, dateTimeAdapter) {
+        this.cdRef = cdRef;
+        this.elmRef = elmRef;
+        this.pickerIntl = pickerIntl;
+        this.dateTimeAdapter = dateTimeAdapter;
+        this.activeSelectedIndex = 0;
+        this.hidePicker$ = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
+        this.confirmSelected$ = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
+        this.pickerOpened$ = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subject"]();
+    }
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "hidePickerStream", {
+        get: function () {
+            return this.hidePicker$.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "confirmSelectedStream", {
+        get: function () {
+            return this.confirmSelected$.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "pickerOpenedStream", {
+        get: function () {
+            return this.pickerOpened$.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "pickerMoment", {
+        get: function () {
+            return this._clamPickerMoment;
+        },
+        set: function (value) {
+            if (value) {
+                this._clamPickerMoment = this.dateTimeAdapter.clampDate(value, this.picker.minDateTime, this.picker.maxDateTime);
+            }
+            this.cdRef.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "pickerType", {
+        get: function () {
+            return this.picker.pickerType;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "cancelLabel", {
+        get: function () {
+            return this.pickerIntl.cancelBtnLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "setLabel", {
+        get: function () {
+            return this.pickerIntl.setBtnLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "fromLabel", {
+        get: function () {
+            return this.pickerIntl.rangeFromLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "toLabel", {
+        get: function () {
+            return this.pickerIntl.rangeToLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "fromFormattedValue", {
+        get: function () {
+            var value = this.picker.selecteds[0];
+            return value ? this.dateTimeAdapter.format(value, this.picker.formatString) : '';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "toFormattedValue", {
+        get: function () {
+            var value = this.picker.selecteds[1];
+            return value ? this.dateTimeAdapter.format(value, this.picker.formatString) : '';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "showControlButtons", {
+        get: function () {
+            return this.picker.pickerMode === 'dialog' ||
+                (this.picker.pickerType !== 'calendar' && this.picker.pickerMode !== 'inline');
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "containerElm", {
+        get: function () {
+            return this.elmRef.nativeElement;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "owlDTContainerClass", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "owlDTPopupContainerClass", {
+        get: function () {
+            return this.picker.pickerMode === 'popup';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "owlDTDialogContainerClass", {
+        get: function () {
+            return this.picker.pickerMode === 'dialog';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "owlDTInlineContainerClass", {
+        get: function () {
+            return this.picker.pickerMode === 'inline';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "owlDTContainerDisabledClass", {
+        get: function () {
+            return this.picker.disabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "owlDTContainerId", {
+        get: function () {
+            return this.picker.id;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeContainerComponent.prototype, "owlDTContainerAnimation", {
+        get: function () {
+            return this.picker.pickerMode === 'inline' ? '' : 'enter';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlDateTimeContainerComponent.prototype.ngOnInit = function () {
+    };
+    OwlDateTimeContainerComponent.prototype.ngAfterContentInit = function () {
+        this.initPicker();
+    };
+    OwlDateTimeContainerComponent.prototype.ngAfterViewInit = function () {
+        this.focusPicker();
+    };
+    OwlDateTimeContainerComponent.prototype.handleContainerAnimationDone = function (event) {
+        var toState = event.toState;
+        if (toState === 'enter') {
+            this.pickerOpened$.next();
+        }
+    };
+    OwlDateTimeContainerComponent.prototype.dateSelected = function (date) {
+        var result;
+        if (this.picker.isInSingleMode) {
+            result = this.dateSelectedInSingleMode(date);
+            if (result) {
+                this.pickerMoment = result;
+                this.picker.select(result);
+            }
+            else {
+                if (this.pickerType === 'calendar') {
+                    this.hidePicker$.next(null);
+                }
+            }
+            return;
+        }
+        if (this.picker.isInRangeMode) {
+            result = this.dateSelectedInRangeMode(date);
+            if (result) {
+                this.pickerMoment = result[this.activeSelectedIndex];
+                this.picker.select(result);
+            }
+        }
+    };
+    OwlDateTimeContainerComponent.prototype.timeSelected = function (time) {
+        this.pickerMoment = this.dateTimeAdapter.clone(time);
+        if (!this.picker.dateTimeChecker(this.pickerMoment)) {
+            return;
+        }
+        if (this.picker.isInSingleMode) {
+            this.picker.select(this.pickerMoment);
+            return;
+        }
+        if (this.picker.isInRangeMode) {
+            var selecteds = this.picker.selecteds.slice();
+            if ((this.activeSelectedIndex === 0 && selecteds[1] && this.dateTimeAdapter.compare(this.pickerMoment, selecteds[1]) === 1) ||
+                (this.activeSelectedIndex === 1 && selecteds[0] && this.dateTimeAdapter.compare(this.pickerMoment, selecteds[0]) === -1)) {
+                selecteds[0] = this.pickerMoment;
+                selecteds[1] = this.pickerMoment;
+            }
+            else {
+                selecteds[this.activeSelectedIndex] = this.pickerMoment;
+            }
+            this.picker.select(selecteds);
+        }
+    };
+    OwlDateTimeContainerComponent.prototype.onCancelClicked = function (event) {
+        this.hidePicker$.next(null);
+        event.preventDefault();
+        return;
+    };
+    OwlDateTimeContainerComponent.prototype.onSetClicked = function (event) {
+        if (!this.picker.dateTimeChecker(this.pickerMoment)) {
+            this.hidePicker$.next(null);
+            event.preventDefault();
+            return;
+        }
+        this.confirmSelected$.next(event);
+        event.preventDefault();
+        return;
+    };
+    OwlDateTimeContainerComponent.prototype.handleClickOnInfoGroup = function (event, index) {
+        this.setActiveSelectedIndex(index);
+        event.preventDefault();
+        event.stopPropagation();
+    };
+    OwlDateTimeContainerComponent.prototype.handleKeydownOnInfoGroup = function (event, next, index) {
+        switch (event.keyCode) {
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_7__["DOWN_ARROW"]:
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_7__["RIGHT_ARROW"]:
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_7__["UP_ARROW"]:
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_7__["LEFT_ARROW"]:
+                next.focus();
+                this.setActiveSelectedIndex(index === 0 ? 1 : 0);
+                event.preventDefault();
+                event.stopPropagation();
+                break;
+            case _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_7__["SPACE"]:
+                this.setActiveSelectedIndex(index);
+                event.preventDefault();
+                event.stopPropagation();
+                break;
+            default:
+                return;
+        }
+    };
+    OwlDateTimeContainerComponent.prototype.setActiveSelectedIndex = function (index) {
+        if (this.picker.selectMode === 'range' &&
+            this.activeSelectedIndex !== index) {
+            this.activeSelectedIndex = index;
+            var selected = this.picker.selecteds[this.activeSelectedIndex];
+            if (this.picker.selecteds && selected) {
+                this.pickerMoment = this.dateTimeAdapter.clone(selected);
+            }
+        }
+        return;
+    };
+    OwlDateTimeContainerComponent.prototype.initPicker = function () {
+        this.pickerMoment = this.picker.startAt || this.dateTimeAdapter.now();
+        this.activeSelectedIndex = this.picker.selectMode === 'rangeTo' ? 1 : 0;
+    };
+    OwlDateTimeContainerComponent.prototype.dateSelectedInSingleMode = function (date) {
+        if (this.dateTimeAdapter.isSameDay(date, this.picker.selected)) {
+            return null;
+        }
+        return this.updateAndCheckCalendarDate(date);
+    };
+    OwlDateTimeContainerComponent.prototype.dateSelectedInRangeMode = function (date) {
+        var from = this.picker.selecteds[0];
+        var to = this.picker.selecteds[1];
+        var result = this.updateAndCheckCalendarDate(date);
+        if (!result) {
+            return null;
+        }
+        if (this.picker.selectMode === 'range') {
+            if (this.picker.selecteds && this.picker.selecteds.length && !to && from &&
+                this.dateTimeAdapter.differenceInCalendarDays(result, from) >= 0) {
+                to = result;
+                this.activeSelectedIndex = 1;
+            }
+            else {
+                from = result;
+                to = null;
+                this.activeSelectedIndex = 0;
+            }
+        }
+        else if (this.picker.selectMode === 'rangeFrom') {
+            from = result;
+            if (to && this.dateTimeAdapter.compare(from, to) > 0) {
+                to = null;
+            }
+        }
+        else if (this.picker.selectMode === 'rangeTo') {
+            to = result;
+            if (from && this.dateTimeAdapter.compare(from, to) > 0) {
+                from = null;
+            }
+        }
+        return [from, to];
+    };
+    OwlDateTimeContainerComponent.prototype.updateAndCheckCalendarDate = function (date) {
+        var result;
+        if (this.picker.pickerType === 'both') {
+            result = this.dateTimeAdapter.createDate(this.dateTimeAdapter.getYear(date), this.dateTimeAdapter.getMonth(date), this.dateTimeAdapter.getDate(date), this.dateTimeAdapter.getHours(this.pickerMoment), this.dateTimeAdapter.getMinutes(this.pickerMoment), this.dateTimeAdapter.getSeconds(this.pickerMoment));
+            result = this.dateTimeAdapter.clampDate(result, this.picker.minDateTime, this.picker.maxDateTime);
+        }
+        else {
+            result = this.dateTimeAdapter.clone(date);
+        }
+        return this.picker.dateTimeChecker(result) ? result : null;
+    };
+    OwlDateTimeContainerComponent.prototype.focusPicker = function () {
+        if (this.picker.pickerMode === 'inline') {
+            return;
+        }
+        if (this.calendar) {
+            this.calendar.focusActiveCell();
+        }
+        else if (this.timer) {
+            this.timer.focus();
+        }
+    };
+    OwlDateTimeContainerComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    exportAs: 'owlDateTimeContainer',
+                    selector: 'owl-date-time-container',
+                    template: "<div [cdkTrapFocus]=\"picker.pickerMode !== 'inline'\" [@fadeInPicker]=\"picker.pickerMode === 'inline'? '' : 'enter'\" class=\"owl-dt-container-inner\"><owl-date-time-calendar *ngIf=\"pickerType === 'both' || pickerType === 'calendar'\" class=\"owl-dt-container-row\" [firstDayOfWeek]=\"picker.firstDayOfWeek\" [(pickerMoment)]=\"pickerMoment\" [selected]=\"picker.selected\" [selecteds]=\"picker.selecteds\" [selectMode]=\"picker.selectMode\" [minDate]=\"picker.minDateTime\" [maxDate]=\"picker.maxDateTime\" [dateFilter]=\"picker.dateTimeFilter\" [startView]=\"picker.startView\" [hideOtherMonths]=\"picker.hideOtherMonths\" (yearSelected)=\"picker.selectYear($event)\" (monthSelected)=\"picker.selectMonth($event)\" (selectedChange)=\"dateSelected($event)\"></owl-date-time-calendar><owl-date-time-timer *ngIf=\"pickerType === 'both' || pickerType === 'timer'\" class=\"owl-dt-container-row\" [pickerMoment]=\"pickerMoment\" [minDateTime]=\"picker.minDateTime\" [maxDateTime]=\"picker.maxDateTime\" [showSecondsTimer]=\"picker.showSecondsTimer\" [hour12Timer]=\"picker.hour12Timer\" [stepHour]=\"picker.stepHour\" [stepMinute]=\"picker.stepMinute\" [stepSecond]=\"picker.stepSecond\" (selectedChange)=\"timeSelected($event)\"></owl-date-time-timer><div *ngIf=\"picker.isInRangeMode\" role=\"radiogroup\" class=\"owl-dt-container-info owl-dt-container-row\"><div role=\"radio\" [tabindex]=\"activeSelectedIndex === 0 ? 0 : -1\" [attr.aria-checked]=\"activeSelectedIndex === 0\" class=\"owl-dt-control owl-dt-container-range owl-dt-container-from\" [ngClass]=\"{'owl-dt-container-info-active': activeSelectedIndex === 0}\" (click)=\"handleClickOnInfoGroup($event, 0)\" (keydown)=\"handleKeydownOnInfoGroup($event, to, 0)\" #from><span class=\"owl-dt-control-content owl-dt-container-range-content\" tabindex=\"-1\"><span class=\"owl-dt-container-info-label\">{{fromLabel}}:</span> <span class=\"owl-dt-container-info-value\">{{fromFormattedValue}}</span></span></div><div role=\"radio\" [tabindex]=\"activeSelectedIndex === 1 ? 0 : -1\" [attr.aria-checked]=\"activeSelectedIndex === 1\" class=\"owl-dt-control owl-dt-container-range owl-dt-container-to\" [ngClass]=\"{'owl-dt-container-info-active': activeSelectedIndex === 1}\" (click)=\"handleClickOnInfoGroup($event, 1)\" (keydown)=\"handleKeydownOnInfoGroup($event, from, 1)\" #to><span class=\"owl-dt-control-content owl-dt-container-range-content\" tabindex=\"-1\"><span class=\"owl-dt-container-info-label\">{{toLabel}}:</span> <span class=\"owl-dt-container-info-value\">{{toFormattedValue}}</span></span></div></div><div *ngIf=\"showControlButtons\" class=\"owl-dt-container-buttons owl-dt-container-row\"><button class=\"owl-dt-control owl-dt-control-button owl-dt-container-control-button\" type=\"button\" tabindex=\"0\" (click)=\"onCancelClicked($event)\"><span class=\"owl-dt-control-content owl-dt-control-button-content\" tabindex=\"-1\">{{cancelLabel}}</span></button> <button class=\"owl-dt-control owl-dt-control-button owl-dt-container-control-button\" type=\"button\" tabindex=\"0\" (click)=\"onSetClicked($event)\"><span class=\"owl-dt-control-content owl-dt-control-button-content\" tabindex=\"-1\">{{setLabel}}</span></button></div></div>",
+                    styles: [""],
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                    preserveWhitespaces: false,
+                    animations: [
+                        _date_time_picker_animations__WEBPACK_IMPORTED_MODULE_6__["owlDateTimePickerAnimations"].transformPicker,
+                        _date_time_picker_animations__WEBPACK_IMPORTED_MODULE_6__["owlDateTimePickerAnimations"].fadeInPicker
+                    ]
+                },] },
+    ];
+    OwlDateTimeContainerComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_1__["OwlDateTimeIntl"], },
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_4__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+    ]; };
+    OwlDateTimeContainerComponent.propDecorators = {
+        "calendar": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: [_calendar_component__WEBPACK_IMPORTED_MODULE_2__["OwlCalendarComponent"],] },],
+        "timer": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: [_timer_component__WEBPACK_IMPORTED_MODULE_3__["OwlTimerComponent"],] },],
+        "owlDTContainerClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-container',] },],
+        "owlDTPopupContainerClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-popup-container',] },],
+        "owlDTDialogContainerClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-dialog-container',] },],
+        "owlDTInlineContainerClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-inline-container',] },],
+        "owlDTContainerDisabledClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-container-disabled',] },],
+        "owlDTContainerId": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.id',] },],
+        "owlDTContainerAnimation": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['@transformPicker',] },],
+        "handleContainerAnimationDone": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['@transformPicker.done', ['$event'],] },],
+    };
+    return OwlDateTimeContainerComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/date-time-picker-input.directive.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/date-time-picker-input.directive.js ***!
+  \*************************************************************************************/
+/*! exports provided: OWL_DATETIME_VALUE_ACCESSOR, OWL_DATETIME_VALIDATORS, OwlDateTimeInputDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DATETIME_VALUE_ACCESSOR", function() { return OWL_DATETIME_VALUE_ACCESSOR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DATETIME_VALIDATORS", function() { return OWL_DATETIME_VALIDATORS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeInputDirective", function() { return OwlDateTimeInputDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/cdk/keycodes */ "./node_modules/@angular/cdk/esm5/keycodes.es5.js");
+/* harmony import */ var _date_time_picker_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./date-time-picker.component */ "./node_modules/ng-pick-datetime/date-time/date-time-picker.component.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var _adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./adapter/date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+
+
+
+
+
+
+
+
+var OWL_DATETIME_VALUE_ACCESSOR = {
+    provide: _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NG_VALUE_ACCESSOR"],
+    useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["forwardRef"])(function () { return OwlDateTimeInputDirective; }),
+    multi: true
+};
+var OWL_DATETIME_VALIDATORS = {
+    provide: _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NG_VALIDATORS"],
+    useExisting: Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["forwardRef"])(function () { return OwlDateTimeInputDirective; }),
+    multi: true
+};
+var OwlDateTimeInputDirective = (function () {
+    function OwlDateTimeInputDirective(elmRef, renderer, dateTimeAdapter, dateTimeFormats) {
+        var _this = this;
+        this.elmRef = elmRef;
+        this.renderer = renderer;
+        this.dateTimeAdapter = dateTimeAdapter;
+        this.dateTimeFormats = dateTimeFormats;
+        this._selectMode = 'single';
+        this.rangeSeparator = '~';
+        this._values = [];
+        this.dateTimeChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.dateTimeInput = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.dtPickerSub = rxjs__WEBPACK_IMPORTED_MODULE_6__["Subscription"].EMPTY;
+        this.localeSub = rxjs__WEBPACK_IMPORTED_MODULE_6__["Subscription"].EMPTY;
+        this.lastValueValid = true;
+        this.onModelChange = function () {
+        };
+        this.onModelTouched = function () {
+        };
+        this.validatorOnChange = function () {
+        };
+        this.parseValidator = function () {
+            return _this.lastValueValid ?
+                null : { 'owlDateTimeParse': { 'text': _this.elmRef.nativeElement.value } };
+        };
+        this.minValidator = function (control) {
+            if (_this.isInSingleMode) {
+                var controlValue = _this.getValidDate(_this.dateTimeAdapter.deserialize(control.value));
+                return (!_this.min || !controlValue ||
+                    _this.dateTimeAdapter.compare(_this.min, controlValue) <= 0) ?
+                    null : { 'owlDateTimeMin': { 'min': _this.min, 'actual': controlValue } };
+            }
+            else if (_this.isInRangeMode && control.value) {
+                var controlValueFrom = _this.getValidDate(_this.dateTimeAdapter.deserialize(control.value[0]));
+                var controlValueTo = _this.getValidDate(_this.dateTimeAdapter.deserialize(control.value[1]));
+                return (!_this.min || !controlValueFrom || !controlValueTo ||
+                    _this.dateTimeAdapter.compare(_this.min, controlValueFrom) <= 0) ?
+                    null : { 'owlDateTimeMin': { 'min': _this.min, 'actual': [controlValueFrom, controlValueTo] } };
+            }
+        };
+        this.maxValidator = function (control) {
+            if (_this.isInSingleMode) {
+                var controlValue = _this.getValidDate(_this.dateTimeAdapter.deserialize(control.value));
+                return (!_this.max || !controlValue ||
+                    _this.dateTimeAdapter.compare(_this.max, controlValue) >= 0) ?
+                    null : { 'owlDateTimeMax': { 'max': _this.max, 'actual': controlValue } };
+            }
+            else if (_this.isInRangeMode && control.value) {
+                var controlValueFrom = _this.getValidDate(_this.dateTimeAdapter.deserialize(control.value[0]));
+                var controlValueTo = _this.getValidDate(_this.dateTimeAdapter.deserialize(control.value[1]));
+                return (!_this.max || !controlValueFrom || !controlValueTo ||
+                    _this.dateTimeAdapter.compare(_this.max, controlValueTo) >= 0) ?
+                    null : { 'owlDateTimeMax': { 'max': _this.max, 'actual': [controlValueFrom, controlValueTo] } };
+            }
+        };
+        this.filterValidator = function (control) {
+            var controlValue = _this.getValidDate(_this.dateTimeAdapter.deserialize(control.value));
+            return !_this._dateTimeFilter || !controlValue || _this._dateTimeFilter(controlValue) ?
+                null : { 'owlDateTimeFilter': true };
+        };
+        this.rangeValidator = function (control) {
+            if (_this.isInSingleMode || !control.value) {
+                return null;
+            }
+            var controlValueFrom = _this.getValidDate(_this.dateTimeAdapter.deserialize(control.value[0]));
+            var controlValueTo = _this.getValidDate(_this.dateTimeAdapter.deserialize(control.value[1]));
+            return !controlValueFrom || !controlValueTo || _this.dateTimeAdapter.compare(controlValueFrom, controlValueTo) <= 0 ?
+                null : { 'owlDateTimeRange': true };
+        };
+        this.validator = _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].compose([this.parseValidator, this.minValidator, this.maxValidator, this.filterValidator, this.rangeValidator]);
+        this.valueChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.disabledChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        if (!this.dateTimeAdapter) {
+            throw Error("OwlDateTimePicker: No provider found for DateTimePicker. You must import one of the following " +
+                "modules at your application root: OwlNativeDateTimeModule, OwlMomentDateTimeModule, or provide a " +
+                "custom implementation.");
+        }
+        if (!this.dateTimeFormats) {
+            throw Error("OwlDateTimePicker: No provider found for OWL_DATE_TIME_FORMATS. You must import one of the following " +
+                "modules at your application root: OwlNativeDateTimeModule, OwlMomentDateTimeModule, or provide a " +
+                "custom implementation.");
+        }
+        this.localeSub = this.dateTimeAdapter.localeChanges.subscribe(function () {
+            _this.value = _this.value;
+        });
+    }
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "owlDateTime", {
+        set: function (value) {
+            this.registerDateTimePicker(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "owlDateTimeFilter", {
+        set: function (filter) {
+            this._dateTimeFilter = filter;
+            this.validatorOnChange();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "dateTimeFilter", {
+        get: function () {
+            return this._dateTimeFilter;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "disabled", {
+        get: function () {
+            return !!this._disabled;
+        },
+        set: function (value) {
+            var newValue = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_7__["coerceBooleanProperty"])(value);
+            var element = this.elmRef.nativeElement;
+            if (this._disabled !== newValue) {
+                this._disabled = newValue;
+                this.disabledChange.emit(newValue);
+            }
+            if (newValue && element.blur) {
+                element.blur();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "min", {
+        get: function () {
+            return this._min;
+        },
+        set: function (value) {
+            this._min = this.getValidDate(this.dateTimeAdapter.deserialize(value));
+            this.validatorOnChange();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "max", {
+        get: function () {
+            return this._max;
+        },
+        set: function (value) {
+            this._max = this.getValidDate(this.dateTimeAdapter.deserialize(value));
+            this.validatorOnChange();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "selectMode", {
+        get: function () {
+            return this._selectMode;
+        },
+        set: function (mode) {
+            if (mode !== 'single' && mode !== 'range' &&
+                mode !== 'rangeFrom' && mode !== 'rangeTo') {
+                throw Error('OwlDateTime Error: invalid selectMode value!');
+            }
+            this._selectMode = mode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "value", {
+        get: function () {
+            return this._value;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this.lastValueValid = !value || this.dateTimeAdapter.isValid(value);
+            value = this.getValidDate(value);
+            var oldDate = this._value;
+            this._value = value;
+            this.formatNativeInputValue();
+            if (!this.dateTimeAdapter.isEqual(oldDate, value)) {
+                this.valueChange.emit(value);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "values", {
+        get: function () {
+            return this._values;
+        },
+        set: function (values) {
+            var _this = this;
+            if (values && values.length > 0) {
+                this._values = values.map(function (v) {
+                    v = _this.dateTimeAdapter.deserialize(v);
+                    return _this.getValidDate(v);
+                });
+                this.lastValueValid = (!this._values[0] || this.dateTimeAdapter.isValid(this._values[0])) && (!this._values[1] || this.dateTimeAdapter.isValid(this._values[1]));
+            }
+            else {
+                this._values = [];
+                this.lastValueValid = true;
+            }
+            this.formatNativeInputValue();
+            this.valueChange.emit(this._values);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "elementRef", {
+        get: function () {
+            return this.elmRef;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "isInSingleMode", {
+        get: function () {
+            return this._selectMode === 'single';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "isInRangeMode", {
+        get: function () {
+            return this._selectMode === 'range' || this._selectMode === 'rangeFrom'
+                || this._selectMode === 'rangeTo';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "owlDateTimeInputAriaHaspopup", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "owlDateTimeInputAriaOwns", {
+        get: function () {
+            return (this.dtPicker.opened && this.dtPicker.id) || null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "minIso8601", {
+        get: function () {
+            return this.min ? this.dateTimeAdapter.toIso8601(this.min) : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "maxIso8601", {
+        get: function () {
+            return this.max ? this.dateTimeAdapter.toIso8601(this.max) : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeInputDirective.prototype, "owlDateTimeInputDisabled", {
+        get: function () {
+            return this.disabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlDateTimeInputDirective.prototype.ngOnInit = function () {
+        if (!this.dtPicker) {
+            throw Error("OwlDateTimePicker: the picker input doesn't have any associated owl-date-time component");
+        }
+    };
+    OwlDateTimeInputDirective.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.dtPickerSub = this.dtPicker.confirmSelectedChange.subscribe(function (selecteds) {
+            if (Array.isArray(selecteds)) {
+                _this.values = selecteds;
+            }
+            else {
+                _this.value = selecteds;
+            }
+            _this.onModelChange(selecteds);
+            _this.onModelTouched();
+            _this.dateTimeChange.emit({ source: _this, value: selecteds, input: _this.elmRef.nativeElement });
+            _this.dateTimeInput.emit({ source: _this, value: selecteds, input: _this.elmRef.nativeElement });
+        });
+    };
+    OwlDateTimeInputDirective.prototype.ngOnDestroy = function () {
+        this.dtPickerSub.unsubscribe();
+        this.localeSub.unsubscribe();
+        this.valueChange.complete();
+        this.disabledChange.complete();
+    };
+    OwlDateTimeInputDirective.prototype.writeValue = function (value) {
+        if (this.isInSingleMode) {
+            this.value = value;
+        }
+        else {
+            this.values = value;
+        }
+    };
+    OwlDateTimeInputDirective.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
+    };
+    OwlDateTimeInputDirective.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
+    };
+    OwlDateTimeInputDirective.prototype.setDisabledState = function (isDisabled) {
+        this.disabled = isDisabled;
+    };
+    OwlDateTimeInputDirective.prototype.validate = function (c) {
+        return this.validator ? this.validator(c) : null;
+    };
+    OwlDateTimeInputDirective.prototype.registerOnValidatorChange = function (fn) {
+        this.validatorOnChange = fn;
+    };
+    OwlDateTimeInputDirective.prototype.handleKeydownOnHost = function (event) {
+        if (event.altKey && event.keyCode === _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_2__["DOWN_ARROW"]) {
+            this.dtPicker.open();
+            event.preventDefault();
+        }
+    };
+    OwlDateTimeInputDirective.prototype.handleBlurOnHost = function (event) {
+        this.onModelTouched();
+    };
+    OwlDateTimeInputDirective.prototype.handleInputOnHost = function (event) {
+        var value = event.target.value;
+        if (this._selectMode === 'single') {
+            this.changeInputInSingleMode(value);
+        }
+        else if (this._selectMode === 'range') {
+            this.changeInputInRangeMode(value);
+        }
+        else {
+            this.changeInputInRangeFromToMode(value);
+        }
+    };
+    OwlDateTimeInputDirective.prototype.handleChangeOnHost = function (event) {
+        var v;
+        if (this.isInSingleMode) {
+            v = this.value;
+        }
+        else if (this.isInRangeMode) {
+            v = this.values;
+        }
+        this.dateTimeChange.emit({
+            source: this,
+            value: v,
+            input: this.elmRef.nativeElement
+        });
+    };
+    OwlDateTimeInputDirective.prototype.formatNativeInputValue = function () {
+        if (this.isInSingleMode) {
+            this.renderer.setProperty(this.elmRef.nativeElement, 'value', this._value ? this.dateTimeAdapter.format(this._value, this.dtPicker.formatString) : '');
+        }
+        else if (this.isInRangeMode) {
+            if (this._values && this.values.length > 0) {
+                var from = this._values[0];
+                var to = this._values[1];
+                var fromFormatted = from ? this.dateTimeAdapter.format(from, this.dtPicker.formatString) : '';
+                var toFormatted = to ? this.dateTimeAdapter.format(to, this.dtPicker.formatString) : '';
+                if (!fromFormatted && !toFormatted) {
+                    this.renderer.setProperty(this.elmRef.nativeElement, 'value', null);
+                }
+                else {
+                    if (this._selectMode === 'range') {
+                        this.renderer.setProperty(this.elmRef.nativeElement, 'value', fromFormatted + ' ' + this.rangeSeparator + ' ' + toFormatted);
+                    }
+                    else if (this._selectMode === 'rangeFrom') {
+                        this.renderer.setProperty(this.elmRef.nativeElement, 'value', fromFormatted);
+                    }
+                    else if (this._selectMode === 'rangeTo') {
+                        this.renderer.setProperty(this.elmRef.nativeElement, 'value', toFormatted);
+                    }
+                }
+            }
+            else {
+                this.renderer.setProperty(this.elmRef.nativeElement, 'value', '');
+            }
+        }
+        return;
+    };
+    OwlDateTimeInputDirective.prototype.registerDateTimePicker = function (picker) {
+        if (picker) {
+            this.dtPicker = picker;
+            this.dtPicker.registerInput(this);
+        }
+    };
+    OwlDateTimeInputDirective.prototype.getValidDate = function (obj) {
+        return (this.dateTimeAdapter.isDateInstance(obj) && this.dateTimeAdapter.isValid(obj)) ? obj : null;
+    };
+    OwlDateTimeInputDirective.prototype.convertTimeStringToDateTimeString = function (timeString, dateTime) {
+        if (timeString) {
+            var v = dateTime || this.dateTimeAdapter.now();
+            var dateString = this.dateTimeAdapter.format(v, this.dateTimeFormats.datePickerInput);
+            return dateString + ' ' + timeString;
+        }
+        else {
+            return null;
+        }
+    };
+    OwlDateTimeInputDirective.prototype.changeInputInSingleMode = function (inputValue) {
+        var value = inputValue;
+        if (this.dtPicker.pickerType === 'timer') {
+            value = this.convertTimeStringToDateTimeString(value, this.value);
+        }
+        var result = this.dateTimeAdapter.parse(value, this.dateTimeFormats.parseInput);
+        this.lastValueValid = !result || this.dateTimeAdapter.isValid(result);
+        result = this.getValidDate(result);
+        if (!this.isSameValue(result, this._value) ||
+            result === null) {
+            this._value = result;
+            this.valueChange.emit(result);
+            this.onModelChange(result);
+            this.dateTimeInput.emit({ source: this, value: result, input: this.elmRef.nativeElement });
+        }
+    };
+    OwlDateTimeInputDirective.prototype.changeInputInRangeFromToMode = function (inputValue) {
+        var originalValue = this._selectMode === 'rangeFrom' ? this._values[0] : this._values[1];
+        if (this.dtPicker.pickerType === 'timer') {
+            inputValue = this.convertTimeStringToDateTimeString(inputValue, originalValue);
+        }
+        var result = this.dateTimeAdapter.parse(inputValue, this.dateTimeFormats.parseInput);
+        this.lastValueValid = !result || this.dateTimeAdapter.isValid(result);
+        result = this.getValidDate(result);
+        if ((this._selectMode === 'rangeFrom' && this.isSameValue(result, this._values[0]) && result) ||
+            (this._selectMode === 'rangeTo' && this.isSameValue(result, this._values[1])) && result) {
+            return;
+        }
+        this._values = this._selectMode === 'rangeFrom' ? [result, this._values[1]] : [this._values[0], result];
+        this.valueChange.emit(this._values);
+        this.onModelChange(this._values);
+        this.dateTimeInput.emit({ source: this, value: this._values, input: this.elmRef.nativeElement });
+    };
+    OwlDateTimeInputDirective.prototype.changeInputInRangeMode = function (inputValue) {
+        var selecteds = inputValue.split(this.rangeSeparator);
+        var fromString = selecteds[0];
+        var toString = selecteds[1];
+        if (this.dtPicker.pickerType === 'timer') {
+            fromString = this.convertTimeStringToDateTimeString(fromString, this.values[0]);
+            toString = this.convertTimeStringToDateTimeString(toString, this.values[1]);
+        }
+        var from = this.dateTimeAdapter.parse(fromString, this.dateTimeFormats.parseInput);
+        var to = this.dateTimeAdapter.parse(toString, this.dateTimeFormats.parseInput);
+        this.lastValueValid = (!from || this.dateTimeAdapter.isValid(from)) && (!to || this.dateTimeAdapter.isValid(to));
+        from = this.getValidDate(from);
+        to = this.getValidDate(to);
+        if (!this.isSameValue(from, this._values[0]) ||
+            !this.isSameValue(to, this._values[1]) ||
+            (from === null && to === null)) {
+            this._values = [from, to];
+            this.valueChange.emit(this._values);
+            this.onModelChange(this._values);
+            this.dateTimeInput.emit({ source: this, value: this._values, input: this.elmRef.nativeElement });
+        }
+    };
+    OwlDateTimeInputDirective.prototype.isSameValue = function (first, second) {
+        if (first && second) {
+            return this.dateTimeAdapter.compare(first, second) === 0;
+        }
+        return first == second;
+    };
+    OwlDateTimeInputDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: 'input[owlDateTime]',
+                    exportAs: 'owlDateTimeInput',
+                    providers: [
+                        OWL_DATETIME_VALUE_ACCESSOR,
+                        OWL_DATETIME_VALIDATORS,
+                    ],
+                },] },
+    ];
+    OwlDateTimeInputDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"], },
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_4__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_5__["OWL_DATE_TIME_FORMATS"],] },] },
+    ]; };
+    OwlDateTimeInputDirective.propDecorators = {
+        "owlDateTime": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "owlDateTimeFilter": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "_disabled": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "min": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "max": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selectMode": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "rangeSeparator": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "value": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "values": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "dateTimeChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "dateTimeInput": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "owlDateTimeInputAriaHaspopup": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.aria-haspopup',] },],
+        "owlDateTimeInputAriaOwns": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.aria-owns',] },],
+        "minIso8601": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.min',] },],
+        "maxIso8601": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.max',] },],
+        "owlDateTimeInputDisabled": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['disabled',] },],
+        "handleKeydownOnHost": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['keydown', ['$event'],] },],
+        "handleBlurOnHost": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['blur', ['$event'],] },],
+        "handleInputOnHost": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['input', ['$event'],] },],
+        "handleChangeOnHost": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['change', ['$event'],] },],
+    };
+    return OwlDateTimeInputDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/date-time-picker-intl.service.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/date-time-picker-intl.service.js ***!
+  \**********************************************************************************/
+/*! exports provided: OwlDateTimeIntl */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeIntl", function() { return OwlDateTimeIntl; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+
+
+
+var OwlDateTimeIntl = (function () {
+    function OwlDateTimeIntl() {
+        this.changes = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        this.upSecondLabel = 'Add a second';
+        this.downSecondLabel = 'Minus a second';
+        this.upMinuteLabel = 'Add a minute';
+        this.downMinuteLabel = 'Minus a minute';
+        this.upHourLabel = 'Add a hour';
+        this.downHourLabel = 'Minus a hour';
+        this.prevMonthLabel = 'Previous month';
+        this.nextMonthLabel = 'Next month';
+        this.prevYearLabel = 'Previous year';
+        this.nextYearLabel = 'Next year';
+        this.prevMultiYearLabel = 'Previous 21 years';
+        this.nextMultiYearLabel = 'Next 21 years';
+        this.switchToMonthViewLabel = 'Change to month view';
+        this.switchToMultiYearViewLabel = 'Choose month and year';
+        this.cancelBtnLabel = 'Cancel';
+        this.setBtnLabel = 'Set';
+        this.rangeFromLabel = 'From';
+        this.rangeToLabel = 'To';
+        this.hour12AMLabel = 'AM';
+        this.hour12PMLabel = 'PM';
+    }
+    OwlDateTimeIntl.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"], args: [{ providedIn: 'root' },] },
+    ];
+    OwlDateTimeIntl.ngInjectableDef = _angular_core__WEBPACK_IMPORTED_MODULE_0__["defineInjectable"]({ factory: function OwlDateTimeIntl_Factory() { return new OwlDateTimeIntl(); }, token: OwlDateTimeIntl, providedIn: "root" });
+    return OwlDateTimeIntl;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/date-time-picker-trigger.directive.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/date-time-picker-trigger.directive.js ***!
+  \***************************************************************************************/
+/*! exports provided: OwlDateTimeTriggerDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeTriggerDirective", function() { return OwlDateTimeTriggerDirective; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _date_time_picker_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./date-time-picker.component */ "./node_modules/ng-pick-datetime/date-time/date-time-picker.component.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+
+
+
+var OwlDateTimeTriggerDirective = (function () {
+    function OwlDateTimeTriggerDirective(changeDetector) {
+        this.changeDetector = changeDetector;
+        this.stateChanges = rxjs__WEBPACK_IMPORTED_MODULE_2__["Subscription"].EMPTY;
+    }
+    Object.defineProperty(OwlDateTimeTriggerDirective.prototype, "disabled", {
+        get: function () {
+            return this._disabled === undefined ? this.dtPicker.disabled : !!this._disabled;
+        },
+        set: function (value) {
+            this._disabled = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeTriggerDirective.prototype, "owlDTTriggerDisabledClass", {
+        get: function () {
+            return this.disabled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlDateTimeTriggerDirective.prototype.ngOnInit = function () {
+    };
+    OwlDateTimeTriggerDirective.prototype.ngOnChanges = function (changes) {
+        if (changes.datepicker) {
+            this.watchStateChanges();
+        }
+    };
+    OwlDateTimeTriggerDirective.prototype.ngAfterContentInit = function () {
+        this.watchStateChanges();
+    };
+    OwlDateTimeTriggerDirective.prototype.ngOnDestroy = function () {
+        this.stateChanges.unsubscribe();
+    };
+    OwlDateTimeTriggerDirective.prototype.handleClickOnHost = function (event) {
+        if (this.dtPicker) {
+            this.dtPicker.open();
+            event.stopPropagation();
+        }
+    };
+    OwlDateTimeTriggerDirective.prototype.watchStateChanges = function () {
+        var _this = this;
+        this.stateChanges.unsubscribe();
+        var inputDisabled = this.dtPicker && this.dtPicker.dtInput ?
+            this.dtPicker.dtInput.disabledChange : Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])();
+        var pickerDisabled = this.dtPicker ?
+            this.dtPicker.disabledChange : Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["of"])();
+        this.stateChanges = Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["merge"])(pickerDisabled, inputDisabled)
+            .subscribe(function () {
+            _this.changeDetector.markForCheck();
+        });
+    };
+    OwlDateTimeTriggerDirective.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"], args: [{
+                    selector: '[owlDateTimeTrigger]',
+                },] },
+    ];
+    OwlDateTimeTriggerDirective.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+    ]; };
+    OwlDateTimeTriggerDirective.propDecorators = {
+        "dtPicker": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"], args: ['owlDateTimeTrigger',] },],
+        "disabled": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "owlDTTriggerDisabledClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-trigger-disabled',] },],
+        "handleClickOnHost": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['click', ['$event'],] },],
+    };
+    return OwlDateTimeTriggerDirective;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/date-time-picker.animations.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/date-time-picker.animations.js ***!
+  \********************************************************************************/
+/*! exports provided: owlDateTimePickerAnimations */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "owlDateTimePickerAnimations", function() { return owlDateTimePickerAnimations; });
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+
+var owlDateTimePickerAnimations = {
+    transformPicker: Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["trigger"])('transformPicker', [
+        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["state"])('void', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["style"])({ opacity: 0, transform: 'scale(1, 0)' })),
+        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["state"])('enter', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["style"])({ opacity: 1, transform: 'scale(1, 1)' })),
+        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["transition"])('void => enter', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["group"])([
+            Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["query"])('@fadeInPicker', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["animateChild"])(), { optional: true }),
+            Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["animate"])('400ms cubic-bezier(0.25, 0.8, 0.25, 1)')
+        ])),
+        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["transition"])('enter => void', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["animate"])('100ms linear', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["style"])({ opacity: 0 })))
+    ]),
+    fadeInPicker: Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["trigger"])('fadeInPicker', [
+        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["state"])('enter', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["style"])({ opacity: 1 })),
+        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["state"])('void', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["style"])({ opacity: 0 })),
+        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["transition"])('void => enter', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["animate"])('400ms 100ms cubic-bezier(0.55, 0, 0.55, 0.2)')),
+    ])
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/date-time-picker.component.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/date-time-picker.component.js ***!
+  \*******************************************************************************/
+/*! exports provided: OWL_DTPICKER_SCROLL_STRATEGY, OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER_FACTORY, OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER, OwlDateTimeComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DTPICKER_SCROLL_STRATEGY", function() { return OWL_DTPICKER_SCROLL_STRATEGY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER_FACTORY", function() { return OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER", function() { return OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeComponent", function() { return OwlDateTimeComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/cdk/portal */ "./node_modules/@angular/cdk/esm5/portal.es5.js");
+/* harmony import */ var _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/overlay */ "./node_modules/@angular/cdk/esm5/overlay.es5.js");
+/* harmony import */ var _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/cdk/keycodes */ "./node_modules/@angular/cdk/esm5/keycodes.es5.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+/* harmony import */ var _date_time_picker_container_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./date-time-picker-container.component */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-container.component.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var _adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./adapter/date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js");
+/* harmony import */ var _date_time_class__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./date-time.class */ "./node_modules/ng-pick-datetime/date-time/date-time.class.js");
+/* harmony import */ var _dialog__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../dialog */ "./node_modules/ng-pick-datetime/dialog/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+var OWL_DTPICKER_SCROLL_STRATEGY = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('owl-dtpicker-scroll-strategy');
+function OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER_FACTORY(overlay) {
+    return function () { return overlay.scrollStrategies.block(); };
+}
+var OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER = {
+    provide: OWL_DTPICKER_SCROLL_STRATEGY,
+    deps: [_angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_3__["Overlay"]],
+    useFactory: OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER_FACTORY,
+};
+var OwlDateTimeComponent = (function (_super) {
+    __extends(OwlDateTimeComponent, _super);
+    function OwlDateTimeComponent(overlay, viewContainerRef, dialogService, ngZone, changeDetector, dateTimeAdapter, defaultScrollStrategy, dateTimeFormats, document) {
+        var _this = _super.call(this, dateTimeAdapter, dateTimeFormats) || this;
+        _this.overlay = overlay;
+        _this.viewContainerRef = viewContainerRef;
+        _this.dialogService = dialogService;
+        _this.ngZone = ngZone;
+        _this.changeDetector = changeDetector;
+        _this.dateTimeAdapter = dateTimeAdapter;
+        _this.defaultScrollStrategy = defaultScrollStrategy;
+        _this.dateTimeFormats = dateTimeFormats;
+        _this.document = document;
+        _this.backdropClass = [];
+        _this.panelClass = [];
+        _this._pickerType = 'both';
+        _this._pickerMode = 'popup';
+        _this._opened = false;
+        _this.afterPickerClosed = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        _this.afterPickerOpen = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        _this.yearSelected = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        _this.monthSelected = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        _this.confirmSelectedChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        _this.disabledChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        _this.dtInputSub = rxjs__WEBPACK_IMPORTED_MODULE_11__["Subscription"].EMPTY;
+        _this.hidePickerStreamSub = rxjs__WEBPACK_IMPORTED_MODULE_11__["Subscription"].EMPTY;
+        _this.confirmSelectedStreamSub = rxjs__WEBPACK_IMPORTED_MODULE_11__["Subscription"].EMPTY;
+        _this.pickerOpenedStreamSub = rxjs__WEBPACK_IMPORTED_MODULE_11__["Subscription"].EMPTY;
+        _this.focusedElementBeforeOpen = null;
+        _this._selecteds = [];
+        return _this;
+    }
+    Object.defineProperty(OwlDateTimeComponent.prototype, "startAt", {
+        get: function () {
+            if (this._startAt) {
+                return this._startAt;
+            }
+            if (this._dtInput) {
+                if (this._dtInput.selectMode === 'single') {
+                    return this._dtInput.value || null;
+                }
+                else if (this._dtInput.selectMode === 'range' ||
+                    this._dtInput.selectMode === 'rangeFrom') {
+                    return this._dtInput.values[0] || null;
+                }
+                else if (this._dtInput.selectMode === 'rangeTo') {
+                    return this._dtInput.values[1] || null;
+                }
+            }
+            else {
+                return null;
+            }
+        },
+        set: function (date) {
+            this._startAt = this.getValidDate(this.dateTimeAdapter.deserialize(date));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "pickerType", {
+        get: function () {
+            return this._pickerType;
+        },
+        set: function (val) {
+            if (val !== this._pickerType) {
+                this._pickerType = val;
+                if (this._dtInput) {
+                    this._dtInput.formatNativeInputValue();
+                }
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "pickerMode", {
+        get: function () {
+            return this._pickerMode;
+        },
+        set: function (mode) {
+            if (mode === 'popup') {
+                this._pickerMode = mode;
+            }
+            else {
+                this._pickerMode = 'dialog';
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "disabled", {
+        get: function () {
+            return this._disabled === undefined && this._dtInput ?
+                this._dtInput.disabled : !!this._disabled;
+        },
+        set: function (value) {
+            value = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_5__["coerceBooleanProperty"])(value);
+            if (value !== this._disabled) {
+                this._disabled = value;
+                this.disabledChange.next(value);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "opened", {
+        get: function () {
+            return this._opened;
+        },
+        set: function (val) {
+            val ? this.open() : this.close();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "dtInput", {
+        get: function () {
+            return this._dtInput;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "selected", {
+        get: function () {
+            return this._selected;
+        },
+        set: function (value) {
+            this._selected = value;
+            this.changeDetector.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "selecteds", {
+        get: function () {
+            return this._selecteds;
+        },
+        set: function (values) {
+            this._selecteds = values;
+            this.changeDetector.markForCheck();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "minDateTime", {
+        get: function () {
+            return this._dtInput && this._dtInput.min;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "maxDateTime", {
+        get: function () {
+            return this._dtInput && this._dtInput.max;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "dateTimeFilter", {
+        get: function () {
+            return this._dtInput && this._dtInput.dateTimeFilter;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "selectMode", {
+        get: function () {
+            return this._dtInput.selectMode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "isInSingleMode", {
+        get: function () {
+            return this._dtInput.isInSingleMode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTimeComponent.prototype, "isInRangeMode", {
+        get: function () {
+            return this._dtInput.isInRangeMode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlDateTimeComponent.prototype.ngOnInit = function () {
+    };
+    OwlDateTimeComponent.prototype.ngOnDestroy = function () {
+        this.close();
+        this.dtInputSub.unsubscribe();
+        this.disabledChange.complete();
+        if (this.popupRef) {
+            this.popupRef.dispose();
+        }
+    };
+    OwlDateTimeComponent.prototype.registerInput = function (input) {
+        var _this = this;
+        if (this._dtInput) {
+            throw Error('A Owl DateTimePicker can only be associated with a single input.');
+        }
+        this._dtInput = input;
+        this.dtInputSub = this._dtInput.valueChange.subscribe(function (value) {
+            if (Array.isArray(value)) {
+                _this.selecteds = value;
+            }
+            else {
+                _this.selected = value;
+            }
+        });
+    };
+    OwlDateTimeComponent.prototype.open = function () {
+        var _this = this;
+        if (this._opened || this.disabled) {
+            return;
+        }
+        if (!this._dtInput) {
+            throw Error('Attempted to open an DateTimePicker with no associated input.');
+        }
+        if (this.document) {
+            this.focusedElementBeforeOpen = this.document.activeElement;
+        }
+        if (this.isInSingleMode) {
+            this.selected = this._dtInput.value;
+        }
+        else if (this.isInRangeMode) {
+            this.selecteds = this._dtInput.values;
+        }
+        if (this.selected && this.pickerType !== 'calendar' && this._startAt) {
+            this.selected = this.dateTimeAdapter.createDate(this.dateTimeAdapter.getYear(this.selected), this.dateTimeAdapter.getMonth(this.selected), this.dateTimeAdapter.getDate(this.selected), this.dateTimeAdapter.getHours(this._startAt), this.dateTimeAdapter.getMinutes(this._startAt), this.dateTimeAdapter.getSeconds(this._startAt));
+        }
+        this.pickerMode === 'dialog' ?
+            this.openAsDialog() :
+            this.openAsPopup();
+        this.pickerContainer.picker = this;
+        this.hidePickerStreamSub = this.pickerContainer.hidePickerStream
+            .subscribe(function () {
+            _this.close();
+        });
+        this.confirmSelectedStreamSub = this.pickerContainer.confirmSelectedStream
+            .subscribe(function (event) {
+            _this.confirmSelect(event);
+        });
+    };
+    OwlDateTimeComponent.prototype.select = function (date) {
+        if (Array.isArray(date)) {
+            this.selecteds = date.slice();
+        }
+        else {
+            this.selected = date;
+        }
+        if (this.pickerMode !== 'dialog' &&
+            this.pickerType === 'calendar' &&
+            ((this.selectMode === 'single' && this.selected) ||
+                (this.selectMode === 'rangeFrom' && this.selecteds[0]) ||
+                (this.selectMode === 'rangeTo' && this.selecteds[1]) ||
+                (this.selectMode === 'range' && this.selecteds[0] && this.selecteds[1]))) {
+            this.confirmSelect();
+        }
+    };
+    OwlDateTimeComponent.prototype.selectYear = function (normalizedYear) {
+        this.yearSelected.emit(normalizedYear);
+    };
+    OwlDateTimeComponent.prototype.selectMonth = function (normalizedMonth) {
+        this.monthSelected.emit(normalizedMonth);
+    };
+    OwlDateTimeComponent.prototype.close = function () {
+        var _this = this;
+        if (!this._opened) {
+            return;
+        }
+        if (this.popupRef && this.popupRef.hasAttached()) {
+            this.popupRef.detach();
+        }
+        if (this.pickerContainerPortal && this.pickerContainerPortal.isAttached) {
+            this.pickerContainerPortal.detach();
+        }
+        if (this.hidePickerStreamSub) {
+            this.hidePickerStreamSub.unsubscribe();
+            this.hidePickerStreamSub = null;
+        }
+        if (this.confirmSelectedStreamSub) {
+            this.confirmSelectedStreamSub.unsubscribe();
+            this.confirmSelectedStreamSub = null;
+        }
+        if (this.pickerOpenedStreamSub) {
+            this.pickerOpenedStreamSub.unsubscribe();
+            this.pickerOpenedStreamSub = null;
+        }
+        if (this.dialogRef) {
+            this.dialogRef.close();
+            this.dialogRef = null;
+        }
+        var completeClose = function () {
+            if (_this._opened) {
+                _this._opened = false;
+                _this.afterPickerClosed.emit(null);
+                _this.focusedElementBeforeOpen = null;
+            }
+        };
+        if (this.focusedElementBeforeOpen &&
+            typeof this.focusedElementBeforeOpen.focus === 'function') {
+            this.focusedElementBeforeOpen.focus();
+            setTimeout(completeClose);
+        }
+        else {
+            completeClose();
+        }
+    };
+    OwlDateTimeComponent.prototype.confirmSelect = function (event) {
+        if (this.isInSingleMode) {
+            var selected = this.selected || this.startAt || this.dateTimeAdapter.now();
+            this.confirmSelectedChange.emit(selected);
+        }
+        else if (this.isInRangeMode) {
+            this.confirmSelectedChange.emit(this.selecteds);
+        }
+        this.close();
+        return;
+    };
+    OwlDateTimeComponent.prototype.openAsDialog = function () {
+        var _this = this;
+        this.dialogRef = this.dialogService.open(_date_time_picker_container_component__WEBPACK_IMPORTED_MODULE_6__["OwlDateTimeContainerComponent"], {
+            autoFocus: false,
+            backdropClass: ['cdk-overlay-dark-backdrop'].concat(Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_5__["coerceArray"])(this.backdropClass)),
+            paneClass: ['owl-dt-dialog'].concat(Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_5__["coerceArray"])(this.panelClass)),
+            viewContainerRef: this.viewContainerRef,
+            scrollStrategy: this.scrollStrategy || this.defaultScrollStrategy(),
+        });
+        this.pickerContainer = this.dialogRef.componentInstance;
+        this.dialogRef.afterOpen().subscribe(function () {
+            _this.afterPickerOpen.emit(null);
+            _this._opened = true;
+        });
+        this.dialogRef.afterClosed().subscribe(function () { return _this.close(); });
+    };
+    OwlDateTimeComponent.prototype.openAsPopup = function () {
+        var _this = this;
+        if (!this.pickerContainerPortal) {
+            this.pickerContainerPortal = new _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_2__["ComponentPortal"](_date_time_picker_container_component__WEBPACK_IMPORTED_MODULE_6__["OwlDateTimeContainerComponent"], this.viewContainerRef);
+        }
+        if (!this.popupRef) {
+            this.createPopup();
+        }
+        if (!this.popupRef.hasAttached()) {
+            var componentRef = this.popupRef.attach(this.pickerContainerPortal);
+            this.pickerContainer = componentRef.instance;
+            this.ngZone.onStable.asObservable().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_12__["take"])(1)).subscribe(function () {
+                _this.popupRef.updatePosition();
+            });
+            this.pickerOpenedStreamSub =
+                this.pickerContainer.pickerOpenedStream.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_12__["take"])(1)).subscribe(function () {
+                    _this.afterPickerOpen.emit(null);
+                    _this._opened = true;
+                });
+        }
+    };
+    OwlDateTimeComponent.prototype.createPopup = function () {
+        var _this = this;
+        var overlayConfig = new _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_3__["OverlayConfig"]({
+            positionStrategy: this.createPopupPositionStrategy(),
+            hasBackdrop: true,
+            backdropClass: ['cdk-overlay-transparent-backdrop'].concat(Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_5__["coerceArray"])(this.backdropClass)),
+            scrollStrategy: this.scrollStrategy || this.defaultScrollStrategy(),
+            panelClass: ['owl-dt-popup'].concat(Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_5__["coerceArray"])(this.panelClass)),
+        });
+        this.popupRef = this.overlay.create(overlayConfig);
+        Object(rxjs__WEBPACK_IMPORTED_MODULE_11__["merge"])(this.popupRef.backdropClick(), this.popupRef.detachments(), this.popupRef.keydownEvents().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_12__["filter"])(function (event) {
+            return event.keyCode === _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_4__["ESCAPE"] ||
+                (_this._dtInput && event.altKey && event.keyCode === _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_4__["UP_ARROW"]);
+        }))).subscribe(function () { return _this.close(); });
+    };
+    OwlDateTimeComponent.prototype.createPopupPositionStrategy = function () {
+        return this.overlay.position()
+            .flexibleConnectedTo(this._dtInput.elementRef)
+            .withTransformOriginOn('.owl-dt-container')
+            .withFlexibleDimensions(false)
+            .withPush(false)
+            .withPositions([
+            { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' },
+            { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom' },
+            { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top' },
+            { originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom' },
+            { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top', offsetY: -176 },
+            { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top', offsetY: -352 },
+        ]);
+    };
+    OwlDateTimeComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'owl-date-time',
+                    exportAs: 'owlDateTime',
+                    template: "",
+                    styles: [""],
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                    preserveWhitespaces: false,
+                },] },
+    ];
+    OwlDateTimeComponent.ctorParameters = function () { return [
+        { type: _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_3__["Overlay"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewContainerRef"], },
+        { type: _dialog__WEBPACK_IMPORTED_MODULE_10__["OwlDialogService"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_7__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [OWL_DTPICKER_SCROLL_STRATEGY,] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_8__["OWL_DATE_TIME_FORMATS"],] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["DOCUMENT"],] },] },
+    ]; };
+    OwlDateTimeComponent.propDecorators = {
+        "backdropClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "panelClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "startAt": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "pickerType": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "pickerMode": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "disabled": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "opened": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "scrollStrategy": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "afterPickerClosed": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "afterPickerOpen": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "yearSelected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "monthSelected": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+    };
+    return OwlDateTimeComponent;
+}(_date_time_class__WEBPACK_IMPORTED_MODULE_9__["OwlDateTime"]));
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/date-time.class.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/date-time.class.js ***!
+  \********************************************************************/
+/*! exports provided: OwlDateTime */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDateTime", function() { return OwlDateTime; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var _adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./adapter/date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js");
+
+
+
+
+var nextUniqueId = 0;
+var OwlDateTime = (function () {
+    function OwlDateTime(dateTimeAdapter, dateTimeFormats) {
+        var _this = this;
+        this.dateTimeAdapter = dateTimeAdapter;
+        this.dateTimeFormats = dateTimeFormats;
+        this._showSecondsTimer = false;
+        this._hour12Timer = false;
+        this.startView = 'month';
+        this._stepHour = 1;
+        this._stepMinute = 1;
+        this._stepSecond = 1;
+        this._firstDayOfWeek = 0;
+        this._hideOtherMonths = false;
+        this.dateTimeChecker = function (dateTime) {
+            return !!dateTime &&
+                (!_this.dateTimeFilter || _this.dateTimeFilter(dateTime)) &&
+                (!_this.minDateTime || _this.dateTimeAdapter.compare(dateTime, _this.minDateTime) >= 0) &&
+                (!_this.maxDateTime || _this.dateTimeAdapter.compare(dateTime, _this.maxDateTime) <= 0);
+        };
+        if (!this.dateTimeAdapter) {
+            throw Error("OwlDateTimePicker: No provider found for DateTimeAdapter. You must import one of the following " +
+                "modules at your application root: OwlNativeDateTimeModule, OwlMomentDateTimeModule, or provide a " +
+                "custom implementation.");
+        }
+        if (!this.dateTimeFormats) {
+            throw Error("OwlDateTimePicker: No provider found for OWL_DATE_TIME_FORMATS. You must import one of the following " +
+                "modules at your application root: OwlNativeDateTimeModule, OwlMomentDateTimeModule, or provide a " +
+                "custom implementation.");
+        }
+        this._id = "owl-dt-picker-" + nextUniqueId++;
+    }
+    Object.defineProperty(OwlDateTime.prototype, "showSecondsTimer", {
+        get: function () {
+            return this._showSecondsTimer;
+        },
+        set: function (val) {
+            this._showSecondsTimer = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTime.prototype, "hour12Timer", {
+        get: function () {
+            return this._hour12Timer;
+        },
+        set: function (val) {
+            this._hour12Timer = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTime.prototype, "stepHour", {
+        get: function () {
+            return this._stepHour;
+        },
+        set: function (val) {
+            this._stepHour = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceNumberProperty"])(val, 1);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTime.prototype, "stepMinute", {
+        get: function () {
+            return this._stepMinute;
+        },
+        set: function (val) {
+            this._stepMinute = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceNumberProperty"])(val, 1);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTime.prototype, "stepSecond", {
+        get: function () {
+            return this._stepSecond;
+        },
+        set: function (val) {
+            this._stepSecond = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceNumberProperty"])(val, 1);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTime.prototype, "firstDayOfWeek", {
+        get: function () {
+            return this._firstDayOfWeek;
+        },
+        set: function (value) {
+            value = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceNumberProperty"])(value, 0);
+            if (value > 6 || value < 0) {
+                this._firstDayOfWeek = 0;
+            }
+            else {
+                this._firstDayOfWeek = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTime.prototype, "hideOtherMonths", {
+        get: function () {
+            return this._hideOtherMonths;
+        },
+        set: function (val) {
+            this._hideOtherMonths = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceBooleanProperty"])(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTime.prototype, "id", {
+        get: function () {
+            return this._id;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTime.prototype, "formatString", {
+        get: function () {
+            return this.pickerType === 'both' ? this.dateTimeFormats.fullPickerInput :
+                this.pickerType === 'calendar' ? this.dateTimeFormats.datePickerInput :
+                    this.dateTimeFormats.timePickerInput;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDateTime.prototype, "disabled", {
+        get: function () {
+            return false;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlDateTime.prototype.getValidDate = function (obj) {
+        return (this.dateTimeAdapter.isDateInstance(obj) && this.dateTimeAdapter.isValid(obj)) ? obj : null;
+    };
+    OwlDateTime.ctorParameters = function () { return [
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_3__["OWL_DATE_TIME_FORMATS"],] },] },
+    ]; };
+    OwlDateTime.propDecorators = {
+        "showSecondsTimer": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "hour12Timer": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "startView": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "stepHour": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "stepMinute": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "stepSecond": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "firstDayOfWeek": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "hideOtherMonths": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+    };
+    return OwlDateTime;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/date-time.module.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/date-time.module.js ***!
+  \*********************************************************************/
+/*! exports provided: OwlDateTimeModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeModule", function() { return OwlDateTimeModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/cdk/a11y */ "./node_modules/@angular/cdk/esm5/a11y.es5.js");
+/* harmony import */ var _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/overlay */ "./node_modules/@angular/cdk/esm5/overlay.es5.js");
+/* harmony import */ var _date_time_picker_trigger_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./date-time-picker-trigger.directive */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-trigger.directive.js");
+/* harmony import */ var _date_time_picker_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./date-time-picker.component */ "./node_modules/ng-pick-datetime/date-time/date-time-picker.component.js");
+/* harmony import */ var _date_time_picker_container_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./date-time-picker-container.component */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-container.component.js");
+/* harmony import */ var _date_time_picker_input_directive__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./date-time-picker-input.directive */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-input.directive.js");
+/* harmony import */ var _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./date-time-picker-intl.service */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-intl.service.js");
+/* harmony import */ var _calendar_month_view_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./calendar-month-view.component */ "./node_modules/ng-pick-datetime/date-time/calendar-month-view.component.js");
+/* harmony import */ var _calendar_body_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./calendar-body.component */ "./node_modules/ng-pick-datetime/date-time/calendar-body.component.js");
+/* harmony import */ var _calendar_year_view_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./calendar-year-view.component */ "./node_modules/ng-pick-datetime/date-time/calendar-year-view.component.js");
+/* harmony import */ var _calendar_multi_year_view_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./calendar-multi-year-view.component */ "./node_modules/ng-pick-datetime/date-time/calendar-multi-year-view.component.js");
+/* harmony import */ var _timer_box_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./timer-box.component */ "./node_modules/ng-pick-datetime/date-time/timer-box.component.js");
+/* harmony import */ var _timer_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./timer.component */ "./node_modules/ng-pick-datetime/date-time/timer.component.js");
+/* harmony import */ var _numberedFixLen_pipe__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./numberedFixLen.pipe */ "./node_modules/ng-pick-datetime/date-time/numberedFixLen.pipe.js");
+/* harmony import */ var _calendar_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./calendar.component */ "./node_modules/ng-pick-datetime/date-time/calendar.component.js");
+/* harmony import */ var _date_time_inline_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./date-time-inline.component */ "./node_modules/ng-pick-datetime/date-time/date-time-inline.component.js");
+/* harmony import */ var _dialog__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../dialog */ "./node_modules/ng-pick-datetime/dialog/index.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var OwlDateTimeModule = (function () {
+    function OwlDateTimeModule() {
+    }
+    OwlDateTimeModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_3__["OverlayModule"], _dialog__WEBPACK_IMPORTED_MODULE_18__["OwlDialogModule"], _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_2__["A11yModule"]],
+                    exports: [
+                        _calendar_component__WEBPACK_IMPORTED_MODULE_16__["OwlCalendarComponent"],
+                        _timer_component__WEBPACK_IMPORTED_MODULE_14__["OwlTimerComponent"],
+                        _date_time_picker_trigger_directive__WEBPACK_IMPORTED_MODULE_4__["OwlDateTimeTriggerDirective"],
+                        _date_time_picker_input_directive__WEBPACK_IMPORTED_MODULE_7__["OwlDateTimeInputDirective"],
+                        _date_time_picker_component__WEBPACK_IMPORTED_MODULE_5__["OwlDateTimeComponent"],
+                        _date_time_inline_component__WEBPACK_IMPORTED_MODULE_17__["OwlDateTimeInlineComponent"],
+                        _calendar_multi_year_view_component__WEBPACK_IMPORTED_MODULE_12__["OwlMultiYearViewComponent"],
+                        _calendar_year_view_component__WEBPACK_IMPORTED_MODULE_11__["OwlYearViewComponent"],
+                        _calendar_month_view_component__WEBPACK_IMPORTED_MODULE_9__["OwlMonthViewComponent"],
+                    ],
+                    declarations: [
+                        _date_time_picker_trigger_directive__WEBPACK_IMPORTED_MODULE_4__["OwlDateTimeTriggerDirective"],
+                        _date_time_picker_input_directive__WEBPACK_IMPORTED_MODULE_7__["OwlDateTimeInputDirective"],
+                        _date_time_picker_component__WEBPACK_IMPORTED_MODULE_5__["OwlDateTimeComponent"],
+                        _date_time_picker_container_component__WEBPACK_IMPORTED_MODULE_6__["OwlDateTimeContainerComponent"],
+                        _calendar_multi_year_view_component__WEBPACK_IMPORTED_MODULE_12__["OwlMultiYearViewComponent"],
+                        _calendar_year_view_component__WEBPACK_IMPORTED_MODULE_11__["OwlYearViewComponent"],
+                        _calendar_month_view_component__WEBPACK_IMPORTED_MODULE_9__["OwlMonthViewComponent"],
+                        _timer_component__WEBPACK_IMPORTED_MODULE_14__["OwlTimerComponent"],
+                        _timer_box_component__WEBPACK_IMPORTED_MODULE_13__["OwlTimerBoxComponent"],
+                        _calendar_component__WEBPACK_IMPORTED_MODULE_16__["OwlCalendarComponent"],
+                        _calendar_body_component__WEBPACK_IMPORTED_MODULE_10__["OwlCalendarBodyComponent"],
+                        _numberedFixLen_pipe__WEBPACK_IMPORTED_MODULE_15__["NumberFixedLenPipe"],
+                        _date_time_inline_component__WEBPACK_IMPORTED_MODULE_17__["OwlDateTimeInlineComponent"],
+                    ],
+                    providers: [
+                        _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_8__["OwlDateTimeIntl"],
+                        _date_time_picker_component__WEBPACK_IMPORTED_MODULE_5__["OWL_DTPICKER_SCROLL_STRATEGY_PROVIDER"],
+                    ],
+                    entryComponents: [
+                        _date_time_picker_container_component__WEBPACK_IMPORTED_MODULE_6__["OwlDateTimeContainerComponent"],
+                    ]
+                },] },
+    ];
+    return OwlDateTimeModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/index.js ***!
+  \**********************************************************/
+/*! exports provided: OwlDateTimeModule, OwlDateTimeIntl, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE_PROVIDER, OWL_DATE_TIME_LOCALE, DateTimeAdapter, OWL_DATE_TIME_FORMATS, OwlDateTimeInlineComponent, OwlDateTimeComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _date_time_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./date-time.module */ "./node_modules/ng-pick-datetime/date-time/date-time.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeModule", function() { return _date_time_module__WEBPACK_IMPORTED_MODULE_0__["OwlDateTimeModule"]; });
+
+/* harmony import */ var _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./date-time-picker-intl.service */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-intl.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeIntl", function() { return _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_1__["OwlDateTimeIntl"]; });
+
+/* harmony import */ var _adapter_native_date_time_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adapter/native-date-time.module */ "./node_modules/ng-pick-datetime/date-time/adapter/native-date-time.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlNativeDateTimeModule", function() { return _adapter_native_date_time_module__WEBPACK_IMPORTED_MODULE_2__["OwlNativeDateTimeModule"]; });
+
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_LOCALE_PROVIDER", function() { return _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_3__["OWL_DATE_TIME_LOCALE_PROVIDER"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_LOCALE", function() { return _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_3__["OWL_DATE_TIME_LOCALE"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DateTimeAdapter", function() { return _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_3__["DateTimeAdapter"]; });
+
+/* harmony import */ var _adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./adapter/date-time-format.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-format.class.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_FORMATS", function() { return _adapter_date_time_format_class__WEBPACK_IMPORTED_MODULE_4__["OWL_DATE_TIME_FORMATS"]; });
+
+/* harmony import */ var _date_time_inline_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./date-time-inline.component */ "./node_modules/ng-pick-datetime/date-time/date-time-inline.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeInlineComponent", function() { return _date_time_inline_component__WEBPACK_IMPORTED_MODULE_5__["OwlDateTimeInlineComponent"]; });
+
+/* harmony import */ var _date_time_picker_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./date-time-picker.component */ "./node_modules/ng-pick-datetime/date-time/date-time-picker.component.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeComponent", function() { return _date_time_picker_component__WEBPACK_IMPORTED_MODULE_6__["OwlDateTimeComponent"]; });
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/numberedFixLen.pipe.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/numberedFixLen.pipe.js ***!
+  \************************************************************************/
+/*! exports provided: NumberFixedLenPipe */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NumberFixedLenPipe", function() { return NumberFixedLenPipe; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+var NumberFixedLenPipe = (function () {
+    function NumberFixedLenPipe() {
+    }
+    NumberFixedLenPipe.prototype.transform = function (num, len) {
+        var number = Math.floor(num);
+        var length = Math.floor(len);
+        if (num === null || isNaN(number) || isNaN(length)) {
+            return num;
+        }
+        var numString = number.toString();
+        while (numString.length < length) {
+            numString = '0' + numString;
+        }
+        return numString;
+    };
+    NumberFixedLenPipe.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"], args: [{
+                    name: 'numberFixedLen'
+                },] },
+    ];
+    return NumberFixedLenPipe;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/timer-box.component.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/timer-box.component.js ***!
+  \************************************************************************/
+/*! exports provided: OwlTimerBoxComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlTimerBoxComponent", function() { return OwlTimerBoxComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/coercion */ "./node_modules/@angular/cdk/esm5/coercion.es5.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+var OwlTimerBoxComponent = (function () {
+    function OwlTimerBoxComponent() {
+        this.showDivider = false;
+        this.step = 1;
+        this.valueChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.inputChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.inputStream = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.inputStreamSub = rxjs__WEBPACK_IMPORTED_MODULE_2__["Subscription"].EMPTY;
+    }
+    Object.defineProperty(OwlTimerBoxComponent.prototype, "displayValue", {
+        get: function () {
+            return this.boxValue || this.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerBoxComponent.prototype, "owlDTTimerBoxClass", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlTimerBoxComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.inputStreamSub = this.inputStream.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["debounceTime"])(500), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["distinctUntilChanged"])()).subscribe(function (val) {
+            if (val) {
+                var inputValue = Object(_angular_cdk_coercion__WEBPACK_IMPORTED_MODULE_1__["coerceNumberProperty"])(val, 0);
+                _this.updateValueViaInput(inputValue);
+            }
+        });
+    };
+    OwlTimerBoxComponent.prototype.ngOnDestroy = function () {
+        this.inputStreamSub.unsubscribe();
+    };
+    OwlTimerBoxComponent.prototype.upBtnClicked = function () {
+        this.updateValue(this.value + this.step);
+    };
+    OwlTimerBoxComponent.prototype.downBtnClicked = function () {
+        this.updateValue(this.value - this.step);
+    };
+    OwlTimerBoxComponent.prototype.handleInputChange = function (val) {
+        this.inputStream.next(val);
+    };
+    OwlTimerBoxComponent.prototype.updateValue = function (value) {
+        this.valueChange.emit(value);
+    };
+    OwlTimerBoxComponent.prototype.updateValueViaInput = function (value) {
+        if (value > this.max || value < this.min) {
+            return;
+        }
+        this.inputChange.emit(value);
+    };
+    OwlTimerBoxComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    exportAs: 'owlDateTimeTimerBox',
+                    selector: 'owl-date-time-timer-box',
+                    template: "<div *ngIf=\"showDivider\" class=\"owl-dt-timer-divider\" aria-hidden=\"true\"></div><button class=\"owl-dt-control-button owl-dt-control-arrow-button\" type=\"button\" tabindex=\"-1\" [disabled]=\"upBtnDisabled\" [attr.aria-label]=\"upBtnAriaLabel\" (click)=\"upBtnClicked()\"><span class=\"owl-dt-control-button-content\" tabindex=\"-1\"><!-- <editor-fold desc=\"SVG Arrow Up\"> --> <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 451.847 451.846\" style=\"enable-background:new 0 0 451.847 451.846;\" xml:space=\"preserve\" width=\"100%\" height=\"100%\"><path d=\"M248.292,106.406l194.281,194.29c12.365,12.359,12.365,32.391,0,44.744c-12.354,12.354-32.391,12.354-44.744,0\n                        L225.923,173.529L54.018,345.44c-12.36,12.354-32.395,12.354-44.748,0c-12.359-12.354-12.359-32.391,0-44.75L203.554,106.4\n                        c6.18-6.174,14.271-9.259,22.369-9.259C234.018,97.141,242.115,100.232,248.292,106.406z\"/></svg><!-- </editor-fold> --></span></button><label class=\"owl-dt-timer-content\"><input class=\"owl-dt-timer-input\" maxlength=\"2\" [value]=\"displayValue | numberFixedLen : 2\" (input)=\"handleInputChange(valueInput.value)\" #valueInput> <span class=\"owl-hidden-accessible\">{{inputLabel}}</span></label><button class=\"owl-dt-control-button owl-dt-control-arrow-button\" type=\"button\" tabindex=\"-1\" [disabled]=\"downBtnDisabled\" [attr.aria-label]=\"downBtnAriaLabel\" (click)=\"downBtnClicked()\"><span class=\"owl-dt-control-button-content\" tabindex=\"-1\"><!-- <editor-fold desc=\"SVG Arrow Down\"> --> <svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 451.847 451.846\" style=\"enable-background:new 0 0 451.847 451.846;\" xml:space=\"preserve\" width=\"100%\" height=\"100%\"><path d=\"M225.923,354.706c-8.098,0-16.195-3.092-22.369-9.263L9.27,151.157c-12.359-12.359-12.359-32.397,0-44.751\n                        c12.354-12.354,32.388-12.354,44.748,0l171.905,171.915l171.906-171.909c12.359-12.354,32.391-12.354,44.744,0\n                        c12.365,12.354,12.365,32.392,0,44.751L248.292,345.449C242.115,351.621,234.018,354.706,225.923,354.706z\"/></svg><!-- </editor-fold> --></span></button>",
+                    styles: [""],
+                    preserveWhitespaces: false,
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                },] },
+    ];
+    OwlTimerBoxComponent.ctorParameters = function () { return []; };
+    OwlTimerBoxComponent.propDecorators = {
+        "showDivider": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "upBtnAriaLabel": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "upBtnDisabled": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "downBtnAriaLabel": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "downBtnDisabled": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "boxValue": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "value": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "min": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "max": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "step": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "inputLabel": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "valueChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "inputChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "owlDTTimerBoxClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-timer-box',] },],
+    };
+    return OwlTimerBoxComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/date-time/timer.component.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/date-time/timer.component.js ***!
+  \********************************************************************/
+/*! exports provided: OwlTimerComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlTimerComponent", function() { return OwlTimerComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./date-time-picker-intl.service */ "./node_modules/ng-pick-datetime/date-time/date-time-picker-intl.service.js");
+/* harmony import */ var _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adapter/date-time-adapter.class */ "./node_modules/ng-pick-datetime/date-time/adapter/date-time-adapter.class.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+var OwlTimerComponent = (function () {
+    function OwlTimerComponent(ngZone, elmRef, pickerIntl, cdRef, dateTimeAdapter) {
+        this.ngZone = ngZone;
+        this.elmRef = elmRef;
+        this.pickerIntl = pickerIntl;
+        this.cdRef = cdRef;
+        this.dateTimeAdapter = dateTimeAdapter;
+        this.isPM = false;
+        this.stepHour = 1;
+        this.stepMinute = 1;
+        this.stepSecond = 1;
+        this.selectedChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+    }
+    Object.defineProperty(OwlTimerComponent.prototype, "pickerMoment", {
+        get: function () {
+            return this._pickerMoment;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._pickerMoment = this.getValidDate(value) || this.dateTimeAdapter.now();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "minDateTime", {
+        get: function () {
+            return this._minDateTime;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._minDateTime = this.getValidDate(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "maxDateTime", {
+        get: function () {
+            return this._maxDateTime;
+        },
+        set: function (value) {
+            value = this.dateTimeAdapter.deserialize(value);
+            this._maxDateTime = this.getValidDate(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "hourValue", {
+        get: function () {
+            return this.dateTimeAdapter.getHours(this.pickerMoment);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "hourBoxValue", {
+        get: function () {
+            var hours = this.hourValue;
+            if (!this.hour12Timer) {
+                return hours;
+            }
+            else {
+                if (hours === 0) {
+                    hours = 12;
+                    this.isPM = false;
+                }
+                else if (hours > 0 && hours < 12) {
+                    this.isPM = false;
+                }
+                else if (hours === 12) {
+                    this.isPM = true;
+                }
+                else if (hours > 12 && hours < 24) {
+                    hours = hours - 12;
+                    this.isPM = true;
+                }
+                return hours;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "minuteValue", {
+        get: function () {
+            return this.dateTimeAdapter.getMinutes(this.pickerMoment);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "secondValue", {
+        get: function () {
+            return this.dateTimeAdapter.getSeconds(this.pickerMoment);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "upHourButtonLabel", {
+        get: function () {
+            return this.pickerIntl.upHourLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "downHourButtonLabel", {
+        get: function () {
+            return this.pickerIntl.downHourLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "upMinuteButtonLabel", {
+        get: function () {
+            return this.pickerIntl.upMinuteLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "downMinuteButtonLabel", {
+        get: function () {
+            return this.pickerIntl.downMinuteLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "upSecondButtonLabel", {
+        get: function () {
+            return this.pickerIntl.upSecondLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "downSecondButtonLabel", {
+        get: function () {
+            return this.pickerIntl.downSecondLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "hour12ButtonLabel", {
+        get: function () {
+            return this.isPM ? this.pickerIntl.hour12PMLabel : this.pickerIntl.hour12AMLabel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "owlDTTimerClass", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlTimerComponent.prototype, "owlDTTimeTabIndex", {
+        get: function () {
+            return -1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlTimerComponent.prototype.ngOnInit = function () {
+    };
+    OwlTimerComponent.prototype.focus = function () {
+        var _this = this;
+        this.ngZone.runOutsideAngular(function () {
+            _this.ngZone.onStable.asObservable().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["take"])(1)).subscribe(function () {
+                _this.elmRef.nativeElement.focus();
+            });
+        });
+    };
+    OwlTimerComponent.prototype.setHourValueViaInput = function (hours) {
+        if (this.hour12Timer && this.isPM && hours >= 1 && hours <= 11) {
+            hours = hours + 12;
+        }
+        else if (this.hour12Timer && !this.isPM && hours === 12) {
+            hours = 0;
+        }
+        this.setHourValue(hours);
+    };
+    OwlTimerComponent.prototype.setHourValue = function (hours) {
+        var m = this.dateTimeAdapter.setHours(this.pickerMoment, hours);
+        this.selectedChange.emit(m);
+        this.cdRef.markForCheck();
+    };
+    OwlTimerComponent.prototype.setMinuteValue = function (minutes) {
+        var m = this.dateTimeAdapter.setMinutes(this.pickerMoment, minutes);
+        this.selectedChange.emit(m);
+        this.cdRef.markForCheck();
+    };
+    OwlTimerComponent.prototype.setSecondValue = function (seconds) {
+        var m = this.dateTimeAdapter.setSeconds(this.pickerMoment, seconds);
+        this.selectedChange.emit(m);
+        this.cdRef.markForCheck();
+    };
+    OwlTimerComponent.prototype.setMeridiem = function (event) {
+        this.isPM = !this.isPM;
+        var hours = this.hourValue;
+        if (this.isPM) {
+            hours = hours + 12;
+        }
+        else {
+            hours = hours - 12;
+        }
+        if (hours >= 0 && hours <= 23) {
+            this.setHourValue(hours);
+        }
+        this.cdRef.markForCheck();
+        event.preventDefault();
+    };
+    OwlTimerComponent.prototype.upHourEnabled = function () {
+        return !this.maxDateTime || this.compareHours(this.stepHour, this.maxDateTime) < 1;
+    };
+    OwlTimerComponent.prototype.downHourEnabled = function () {
+        return !this.minDateTime || this.compareHours(-this.stepHour, this.minDateTime) > -1;
+    };
+    OwlTimerComponent.prototype.upMinuteEnabled = function () {
+        return !this.maxDateTime || this.compareMinutes(this.stepMinute, this.maxDateTime) < 1;
+    };
+    OwlTimerComponent.prototype.downMinuteEnabled = function () {
+        return !this.minDateTime || this.compareMinutes(-this.stepMinute, this.minDateTime) > -1;
+    };
+    OwlTimerComponent.prototype.upSecondEnabled = function () {
+        return !this.maxDateTime || this.compareSeconds(this.stepSecond, this.maxDateTime) < 1;
+    };
+    OwlTimerComponent.prototype.downSecondEnabled = function () {
+        return !this.minDateTime || this.compareSeconds(-this.stepSecond, this.minDateTime) > -1;
+    };
+    OwlTimerComponent.prototype.compareHours = function (amount, comparedDate) {
+        var hours = this.dateTimeAdapter.getHours(this.pickerMoment) + amount;
+        var result = this.dateTimeAdapter.setHours(this.pickerMoment, hours);
+        return this.dateTimeAdapter.compare(result, comparedDate);
+    };
+    OwlTimerComponent.prototype.compareMinutes = function (amount, comparedDate) {
+        var minutes = this.dateTimeAdapter.getMinutes(this.pickerMoment) + amount;
+        var result = this.dateTimeAdapter.setMinutes(this.pickerMoment, minutes);
+        return this.dateTimeAdapter.compare(result, comparedDate);
+    };
+    OwlTimerComponent.prototype.compareSeconds = function (amount, comparedDate) {
+        var seconds = this.dateTimeAdapter.getSeconds(this.pickerMoment) + amount;
+        var result = this.dateTimeAdapter.setSeconds(this.pickerMoment, seconds);
+        return this.dateTimeAdapter.compare(result, comparedDate);
+    };
+    OwlTimerComponent.prototype.getValidDate = function (obj) {
+        return (this.dateTimeAdapter.isDateInstance(obj) && this.dateTimeAdapter.isValid(obj)) ? obj : null;
+    };
+    OwlTimerComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    exportAs: 'owlDateTimeTimer',
+                    selector: 'owl-date-time-timer',
+                    template: "<owl-date-time-timer-box [upBtnAriaLabel]=\"upHourButtonLabel\" [downBtnAriaLabel]=\"downHourButtonLabel\" [upBtnDisabled]=\"!upHourEnabled()\" [downBtnDisabled]=\"!downHourEnabled()\" [boxValue]=\"hourBoxValue\" [value]=\"hourValue\" [min]=\"0\" [max]=\"23\" [step]=\"stepHour\" [inputLabel]=\"'Hour'\" (inputChange)=\"setHourValueViaInput($event)\" (valueChange)=\"setHourValue($event)\"></owl-date-time-timer-box><owl-date-time-timer-box [showDivider]=\"true\" [upBtnAriaLabel]=\"upMinuteButtonLabel\" [downBtnAriaLabel]=\"downMinuteButtonLabel\" [upBtnDisabled]=\"!upMinuteEnabled()\" [downBtnDisabled]=\"!downMinuteEnabled()\" [value]=\"minuteValue\" [min]=\"0\" [max]=\"59\" [step]=\"stepMinute\" [inputLabel]=\"'Minute'\" (inputChange)=\"setMinuteValue($event)\" (valueChange)=\"setMinuteValue($event)\"></owl-date-time-timer-box><owl-date-time-timer-box *ngIf=\"showSecondsTimer\" [showDivider]=\"true\" [upBtnAriaLabel]=\"upSecondButtonLabel\" [downBtnAriaLabel]=\"downSecondButtonLabel\" [upBtnDisabled]=\"!upSecondEnabled()\" [downBtnDisabled]=\"!downSecondEnabled()\" [value]=\"secondValue\" [min]=\"0\" [max]=\"59\" [step]=\"stepSecond\" [inputLabel]=\"'Second'\" (inputChange)=\"setSecondValue($event)\" (valueChange)=\"setSecondValue($event)\"></owl-date-time-timer-box><div *ngIf=\"hour12Timer\" class=\"owl-dt-timer-hour12\"><button class=\"owl-dt-control-button owl-dt-timer-hour12-box\" type=\"button\" tabindex=\"0\" (click)=\"setMeridiem($event)\"><span class=\"owl-dt-control-button-content\" tabindex=\"-1\">{{hour12ButtonLabel}}</span></button></div>",
+                    styles: [""],
+                    preserveWhitespaces: false,
+                    changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectionStrategy"].OnPush,
+                },] },
+    ];
+    OwlTimerComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgZone"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _date_time_picker_intl_service__WEBPACK_IMPORTED_MODULE_1__["OwlDateTimeIntl"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _adapter_date_time_adapter_class__WEBPACK_IMPORTED_MODULE_2__["DateTimeAdapter"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+    ]; };
+    OwlTimerComponent.propDecorators = {
+        "pickerMoment": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "minDateTime": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "maxDateTime": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "showSecondsTimer": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "hour12Timer": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "stepHour": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "stepMinute": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "stepSecond": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "selectedChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "owlDTTimerClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dt-timer',] },],
+        "owlDTTimeTabIndex": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.tabindex',] },],
+    };
+    return OwlTimerComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/dialog/dialog-config.class.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/dialog/dialog-config.class.js ***!
+  \*********************************************************************/
+/*! exports provided: OwlDialogConfig */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDialogConfig", function() { return OwlDialogConfig; });
+/* harmony import */ var _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/cdk/overlay */ "./node_modules/@angular/cdk/esm5/overlay.es5.js");
+
+var uniqueId = 0;
+var OwlDialogConfig = (function () {
+    function OwlDialogConfig() {
+        this.ariaDescribedBy = null;
+        this.autoFocus = true;
+        this.hasBackdrop = true;
+        this.data = null;
+        this.disableClose = false;
+        this.role = 'dialog';
+        this.paneClass = '';
+        this.event = null;
+        this.backdropClass = '';
+        this.closeOnNavigation = true;
+        this.width = '';
+        this.height = '';
+        this.maxWidth = '85vw';
+        this.scrollStrategy = new _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_0__["NoopScrollStrategy"]();
+        this.id = "owl-dialog-" + uniqueId++;
+    }
+    return OwlDialogConfig;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/dialog/dialog-container.component.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/dialog/dialog-container.component.js ***!
+  \****************************************************************************/
+/*! exports provided: OwlDialogContainerComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDialogContainerComponent", function() { return OwlDialogContainerComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_animations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/a11y */ "./node_modules/@angular/cdk/esm5/a11y.es5.js");
+/* harmony import */ var _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/cdk/portal */ "./node_modules/@angular/cdk/esm5/portal.es5.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+var zoomFadeIn = { opacity: 0, transform: 'translateX({{ x }}) translateY({{ y }}) scale({{scale}})' };
+var zoomFadeInFrom = {
+    opacity: 0,
+    transform: 'translateX({{ x }}) translateY({{ y }}) scale({{scale}})',
+    transformOrigin: '{{ ox }} {{ oy }}'
+};
+var OwlDialogContainerComponent = (function (_super) {
+    __extends(OwlDialogContainerComponent, _super);
+    function OwlDialogContainerComponent(changeDetector, elementRef, focusTrapFactory, document) {
+        var _this = _super.call(this) || this;
+        _this.changeDetector = changeDetector;
+        _this.elementRef = elementRef;
+        _this.focusTrapFactory = focusTrapFactory;
+        _this.document = document;
+        _this.ariaLabelledBy = null;
+        _this.animationStateChanged = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        _this.isAnimating = false;
+        _this.state = 'enter';
+        _this.params = {
+            x: '0px',
+            y: '0px',
+            ox: '50%',
+            oy: '50%',
+            scale: 0
+        };
+        _this.elementFocusedBeforeDialogWasOpened = null;
+        return _this;
+    }
+    Object.defineProperty(OwlDialogContainerComponent.prototype, "config", {
+        get: function () {
+            return this._config;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDialogContainerComponent.prototype, "owlDialogContainerClass", {
+        get: function () {
+            return true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDialogContainerComponent.prototype, "owlDialogContainerTabIndex", {
+        get: function () {
+            return -1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDialogContainerComponent.prototype, "owlDialogContainerId", {
+        get: function () {
+            return this._config.id;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDialogContainerComponent.prototype, "owlDialogContainerRole", {
+        get: function () {
+            return this._config.role || null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDialogContainerComponent.prototype, "owlDialogContainerAriaLabelledby", {
+        get: function () {
+            return this.ariaLabelledBy;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDialogContainerComponent.prototype, "owlDialogContainerAriaDescribedby", {
+        get: function () {
+            return this._config.ariaDescribedBy || null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDialogContainerComponent.prototype, "owlDialogContainerAnimation", {
+        get: function () {
+            return { value: this.state, params: this.params };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlDialogContainerComponent.prototype.ngOnInit = function () {
+    };
+    OwlDialogContainerComponent.prototype.attachComponentPortal = function (portal) {
+        if (this.portalOutlet.hasAttached()) {
+            throw Error('Attempting to attach dialog content after content is already attached');
+        }
+        this.savePreviouslyFocusedElement();
+        return this.portalOutlet.attachComponentPortal(portal);
+    };
+    OwlDialogContainerComponent.prototype.attachTemplatePortal = function (portal) {
+        throw new Error('Method not implemented.');
+    };
+    OwlDialogContainerComponent.prototype.setConfig = function (config) {
+        this._config = config;
+        if (config.event) {
+            this.calculateZoomOrigin(event);
+        }
+    };
+    OwlDialogContainerComponent.prototype.onAnimationStart = function (event) {
+        this.isAnimating = true;
+        this.animationStateChanged.emit(event);
+    };
+    OwlDialogContainerComponent.prototype.onAnimationDone = function (event) {
+        if (event.toState === 'enter') {
+            this.trapFocus();
+        }
+        else if (event.toState === 'exit') {
+            this.restoreFocus();
+        }
+        this.animationStateChanged.emit(event);
+        this.isAnimating = false;
+    };
+    OwlDialogContainerComponent.prototype.startExitAnimation = function () {
+        this.state = 'exit';
+        this.changeDetector.markForCheck();
+    };
+    OwlDialogContainerComponent.prototype.calculateZoomOrigin = function (event) {
+        if (!event) {
+            return;
+        }
+        var clientX = event.clientX;
+        var clientY = event.clientY;
+        var wh = window.innerWidth / 2;
+        var hh = window.innerHeight / 2;
+        var x = clientX - wh;
+        var y = clientY - hh;
+        var ox = clientX / window.innerWidth;
+        var oy = clientY / window.innerHeight;
+        this.params.x = x + "px";
+        this.params.y = y + "px";
+        this.params.ox = ox * 100 + "%";
+        this.params.oy = oy * 100 + "%";
+        this.params.scale = 0;
+        return;
+    };
+    OwlDialogContainerComponent.prototype.savePreviouslyFocusedElement = function () {
+        var _this = this;
+        if (this.document) {
+            this.elementFocusedBeforeDialogWasOpened = this.document.activeElement;
+            Promise.resolve().then(function () { return _this.elementRef.nativeElement.focus(); });
+        }
+    };
+    OwlDialogContainerComponent.prototype.trapFocus = function () {
+        if (!this.focusTrap) {
+            this.focusTrap = this.focusTrapFactory.create(this.elementRef.nativeElement);
+        }
+        if (this._config.autoFocus) {
+            this.focusTrap.focusInitialElementWhenReady();
+        }
+    };
+    OwlDialogContainerComponent.prototype.restoreFocus = function () {
+        var toFocus = this.elementFocusedBeforeDialogWasOpened;
+        if (toFocus && typeof toFocus.focus === 'function') {
+            toFocus.focus();
+        }
+        if (this.focusTrap) {
+            this.focusTrap.destroy();
+        }
+    };
+    OwlDialogContainerComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'owl-dialog-container',
+                    template: "<ng-template cdkPortalOutlet></ng-template>",
+                    animations: [
+                        Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["trigger"])('slideModal', [
+                            Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["transition"])('void => enter', [
+                                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])(zoomFadeInFrom),
+                                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["animate"])('300ms cubic-bezier(0.35, 0, 0.25, 1)', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])('*')),
+                                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["animate"])('150ms', Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["keyframes"])([
+                                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({ transform: 'scale(1)', offset: 0 }),
+                                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({ transform: 'scale(1.05)', offset: 0.3 }),
+                                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({ transform: 'scale(.95)', offset: 0.8 }),
+                                    Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])({ transform: 'scale(1)', offset: 1.0 })
+                                ])),
+                                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["animateChild"])()
+                            ], { params: { x: '0px', y: '0px', ox: '50%', oy: '50%', scale: 1 } }),
+                            Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["transition"])('enter => exit', [
+                                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["animateChild"])(),
+                                Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["animate"])(200, Object(_angular_animations__WEBPACK_IMPORTED_MODULE_1__["style"])(zoomFadeIn))
+                            ], { params: { x: '0px', y: '0px', ox: '50%', oy: '50%' } })
+                        ])
+                    ]
+                },] },
+    ];
+    OwlDialogContainerComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"], },
+        { type: _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__["FocusTrapFactory"], },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["DOCUMENT"],] },] },
+    ]; };
+    OwlDialogContainerComponent.propDecorators = {
+        "portalOutlet": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: [_angular_cdk_portal__WEBPACK_IMPORTED_MODULE_4__["CdkPortalOutlet"],] },],
+        "owlDialogContainerClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['class.owl-dialog-container',] },],
+        "owlDialogContainerTabIndex": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.tabindex',] },],
+        "owlDialogContainerId": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.id',] },],
+        "owlDialogContainerRole": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.role',] },],
+        "owlDialogContainerAriaLabelledby": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.aria-labelledby',] },],
+        "owlDialogContainerAriaDescribedby": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['attr.aria-describedby',] },],
+        "owlDialogContainerAnimation": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostBinding"], args: ['@slideModal',] },],
+        "onAnimationStart": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['@slideModal.start', ['$event'],] },],
+        "onAnimationDone": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['@slideModal.done', ['$event'],] },],
+    };
+    return OwlDialogContainerComponent;
+}(_angular_cdk_portal__WEBPACK_IMPORTED_MODULE_4__["BasePortalOutlet"]));
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/dialog/dialog-ref.class.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/dialog/dialog-ref.class.js ***!
+  \******************************************************************/
+/*! exports provided: OwlDialogRef */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDialogRef", function() { return OwlDialogRef; });
+/* harmony import */ var _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/cdk/keycodes */ "./node_modules/@angular/cdk/esm5/keycodes.es5.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+var OwlDialogRef = (function () {
+    function OwlDialogRef(overlayRef, container, id, location) {
+        var _this = this;
+        this.overlayRef = overlayRef;
+        this.container = container;
+        this.id = id;
+        this._beforeClose$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        this._afterOpen$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        this._afterClosed$ = new rxjs__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        this.locationChanged = rxjs__WEBPACK_IMPORTED_MODULE_1__["Subscription"].EMPTY;
+        this.disableClose = this.container.config.disableClose;
+        this.container.animationStateChanged
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (event) { return event.phaseName === 'done' && event.toState === 'enter'; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["take"])(1))
+            .subscribe(function () {
+            _this._afterOpen$.next();
+            _this._afterOpen$.complete();
+        });
+        this.container.animationStateChanged
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (event) { return event.phaseName === 'done' && event.toState === 'exit'; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["take"])(1))
+            .subscribe(function () {
+            _this.overlayRef.dispose();
+            _this.locationChanged.unsubscribe();
+            _this._afterClosed$.next(_this.result);
+            _this._afterClosed$.complete();
+            _this.componentInstance = (null);
+        });
+        this.overlayRef.keydownEvents()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (event) { return event.keyCode === _angular_cdk_keycodes__WEBPACK_IMPORTED_MODULE_0__["ESCAPE"] && !_this.disableClose; }))
+            .subscribe(function () { return _this.close(); });
+        if (location) {
+            this.locationChanged = location.subscribe(function () {
+                if (_this.container.config.closeOnNavigation) {
+                    _this.close();
+                }
+            });
+        }
+    }
+    OwlDialogRef.prototype.close = function (dialogResult) {
+        var _this = this;
+        this.result = dialogResult;
+        this.container.animationStateChanged
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["filter"])(function (event) { return event.phaseName === 'start'; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["take"])(1))
+            .subscribe(function () {
+            _this._beforeClose$.next(dialogResult);
+            _this._beforeClose$.complete();
+            _this.overlayRef.detachBackdrop();
+        });
+        this.container.startExitAnimation();
+    };
+    OwlDialogRef.prototype.backdropClick = function () {
+        return this.overlayRef.backdropClick();
+    };
+    OwlDialogRef.prototype.keydownEvents = function () {
+        return this.overlayRef.keydownEvents();
+    };
+    OwlDialogRef.prototype.updatePosition = function (position) {
+        var strategy = this.getPositionStrategy();
+        if (position && (position.left || position.right)) {
+            position.left ? strategy.left(position.left) : strategy.right(position.right);
+        }
+        else {
+            strategy.centerHorizontally();
+        }
+        if (position && (position.top || position.bottom)) {
+            position.top ? strategy.top(position.top) : strategy.bottom(position.bottom);
+        }
+        else {
+            strategy.centerVertically();
+        }
+        this.overlayRef.updatePosition();
+        return this;
+    };
+    OwlDialogRef.prototype.updateSize = function (width, height) {
+        if (width === void 0) { width = 'auto'; }
+        if (height === void 0) { height = 'auto'; }
+        this.getPositionStrategy().width(width).height(height);
+        this.overlayRef.updatePosition();
+        return this;
+    };
+    OwlDialogRef.prototype.isAnimating = function () {
+        return this.container.isAnimating;
+    };
+    OwlDialogRef.prototype.afterOpen = function () {
+        return this._afterOpen$.asObservable();
+    };
+    OwlDialogRef.prototype.beforeClose = function () {
+        return this._beforeClose$.asObservable();
+    };
+    OwlDialogRef.prototype.afterClosed = function () {
+        return this._afterClosed$.asObservable();
+    };
+    OwlDialogRef.prototype.getPositionStrategy = function () {
+        return this.overlayRef.getConfig().positionStrategy;
+    };
+    return OwlDialogRef;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/dialog/dialog.module.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/dialog/dialog.module.js ***!
+  \***************************************************************/
+/*! exports provided: OwlDialogModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDialogModule", function() { return OwlDialogModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/cdk/a11y */ "./node_modules/@angular/cdk/esm5/a11y.es5.js");
+/* harmony import */ var _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/overlay */ "./node_modules/@angular/cdk/esm5/overlay.es5.js");
+/* harmony import */ var _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/cdk/portal */ "./node_modules/@angular/cdk/esm5/portal.es5.js");
+/* harmony import */ var _dialog_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dialog.service */ "./node_modules/ng-pick-datetime/dialog/dialog.service.js");
+/* harmony import */ var _dialog_container_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./dialog-container.component */ "./node_modules/ng-pick-datetime/dialog/dialog-container.component.js");
+
+
+
+
+
+
+
+var OwlDialogModule = (function () {
+    function OwlDialogModule() {
+    }
+    OwlDialogModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_2__["A11yModule"], _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_3__["OverlayModule"], _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_4__["PortalModule"]],
+                    exports: [],
+                    declarations: [
+                        _dialog_container_component__WEBPACK_IMPORTED_MODULE_6__["OwlDialogContainerComponent"],
+                    ],
+                    providers: [
+                        _dialog_service__WEBPACK_IMPORTED_MODULE_5__["OWL_DIALOG_SCROLL_STRATEGY_PROVIDER"],
+                        _dialog_service__WEBPACK_IMPORTED_MODULE_5__["OwlDialogService"],
+                    ],
+                    entryComponents: [
+                        _dialog_container_component__WEBPACK_IMPORTED_MODULE_6__["OwlDialogContainerComponent"],
+                    ]
+                },] },
+    ];
+    return OwlDialogModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/dialog/dialog.service.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/dialog/dialog.service.js ***!
+  \****************************************************************/
+/*! exports provided: OWL_DIALOG_DATA, OWL_DIALOG_SCROLL_STRATEGY, OWL_DIALOG_SCROLL_STRATEGY_PROVIDER_FACTORY, OWL_DIALOG_SCROLL_STRATEGY_PROVIDER, OWL_DIALOG_DEFAULT_OPTIONS, OwlDialogService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DIALOG_DATA", function() { return OWL_DIALOG_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DIALOG_SCROLL_STRATEGY", function() { return OWL_DIALOG_SCROLL_STRATEGY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DIALOG_SCROLL_STRATEGY_PROVIDER_FACTORY", function() { return OWL_DIALOG_SCROLL_STRATEGY_PROVIDER_FACTORY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DIALOG_SCROLL_STRATEGY_PROVIDER", function() { return OWL_DIALOG_SCROLL_STRATEGY_PROVIDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OWL_DIALOG_DEFAULT_OPTIONS", function() { return OWL_DIALOG_DEFAULT_OPTIONS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OwlDialogService", function() { return OwlDialogService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _dialog_config_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dialog-config.class */ "./node_modules/ng-pick-datetime/dialog/dialog-config.class.js");
+/* harmony import */ var _dialog_ref_class__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dialog-ref.class */ "./node_modules/ng-pick-datetime/dialog/dialog-ref.class.js");
+/* harmony import */ var _dialog_container_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dialog-container.component */ "./node_modules/ng-pick-datetime/dialog/dialog-container.component.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils */ "./node_modules/ng-pick-datetime/utils/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/cdk/overlay */ "./node_modules/@angular/cdk/esm5/overlay.es5.js");
+/* harmony import */ var _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/cdk/portal */ "./node_modules/@angular/cdk/esm5/portal.es5.js");
+
+
+
+
+
+
+
+
+
+
+var OWL_DIALOG_DATA = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('OwlDialogData');
+var OWL_DIALOG_SCROLL_STRATEGY = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('owl-dialog-scroll-strategy');
+function OWL_DIALOG_SCROLL_STRATEGY_PROVIDER_FACTORY(overlay) {
+    return function () { return overlay.scrollStrategies.block(); };
+}
+var OWL_DIALOG_SCROLL_STRATEGY_PROVIDER = {
+    provide: OWL_DIALOG_SCROLL_STRATEGY,
+    deps: [_angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_8__["Overlay"]],
+    useFactory: OWL_DIALOG_SCROLL_STRATEGY_PROVIDER_FACTORY,
+};
+var OWL_DIALOG_DEFAULT_OPTIONS = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["InjectionToken"]('owl-dialog-default-options');
+var OwlDialogService = (function () {
+    function OwlDialogService(overlay, injector, location, scrollStrategy, defaultOptions, parentDialog, overlayContainer) {
+        var _this = this;
+        this.overlay = overlay;
+        this.injector = injector;
+        this.location = location;
+        this.scrollStrategy = scrollStrategy;
+        this.defaultOptions = defaultOptions;
+        this.parentDialog = parentDialog;
+        this.overlayContainer = overlayContainer;
+        this.ariaHiddenElements = new Map();
+        this._openDialogsAtThisLevel = [];
+        this._afterOpenAtThisLevel = new rxjs__WEBPACK_IMPORTED_MODULE_6__["Subject"]();
+        this._afterAllClosedAtThisLevel = new rxjs__WEBPACK_IMPORTED_MODULE_6__["Subject"]();
+        this.afterAllClosed = Object(rxjs__WEBPACK_IMPORTED_MODULE_6__["defer"])(function () {
+            return _this._openDialogsAtThisLevel.length ?
+                _this._afterAllClosed :
+                _this._afterAllClosed.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["startWith"])(undefined));
+        });
+        if (!parentDialog && location) {
+            location.subscribe(function () { return _this.closeAll(); });
+        }
+    }
+    Object.defineProperty(OwlDialogService.prototype, "openDialogs", {
+        get: function () {
+            return this.parentDialog ? this.parentDialog.openDialogs : this._openDialogsAtThisLevel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDialogService.prototype, "afterOpen", {
+        get: function () {
+            return this.parentDialog ? this.parentDialog.afterOpen : this._afterOpenAtThisLevel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(OwlDialogService.prototype, "_afterAllClosed", {
+        get: function () {
+            var parent = this.parentDialog;
+            return parent ? parent._afterAllClosed : this._afterAllClosedAtThisLevel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OwlDialogService.prototype.open = function (componentOrTemplateRef, config) {
+        var _this = this;
+        config = applyConfigDefaults(config, this.defaultOptions);
+        if (config.id && this.getDialogById(config.id)) {
+            throw Error("Dialog with id \"" + config.id + "\" exists already. The dialog id must be unique.");
+        }
+        var overlayRef = this.createOverlay(config);
+        var dialogContainer = this.attachDialogContainer(overlayRef, config);
+        var dialogRef = this.attachDialogContent(componentOrTemplateRef, dialogContainer, overlayRef, config);
+        if (!this.openDialogs.length) {
+            this.hideNonDialogContentFromAssistiveTechnology();
+        }
+        this.openDialogs.push(dialogRef);
+        dialogRef.afterClosed().subscribe(function () { return _this.removeOpenDialog(dialogRef); });
+        this.afterOpen.next(dialogRef);
+        return dialogRef;
+    };
+    OwlDialogService.prototype.closeAll = function () {
+        var i = this.openDialogs.length;
+        while (i--) {
+            this.openDialogs[i].close();
+        }
+    };
+    OwlDialogService.prototype.getDialogById = function (id) {
+        return this.openDialogs.find(function (dialog) { return dialog.id === id; });
+    };
+    OwlDialogService.prototype.attachDialogContent = function (componentOrTemplateRef, dialogContainer, overlayRef, config) {
+        var dialogRef = new _dialog_ref_class__WEBPACK_IMPORTED_MODULE_3__["OwlDialogRef"](overlayRef, dialogContainer, config.id, this.location);
+        if (config.hasBackdrop) {
+            overlayRef.backdropClick().subscribe(function () {
+                if (!dialogRef.disableClose) {
+                    dialogRef.close();
+                }
+            });
+        }
+        if (componentOrTemplateRef instanceof _angular_core__WEBPACK_IMPORTED_MODULE_0__["TemplateRef"]) {
+        }
+        else {
+            var injector = this.createInjector(config, dialogRef, dialogContainer);
+            var contentRef = dialogContainer.attachComponentPortal(new _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_9__["ComponentPortal"](componentOrTemplateRef, undefined, injector));
+            dialogRef.componentInstance = contentRef.instance;
+        }
+        dialogRef
+            .updateSize(config.width, config.height)
+            .updatePosition(config.position);
+        return dialogRef;
+    };
+    OwlDialogService.prototype.createInjector = function (config, dialogRef, dialogContainer) {
+        var userInjector = config && config.viewContainerRef && config.viewContainerRef.injector;
+        var injectionTokens = new WeakMap();
+        injectionTokens.set(_dialog_ref_class__WEBPACK_IMPORTED_MODULE_3__["OwlDialogRef"], dialogRef);
+        injectionTokens.set(_dialog_container_component__WEBPACK_IMPORTED_MODULE_4__["OwlDialogContainerComponent"], dialogContainer);
+        injectionTokens.set(OWL_DIALOG_DATA, config.data);
+        return new _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_9__["PortalInjector"](userInjector || this.injector, injectionTokens);
+    };
+    OwlDialogService.prototype.createOverlay = function (config) {
+        var overlayConfig = this.getOverlayConfig(config);
+        return this.overlay.create(overlayConfig);
+    };
+    OwlDialogService.prototype.attachDialogContainer = function (overlayRef, config) {
+        var containerPortal = new _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_9__["ComponentPortal"](_dialog_container_component__WEBPACK_IMPORTED_MODULE_4__["OwlDialogContainerComponent"], config.viewContainerRef);
+        var containerRef = overlayRef.attach(containerPortal);
+        containerRef.instance.setConfig(config);
+        return containerRef.instance;
+    };
+    OwlDialogService.prototype.getOverlayConfig = function (dialogConfig) {
+        var state = new _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_8__["OverlayConfig"]({
+            positionStrategy: this.overlay.position().global(),
+            scrollStrategy: dialogConfig.scrollStrategy || this.scrollStrategy(),
+            panelClass: dialogConfig.paneClass,
+            hasBackdrop: dialogConfig.hasBackdrop,
+            minWidth: dialogConfig.minWidth,
+            minHeight: dialogConfig.minHeight,
+            maxWidth: dialogConfig.maxWidth,
+            maxHeight: dialogConfig.maxHeight
+        });
+        if (dialogConfig.backdropClass) {
+            state.backdropClass = dialogConfig.backdropClass;
+        }
+        return state;
+    };
+    OwlDialogService.prototype.removeOpenDialog = function (dialogRef) {
+        var index = this._openDialogsAtThisLevel.indexOf(dialogRef);
+        if (index > -1) {
+            this.openDialogs.splice(index, 1);
+            if (!this.openDialogs.length) {
+                this.ariaHiddenElements.forEach(function (previousValue, element) {
+                    if (previousValue) {
+                        element.setAttribute('aria-hidden', previousValue);
+                    }
+                    else {
+                        element.removeAttribute('aria-hidden');
+                    }
+                });
+                this.ariaHiddenElements.clear();
+                this._afterAllClosed.next();
+            }
+        }
+    };
+    OwlDialogService.prototype.hideNonDialogContentFromAssistiveTechnology = function () {
+        var overlayContainer = this.overlayContainer.getContainerElement();
+        if (overlayContainer.parentElement) {
+            var siblings = overlayContainer.parentElement.children;
+            for (var i = siblings.length - 1; i > -1; i--) {
+                var sibling = siblings[i];
+                if (sibling !== overlayContainer &&
+                    sibling.nodeName !== 'SCRIPT' &&
+                    sibling.nodeName !== 'STYLE' &&
+                    !sibling.hasAttribute('aria-live')) {
+                    this.ariaHiddenElements.set(sibling, sibling.getAttribute('aria-hidden'));
+                    sibling.setAttribute('aria-hidden', 'true');
+                }
+            }
+        }
+    };
+    OwlDialogService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    OwlDialogService.ctorParameters = function () { return [
+        { type: _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_8__["Overlay"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injector"], },
+        { type: _angular_common__WEBPACK_IMPORTED_MODULE_1__["Location"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] },] },
+        { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [OWL_DIALOG_SCROLL_STRATEGY,] },] },
+        { type: _dialog_config_class__WEBPACK_IMPORTED_MODULE_2__["OwlDialogConfig"], decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"], args: [OWL_DIALOG_DEFAULT_OPTIONS,] },] },
+        { type: OwlDialogService, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Optional"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["SkipSelf"] },] },
+        { type: _angular_cdk_overlay__WEBPACK_IMPORTED_MODULE_8__["OverlayContainer"], },
+    ]; };
+    return OwlDialogService;
+}());
+
+function applyConfigDefaults(config, defaultOptions) {
+    return Object(_utils__WEBPACK_IMPORTED_MODULE_5__["extendObject"])(new _dialog_config_class__WEBPACK_IMPORTED_MODULE_2__["OwlDialogConfig"](), config, defaultOptions);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/dialog/index.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/dialog/index.js ***!
+  \*******************************************************/
+/*! exports provided: OwlDialogModule, OwlDialogService, OwlDialogRef */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _dialog_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dialog.module */ "./node_modules/ng-pick-datetime/dialog/dialog.module.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDialogModule", function() { return _dialog_module__WEBPACK_IMPORTED_MODULE_0__["OwlDialogModule"]; });
+
+/* harmony import */ var _dialog_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dialog.service */ "./node_modules/ng-pick-datetime/dialog/dialog.service.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDialogService", function() { return _dialog_service__WEBPACK_IMPORTED_MODULE_1__["OwlDialogService"]; });
+
+/* harmony import */ var _dialog_ref_class__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dialog-ref.class */ "./node_modules/ng-pick-datetime/dialog/dialog-ref.class.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDialogRef", function() { return _dialog_ref_class__WEBPACK_IMPORTED_MODULE_2__["OwlDialogRef"]; });
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/picker.js":
+/*!*************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/picker.js ***!
+  \*************************************************/
+/*! exports provided: OwlDateTimeModule, OwlDateTimeIntl, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE_PROVIDER, OWL_DATE_TIME_LOCALE, DateTimeAdapter, OWL_DATE_TIME_FORMATS, OwlDateTimeInlineComponent, OwlDateTimeComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _date_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./date-time */ "./node_modules/ng-pick-datetime/date-time/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeModule", function() { return _date_time__WEBPACK_IMPORTED_MODULE_0__["OwlDateTimeModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeIntl", function() { return _date_time__WEBPACK_IMPORTED_MODULE_0__["OwlDateTimeIntl"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlNativeDateTimeModule", function() { return _date_time__WEBPACK_IMPORTED_MODULE_0__["OwlNativeDateTimeModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_LOCALE_PROVIDER", function() { return _date_time__WEBPACK_IMPORTED_MODULE_0__["OWL_DATE_TIME_LOCALE_PROVIDER"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_LOCALE", function() { return _date_time__WEBPACK_IMPORTED_MODULE_0__["OWL_DATE_TIME_LOCALE"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DateTimeAdapter", function() { return _date_time__WEBPACK_IMPORTED_MODULE_0__["DateTimeAdapter"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OWL_DATE_TIME_FORMATS", function() { return _date_time__WEBPACK_IMPORTED_MODULE_0__["OWL_DATE_TIME_FORMATS"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeInlineComponent", function() { return _date_time__WEBPACK_IMPORTED_MODULE_0__["OwlDateTimeInlineComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OwlDateTimeComponent", function() { return _date_time__WEBPACK_IMPORTED_MODULE_0__["OwlDateTimeComponent"]; });
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/utils/index.js":
+/*!******************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/utils/index.js ***!
+  \******************************************************/
+/*! exports provided: extendObject */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _object_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./object.utils */ "./node_modules/ng-pick-datetime/utils/object.utils.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "extendObject", function() { return _object_utils__WEBPACK_IMPORTED_MODULE_0__["extendObject"]; });
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/ng-pick-datetime/utils/object.utils.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/ng-pick-datetime/utils/object.utils.js ***!
+  \*************************************************************/
+/*! exports provided: extendObject */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "extendObject", function() { return extendObject; });
+function extendObject(dest) {
+    var sources = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        sources[_i - 1] = arguments[_i];
+    }
+    if (dest == null) {
+        throw TypeError('Cannot convert undefined or null to object');
+    }
+    for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
+        var source = sources_1[_a];
+        if (source != null) {
+            for (var key in source) {
+                if (source.hasOwnProperty(key)) {
+                    dest[key] = source[key];
+                }
+            }
+        }
+    }
+    return dest;
+}
 
 
 /***/ }),

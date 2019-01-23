@@ -11,10 +11,14 @@ export class MultiselectComponent implements OnInit, OnChanges {
   @Input() selected: any[] = [];
   @Input() list: any[] = [];
   @Input() settings;
+  @Input() typeOfSearch: 'text' | 'datetime' | 'datetime-range' = 'text';
 
   typingTimer;
   doneTypingInterval = 1500;
   searchBarText: string;
+
+  datetimeStart;
+  datetimeEnd;
 
   @Output() searchBar: EventEmitter<any> = new EventEmitter();
 
@@ -28,6 +32,10 @@ export class MultiselectComponent implements OnInit, OnChanges {
         listEmptyLabel: 'No choices available',
         selectedLabel: 'Selected choices',
         selectedEmptyLabel: 'No choice selected',
+        datetime_range: {
+          start: 'Start',
+          end: 'End',
+        }
       }
     }
   }
@@ -42,17 +50,32 @@ export class MultiselectComponent implements OnInit, OnChanges {
   }
 
   triggerSearch() {
-    clearTimeout(this.typingTimer);
-    this.typingTimer = setTimeout(
-      () => {
-        this.filterList();
-      },
-      this.doneTypingInterval
-    );
+    if (this.typeOfSearch === 'text') {
+      clearTimeout(this.typingTimer);
+      this.typingTimer = setTimeout(
+        () => {
+          this.filterList();
+        },
+        this.doneTypingInterval
+      );
+    } else {
+      this.filterList();
+    }
   }
 
   filterList() {
-    this.searchBar.emit(this.searchBarText);
+    if (this.typeOfSearch === 'text') {
+      this.searchBar.emit(this.searchBarText);
+    } else if (this.typeOfSearch === 'datetime') {
+      this.searchBar.emit(this.datetimeStart);
+    } else if (this.typeOfSearch === 'datetime-range') {
+      this.searchBar.emit(
+        {
+          start: this.datetimeStart,
+          end: this.datetimeEnd,
+        }
+      );
+    }
   }
 
   select(item) {

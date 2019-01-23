@@ -1,9 +1,39 @@
 <div class="multiselect">
-  <input [(ngModel)]="searchBarText"
-         class="multiselect__searchbar"
-         (keypress)="triggerSearch()"
-         type="text"
-         [placeholder]="settings.searchBarPlaceholder"/>
+  <div *ngIf="typeOfSearch === 'text'">
+    <input [(ngModel)]="searchBarText"
+           class="input"
+           (keypress)="triggerSearch()"
+           type="text"
+           [placeholder]="settings.searchBarPlaceholder"/>
+  </div>
+  <div *ngIf="typeOfSearch === 'datetime'">
+    <input [owlDateTimeTrigger]="datetime"
+           class="input"
+           [owlDateTime]="datetime"
+           [(ngModel)]="datetimeStart"
+           (ngModelChange)="triggerSearch()">
+    <owl-date-time #datetime [firstDayOfWeek]="1"></owl-date-time>
+  </div>
+  <div *ngIf="typeOfSearch === 'datetime-range'" class="multiselect__searchbar">
+      <div class="multiselect__searchbar__item">
+        {{ settings.datetime_range.start }}
+        <input [owlDateTimeTrigger]="dt_start"
+               class="input"
+               [owlDateTime]="dt_start"
+               [(ngModel)]="datetimeStart"
+               (ngModelChange)="triggerSearch()">
+        <owl-date-time #dt_start [firstDayOfWeek]="1"></owl-date-time>
+      </div>
+      <div class="multiselect__searchbar__item">
+        {{ settings.datetime_range.end }}
+          <input [owlDateTimeTrigger]="dt_end"
+                 class="input"
+                 [owlDateTime]="dt_end"
+                 [(ngModel)]="datetimeEnd"
+                 (ngModelChange)="triggerSearch()">
+          <owl-date-time #dt_end [firstDayOfWeek]="1"></owl-date-time>
+      </div>
+  </div>
   <div class="multiselect__columns">
     <div class="multiselect__columns__column">
       <div class="multiselect__columns__column__title">

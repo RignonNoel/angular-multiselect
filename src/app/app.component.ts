@@ -11,6 +11,14 @@ export class AppComponent {
   choicesAvailable = [];
   selectedChoices = [];
 
+  demo1;
+  demo1ChoicesAvailable = [];
+  demo1SelectedChoices = [];
+
+  demo2;
+  demo2ChoicesAvailable = [];
+  demo2SelectedChoices = [];
+
   constructor() {
     for (let index = 0; index <= 200; index++) {
       this.allChoices.push(
@@ -20,6 +28,8 @@ export class AppComponent {
       );
     }
     this.choicesAvailable = this.allChoices;
+    this.demo1ChoicesAvailable = this.allChoices;
+    this.demo2ChoicesAvailable = this.allChoices;
   }
 
   filter(search) {
@@ -34,5 +44,13 @@ export class AppComponent {
     } else {
       this.choicesAvailable = this.allChoices;
     }
+  }
+
+  setDemo1(value) {
+    this.demo1 = value;
+  }
+
+  setDemo2(value) {
+    this.demo2 = value;
   }
 }
