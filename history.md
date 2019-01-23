@@ -19,3 +19,9 @@
 * Add demo website on https://rignonnoel.com/angular-multiselect
 * Add example of usage in README
 * Add LICENSE file
+
+1.1.0 (2019-01-23)
+------------------
+
+* Add new type of filter (datetime and datetime-range)
+* Enhance documentation for new type of filter
